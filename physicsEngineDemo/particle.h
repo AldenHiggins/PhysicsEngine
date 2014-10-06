@@ -1,3 +1,6 @@
+#ifndef PARTICLE_H
+#define PARTICLE_H
+
 #include <GL/glut.h>
 
 #define WORLDBOUNDS 22.0f
@@ -19,3 +22,5 @@ public:
 	GLfloat size;
 private:
 };
+
+#endif // PARTICLE_H

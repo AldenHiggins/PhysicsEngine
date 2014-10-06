@@ -1,7 +1,7 @@
 #include "particle.h"
 #include <iostream>
 
-static GLfloat roomBound = WORLDBOUNDS;
+static GLfloat roomBound = WORLDBOUNDS/2;
 
 Particle::Particle(GLfloat positionInput[3], GLfloat sizeInput, GLfloat colorInput[4])
 {
@@ -57,30 +57,69 @@ void Particle::update()
 
 
 	// Keep the particle within the bounds of the room
-	if (position[2] > roomBound)
+	//if (position[2] > roomBound)
+	//{
+	//	position[2] = 0;
+	//}
+	//else if (position[2] < 0)
+	//{
+	//	position[2] = roomBound;
+	//}
+
+	//if (position[1] > roomBound)
+	//{
+	//	position[1] = -roomBound;
+	//}
+	//else if (position[1] < -roomBound)
+	//{
+	//	position[1] = roomBound;
+	//}
+
+	//if (position[0] > roomBound)
+	//{
+	//	position[0] = -roomBound;
+	//}
+	//else if (position[0] < -roomBound)
+	//{
+	//	position[0] = roomBound;
+	//}
+
+	if (position[2] > roomBound * 1.5)
 	{
-		position[2] = 0;
+		//position[2] = 0;
+		position[2] = roomBound * 1.5 - size;
+		velocity[2] = -velocity[2];
 	}
 	else if (position[2] < 0)
 	{
-		position[2] = roomBound;
+		//position[2] = roomBound;
+		position[2] = size;
+		velocity[2] = -velocity[2];
 	}
 
 	if (position[1] > roomBound)
 	{
-		position[1] = -roomBound;
+		//position[1] = -roomBound;
+		position[1] = roomBound - size;
+		velocity[1] = -velocity[1];
 	}
 	else if (position[1] < -roomBound)
 	{
-		position[1] = roomBound;
+		//position[1] = roomBound;
+		position[1] = -roomBound + size;
+		velocity[1] = -velocity[1];
 	}
 
 	if (position[0] > roomBound)
 	{
-		position[0] = -roomBound;
+		//position[0] = -roomBound;
+		position[0] = roomBound - size;
+		velocity[0] = -velocity[0];
 	}
 	else if (position[0] < -roomBound)
 	{
-		position[0] = roomBound;
+		//position[0] = roomBound;
+		position[0] = -roomBound + size;
+		velocity[0] = -velocity[0];
 	}
 }
