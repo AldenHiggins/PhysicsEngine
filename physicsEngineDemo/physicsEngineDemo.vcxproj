@@ -58,7 +58,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glew.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\SeniorDesign\PhysicsEngine\glfw\build2\src\Debug\;D:\SeniorDesign\PhysicsEngine\glew\build2\Debug\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\SeniorDesign\PhysicsEngine\glfwBuild\src\Debug;D:\SeniorDesign\PhysicsEngine\glew\build2\Debug\</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
