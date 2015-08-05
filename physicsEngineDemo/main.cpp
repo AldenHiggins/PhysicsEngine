@@ -1,58 +1,88 @@
-#include <GLFW/glfw3.h>
+#include <GL/glut.h>
 #include <stdlib.h>
 #include <stdio.h>
 
 
-static void error_callback(int error, const char* description)
+/**
+* Creates a window in which to display the scene.
+*/
+void createWindow(const char* title)
 {
-	fputs(description, stderr);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+	glutInitWindowSize(640, 320);
+	glutInitWindowPosition(0, 0);
+	glutCreateWindow(title);
 }
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+
+/**
+* Called each frame to update the 3D scene. Delegates to
+* the application.
+*/
+void update()
 {
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, GL_TRUE);
+
 }
-int main(void)
+
+/**
+* Called each frame to display the 3D scene. Delegates to
+* the application.
+*/
+void display()
 {
-	GLFWwindow* window;
-	glfwSetErrorCallback(error_callback);
-	if (!glfwInit())
-		exit(EXIT_FAILURE);
-	window = glfwCreateWindow(640, 480, "Simple example", NULL, NULL);
-	if (!window)
-	{
-		glfwTerminate();
-		exit(EXIT_FAILURE);
-	}
-	glfwMakeContextCurrent(window);
-	glfwSwapInterval(1);
-	glfwSetKeyCallback(window, key_callback);
-	while (!glfwWindowShouldClose(window))
-	{
-		float ratio;
-		int width, height;
-		glfwGetFramebufferSize(window, &width, &height);
-		ratio = width / (float)height;
-		glViewport(0, 0, width, height);
-		glClear(GL_COLOR_BUFFER_BIT);
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		glRotatef((float)glfwGetTime() * 50.f, 0.f, 0.f, 1.f);
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.f, 0.f, 0.f);
-		glVertex3f(-0.6f, -0.4f, 0.f);
-		glColor3f(0.f, 1.f, 0.f);
-		glVertex3f(0.6f, -0.4f, 0.f);
-		glColor3f(0.f, 0.f, 1.f);
-		glVertex3f(0.f, 0.6f, 0.f);
-		glEnd();
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-	}
-	glfwDestroyWindow(window);
-	glfwTerminate();
-	exit(EXIT_SUCCESS);
+	// Update the displayed content.
+	glFlush();
+	glutSwapBuffers();
+}
+
+/**
+* Called when a mouse button is pressed. Delegates to the
+* application.
+*/
+void mouse(int button, int state, int x, int y)
+{
+}
+
+/**
+* Called when the display window changes size.
+*/
+void reshape(int width, int height)
+{
+}
+
+/**
+* Called when a key is pressed.
+*/
+void keyboard(unsigned char key, int x, int y)
+{
+	// Note we omit passing on the x and y: they are rarely needed.
+}
+
+/**
+* Called when the mouse is dragged.
+*/
+void motion(int x, int y)
+{
+}
+
+/**
+* The main entry point. We pass arguments onto GLUT.
+*/
+int main(int argc, char** argv)
+{
+	// Set up GLUT and the timers
+	glutInit(&argc, argv);
+
+	// Create the application and its window
+	createWindow("PhysicsEngine");
+
+	// Set up the appropriate handler functions
+	glutReshapeFunc(reshape);
+	glutKeyboardFunc(keyboard);
+	glutDisplayFunc(display);
+	glutIdleFunc(update);
+	glutMouseFunc(mouse);
+	glutMotionFunc(motion);
+
+	// Run the application
+	glutMainLoop();
 }
