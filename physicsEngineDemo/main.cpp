@@ -1,7 +1,9 @@
 #include <GL/glut.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "MathDataTypes.h"
 
+using namespace PhysicsEngine;
 
 /**
 * Creates a window in which to display the scene.
@@ -30,10 +32,28 @@ void update()
 void display()
 {
 	// Update the displayed content.
+	
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();
+	// eye, center, up
+	gluLookAt(0.0, 4.0, 0.0, 0.0, 4.0, 6.0, 0.0, 1.0, 0.0);
+	glColor3f(1, 0.5f, 0.5f);
+
+	real xPosition = 0;
+	real yPosition = 4;
+	real zPosition = 10;
+	real size = 3;
+
+	glBegin(GL_QUADS);
+	glVertex3f(xPosition - size, yPosition - size, zPosition);
+	glVertex3f(xPosition + size, yPosition - size, zPosition);
+	glVertex3f(xPosition + size, yPosition + size, zPosition);
+	glVertex3f(xPosition - size, yPosition + size, zPosition);
+
+	glEnd();
+
 	glFlush();
-
-
-
 	glutSwapBuffers();
 }
 
@@ -67,6 +87,22 @@ void motion(int x, int y)
 {
 }
 
+void initializeGraphics()
+{
+	glClearColor(0.9f, 0.95f, 1.0f, 1.0f);
+	glEnable(GL_DEPTH_TEST);
+	glShadeModel(GL_SMOOTH);
+
+	// Now set the view
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(60.0, (double)1920 / (double)1080, 1.0, 500.0);
+	glMatrixMode(GL_MODELVIEW);
+
+	// But override the clear color
+	glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
+}
+
 /**
 * The main entry point. We pass arguments onto GLUT.
 */
@@ -85,6 +121,9 @@ int main(int argc, char** argv)
 	glutIdleFunc(update);
 	glutMouseFunc(mouse);
 	glutMotionFunc(motion);
+
+	// Initialize the graphics
+	initializeGraphics();
 
 	// Run the application
 	glutMainLoop();
