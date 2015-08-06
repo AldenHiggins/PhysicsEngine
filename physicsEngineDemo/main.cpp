@@ -31,6 +31,9 @@ void display()
 {
 	// Update the displayed content.
 	glFlush();
+
+
+
 	glutSwapBuffers();
 }
 

@@ -83,11 +83,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="particle.cpp" />
+    <ClCompile Include="MathDataTypes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\gl\glut.h" />
-    <ClInclude Include="particle.h" />
+    <ClInclude Include="include\MathDataTypes.h" />
+    <ClInclude Include="include\Precision.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

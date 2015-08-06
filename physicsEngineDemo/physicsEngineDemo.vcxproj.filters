@@ -18,15 +18,18 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="particle.cpp">
+    <ClCompile Include="MathDataTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="particle.h">
+    <ClInclude Include="include\gl\glut.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\gl\glut.h">
+    <ClInclude Include="include\MathDataTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Precision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
