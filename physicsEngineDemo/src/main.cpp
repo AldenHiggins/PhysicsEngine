@@ -69,18 +69,7 @@ void display()
 	for (int particleIndex = 0; particleIndex < currentParticles; particleIndex++)
 	{
 		Particle particle = particles[particleIndex];
-		// Set the color for the particle
-		Vector3 particleColor = particle.getColor();
-		glColor3f(particleColor[0], particleColor[1], particleColor[2]);
-		// Get the particle's position
-		Vector3 particlePosition = particle.getPosition();
-		// Get the particle's size
-		real size = particle.getSize();
-		// Now render the particle
-		glVertex3f(particlePosition[0] - size, particlePosition[1] - size, particlePosition[2]);
-		glVertex3f(particlePosition[0] + size, particlePosition[1] - size, particlePosition[2]);
-		glVertex3f(particlePosition[0] + size, particlePosition[1] + size, particlePosition[2]);
-		glVertex3f(particlePosition[0] - size, particlePosition[1] + size, particlePosition[2]);
+		particle.display();
 	}
 	glEnd();
 
@@ -181,6 +170,7 @@ void createParticle(real speed, real size, Vector3 color)
 	newParticle.setPosition(Vector3(0.0f, 4.0f, 6.0f));
 	newParticle.setColor(color);
 	newParticle.setSize(size);
+	newParticle.setLifeTime(3.0f);
 	// Add the newly created particle to the list of particles
 	particles[currentParticles] = newParticle;
 	// Increment the current number of particles
