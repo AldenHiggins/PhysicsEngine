@@ -8,7 +8,13 @@
 
 using namespace PhysicsEngine;
 
+// Contains all of the particles in the scene
 Particle particles[PARTICLE_COUNT];
+// Camera control variables
+float theta;
+float phi;
+int lastX;
+int lastY;
 
 /**
 * Creates a window in which to display the scene.
@@ -49,6 +55,11 @@ void display()
 	// Look out towards the Z direction
 	// eye, center, up
 	gluLookAt(0.0, 4.0, 0.0, 0.0, 4.0, 6.0, 0.0, 1.0, 0.0);
+	// Rotate the camera based on mouse movements
+	glRotatef(-phi, 1, 0, 0);
+	glRotatef(theta, 0, 1, 0);
+
+	// Now render all the particles
 	glBegin(GL_QUADS);
 	for (int particleIndex = 0; particleIndex < PARTICLE_COUNT; particleIndex++)
 	{
@@ -66,7 +77,6 @@ void display()
 		glVertex3f(particlePosition[0] + size, particlePosition[1] + size, particlePosition[2]);
 		glVertex3f(particlePosition[0] - size, particlePosition[1] + size, particlePosition[2]);
 	}
-	
 	glEnd();
 
 	glFlush();
@@ -79,6 +89,8 @@ void display()
 */
 void mouse(int button, int state, int x, int y)
 {
+	lastX = x;
+	lastY = y;
 }
 
 /**
@@ -101,6 +113,17 @@ void keyboard(unsigned char key, int x, int y)
 */
 void motion(int x, int y)
 {
+	// Update the camera
+	theta += (x - lastX)*0.25f;
+	phi += (y - lastY)*0.25f;
+
+	// Keep it in bounds
+	if (phi < -20.0f) phi = -20.0f;
+	else if (phi > 80.0f) phi = 80.0f;
+
+	// Remember the position
+	lastX = x;
+	lastY = y;
 }
 
 void initializeGraphics()
