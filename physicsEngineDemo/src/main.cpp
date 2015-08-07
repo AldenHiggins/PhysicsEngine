@@ -2,8 +2,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "MathDataTypes.h"
+#include "ApplicationSettings.h"
+#include "Particle.h"
+#include "Timing.h"
 
 using namespace PhysicsEngine;
+
+Particle particles[PARTICLE_COUNT];
 
 /**
 * Creates a window in which to display the scene.
@@ -11,7 +16,7 @@ using namespace PhysicsEngine;
 void createWindow(const char* title)
 {
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	glutInitWindowSize(640, 320);
+	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	glutInitWindowPosition(0, 0);
 	glutCreateWindow(title);
 }
@@ -22,7 +27,8 @@ void createWindow(const char* title)
 */
 void update()
 {
-
+	TimingData::get().update();
+	glutPostRedisplay();
 }
 
 /**
@@ -31,26 +37,36 @@ void update()
 */
 void display()
 {
-	// Update the displayed content.
-	
+	float duration = (float)TimingData::get().lastFrameDuration * 0.001f;
+	// Integrate all of the particles
+	for (int particleIndex = 0; particleIndex < PARTICLE_COUNT; particleIndex++)
+	{
+		particles[particleIndex].integrate(duration);
+	}
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
+	// Look out towards the Z direction
 	// eye, center, up
 	gluLookAt(0.0, 4.0, 0.0, 0.0, 4.0, 6.0, 0.0, 1.0, 0.0);
-	glColor3f(1, 0.5f, 0.5f);
-
-	real xPosition = 0;
-	real yPosition = 4;
-	real zPosition = 10;
-	real size = 3;
-
 	glBegin(GL_QUADS);
-	glVertex3f(xPosition - size, yPosition - size, zPosition);
-	glVertex3f(xPosition + size, yPosition - size, zPosition);
-	glVertex3f(xPosition + size, yPosition + size, zPosition);
-	glVertex3f(xPosition - size, yPosition + size, zPosition);
-
+	for (int particleIndex = 0; particleIndex < PARTICLE_COUNT; particleIndex++)
+	{
+		Particle particle = particles[particleIndex];
+		// Set the color for the particle
+		Vector3 particleColor = particle.getColor();
+		glColor3f(particleColor[0], particleColor[1], particleColor[2]);
+		// Get the particle's position
+		Vector3 particlePosition = particle.getPosition();
+		// Get the particle's size
+		real size = particle.getSize();
+		// Now render the particle
+		glVertex3f(particlePosition[0] - size, particlePosition[1] - size, particlePosition[2]);
+		glVertex3f(particlePosition[0] + size, particlePosition[1] - size, particlePosition[2]);
+		glVertex3f(particlePosition[0] + size, particlePosition[1] + size, particlePosition[2]);
+		glVertex3f(particlePosition[0] - size, particlePosition[1] + size, particlePosition[2]);
+	}
+	
 	glEnd();
 
 	glFlush();
@@ -96,11 +112,27 @@ void initializeGraphics()
 	// Now set the view
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60.0, (double)1920 / (double)1080, 1.0, 500.0);
+	gluPerspective(60.0, (double)SCREEN_WIDTH / (double)SCREEN_HEIGHT, 1.0, 500.0);
 	glMatrixMode(GL_MODELVIEW);
 
 	// But override the clear color
 	glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
+}
+
+void initializeScene()
+{
+	// Initialize the timers
+	TimingData::init();
+	// Generate all of the particles
+	for (int particleIndex = 0; particleIndex < PARTICLE_COUNT; particleIndex++)
+	{
+		Particle newParticle;
+		newParticle.setVelocity(Vector3(0.0f, 1.0f, 0.0f));
+		newParticle.setPosition(Vector3(0.0f, 4.0f, 6.0f));
+		newParticle.setColor(Vector3(1, 0.5f, 0.5f));
+		newParticle.setSize(3.0f);
+		particles[particleIndex] = newParticle;;
+	}
 }
 
 /**
@@ -108,6 +140,8 @@ void initializeGraphics()
 */
 int main(int argc, char** argv)
 {
+	// Initialize everything needed for the current scene
+	initializeScene();
 	// Set up GLUT and the timers
 	glutInit(&argc, argv);
 
