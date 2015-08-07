@@ -11,6 +11,7 @@ using namespace PhysicsEngine;
 
 // Generate a new particle
 void createParticle(real speed, real size, Vector3 color);
+void drawBackground();
 
 // Contains all of the particles in the scene
 Particle particles[MAX_PARTICLE_COUNT];
@@ -64,17 +65,72 @@ void display()
 	glRotatef(-phi, 1, 0, 0);
 	glRotatef(theta, 0, 1, 0);
 
-	// Now render all the particles
-	glBegin(GL_QUADS);
+	// Now render the scene
+	// Draw the background
+	drawBackground();
+	// Draw all of the particles
 	for (int particleIndex = 0; particleIndex < currentParticles; particleIndex++)
 	{
+		glBegin(GL_QUADS);
 		Particle particle = particles[particleIndex];
 		particle.display();
+		glEnd();
 	}
-	glEnd();
 
 	glFlush();
 	glutSwapBuffers();
+}
+
+// Draw the background of the scene
+void drawBackground()
+{
+	// Draw the ground
+	glBegin(GL_QUADS);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(20, 0, 20);
+	glVertex3f(20, 0, -20);
+	glVertex3f(-20, 0, -20);
+	glVertex3f(-20, 0, 20);
+	// Draw the walls
+	// Front wall
+	glColor3f(0.9f, 0.9f, 0.9f);
+	glVertex3f(20, 0, 20);
+	glVertex3f(20, 20, 20);
+	glVertex3f(-20, 20, 20);
+	glVertex3f(-20, 0, 20);
+	// Back Wall
+	glColor3f(0.8f, 0.8f, 0.8f);
+	glVertex3f(20, 0, -20);
+	glVertex3f(20, 20, -20);
+	glVertex3f(-20, 20, -20);
+	glVertex3f(-20, 0, -20);
+	// Left Wall
+	glColor3f(0.7f, 0.7f, 0.7f);
+	glVertex3f(20, 0, -20);
+	glVertex3f(20, 20, -20);
+	glVertex3f(20, 20, 20);
+	glVertex3f(20, 0, 20);
+	// Right Wall
+	glColor3f(0.6f, 0.6f, 0.6f);
+	glVertex3f(-20, 0, 20);
+	glVertex3f(-20, 20, 20);
+	glVertex3f(-20, 20, -20);
+	glVertex3f(-20, 0, -20);
+	// Draw the lines of the axes
+	glColor3f(0.0f, 0.0f, 0.0f);
+	// x axis
+	glVertex3f(20, .01, AXES_WIDTH/2);
+	glVertex3f(20, .01, -1 * AXES_WIDTH/2);
+	glVertex3f(-20, .01, -1 * AXES_WIDTH/2);
+	glVertex3f(-20, .01, AXES_WIDTH/2);
+	// z axis
+	glVertex3f(AXES_WIDTH/2, .01, 20);
+	glVertex3f(-1 * AXES_WIDTH/2, .01, 20);
+	glVertex3f(-1 * AXES_WIDTH/2, .01, -20);
+	glVertex3f(AXES_WIDTH/2, .01, -20);
+	glEnd();
+
+
 }
 
 /**
@@ -107,7 +163,7 @@ void keyboard(unsigned char key, int x, int y)
 	// Create a fast particle
 	case '2': createParticle(.8f, .1f, Vector3(0.0f, 0.5f, 0.5f)); break;
 	// Create a big particle
-	case '3': createParticle(.3f, 0.3f, Vector3(.75f, 0.23f, 0.68f)); break;
+	case '3': createParticle(.3f, .3f, Vector3(.75f, 0.23f, 0.68f)); break;
 	}
 }
 
