@@ -1,6 +1,7 @@
 #include <GL/glut.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <iostream>
 #include "MathDataTypes.h"
 #include "ApplicationSettings.h"
 #include "Particle.h"
@@ -8,8 +9,12 @@
 
 using namespace PhysicsEngine;
 
+// Generate a new particle
+void createParticle(real speed, real size, Vector3 color);
+
 // Contains all of the particles in the scene
-Particle particles[PARTICLE_COUNT];
+Particle particles[MAX_PARTICLE_COUNT];
+int currentParticles;
 // Camera control variables
 float theta;
 float phi;
@@ -45,7 +50,7 @@ void display()
 {
 	float duration = (float)TimingData::get().lastFrameDuration * 0.001f;
 	// Integrate all of the particles
-	for (int particleIndex = 0; particleIndex < PARTICLE_COUNT; particleIndex++)
+	for (int particleIndex = 0; particleIndex < currentParticles; particleIndex++)
 	{
 		particles[particleIndex].integrate(duration);
 	}
@@ -61,7 +66,7 @@ void display()
 
 	// Now render all the particles
 	glBegin(GL_QUADS);
-	for (int particleIndex = 0; particleIndex < PARTICLE_COUNT; particleIndex++)
+	for (int particleIndex = 0; particleIndex < currentParticles; particleIndex++)
 	{
 		Particle particle = particles[particleIndex];
 		// Set the color for the particle
@@ -106,6 +111,15 @@ void reshape(int width, int height)
 void keyboard(unsigned char key, int x, int y)
 {
 	// Note we omit passing on the x and y: they are rarely needed.
+	switch (key)
+	{
+	// Create a slow particle
+	case '1': createParticle(.3f, .1f, Vector3(.5f, 0.0f, 1.0f)); break;
+	// Create a fast particle
+	case '2': createParticle(.8f, .1f, Vector3(0.0f, 0.5f, 0.5f)); break;
+	// Create a big particle
+	case '3': createParticle(.3f, 0.3f, Vector3(.75f, 0.23f, 0.68f)); break;
+	}
 }
 
 /**
@@ -146,22 +160,31 @@ void initializeScene()
 {
 	// Initialize the timers
 	TimingData::init();
-	// Generate all of the particles
-	for (int particleIndex = 0; particleIndex < PARTICLE_COUNT; particleIndex++)
+}
+
+// Generate a new particle
+void createParticle(real speed, real size, Vector3 color)
+{
+	if (currentParticles > MAX_PARTICLE_COUNT)
 	{
-		Particle newParticle;
-		real xVelocity = ((real)((rand() % 200) - 100)) / 100;
-		real yVelocity = ((real)((rand() % 200) - 100)) / 100;
-		real zVelocity = ((real)((rand() % 200) - 100)) / 100;
-		xVelocity *= .5;
-		yVelocity *= .5;
-		zVelocity *= .5;
-		newParticle.setVelocity(Vector3(xVelocity, yVelocity, zVelocity));
-		newParticle.setPosition(Vector3(0.0f, 4.0f, 6.0f));
-		newParticle.setColor(Vector3(1, 0.5f, 0.5f));
-		newParticle.setSize(0.1f);
-		particles[particleIndex] = newParticle;;
+		std::cout << "No more particles can be created!" << std::endl;
+		return;
 	}
+	Particle newParticle;
+	real xVelocity = ((real)((rand() % 200) - 100)) / 100;
+	real yVelocity = ((real)((rand() % 200) - 100)) / 100;
+	real zVelocity = ((real)((rand() % 200) - 100)) / 100;
+	xVelocity *= speed;
+	yVelocity *= speed;
+	zVelocity *= speed;
+	newParticle.setVelocity(Vector3(xVelocity, yVelocity, zVelocity));
+	newParticle.setPosition(Vector3(0.0f, 4.0f, 6.0f));
+	newParticle.setColor(color);
+	newParticle.setSize(size);
+	// Add the newly created particle to the list of particles
+	particles[currentParticles] = newParticle;
+	// Increment the current number of particles
+	currentParticles++;
 }
 
 /**
