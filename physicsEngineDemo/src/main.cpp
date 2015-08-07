@@ -127,10 +127,16 @@ void initializeScene()
 	for (int particleIndex = 0; particleIndex < PARTICLE_COUNT; particleIndex++)
 	{
 		Particle newParticle;
-		newParticle.setVelocity(Vector3(0.0f, 1.0f, 0.0f));
+		real xVelocity = ((real)((rand() % 200) - 100)) / 100;
+		real yVelocity = ((real)((rand() % 200) - 100)) / 100;
+		real zVelocity = ((real)((rand() % 200) - 100)) / 100;
+		xVelocity *= .5;
+		yVelocity *= .5;
+		zVelocity *= .5;
+		newParticle.setVelocity(Vector3(xVelocity, yVelocity, zVelocity));
 		newParticle.setPosition(Vector3(0.0f, 4.0f, 6.0f));
 		newParticle.setColor(Vector3(1, 0.5f, 0.5f));
-		newParticle.setSize(3.0f);
+		newParticle.setSize(0.1f);
 		particles[particleIndex] = newParticle;;
 	}
 }

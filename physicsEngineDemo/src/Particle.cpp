@@ -7,10 +7,8 @@ using namespace PhysicsEngine;
 // Integrate the particle forward in time by the timestep
 void Particle::integrate(real timeStep)
 {
-	std::cout << "Velocity: " << velocity[0] << " " << velocity[1] << " " << velocity[2] << std::endl;
 	// Update the position based on the particle's velocity
 	position.addScaledVector(velocity, timeStep);
-	std::cout << "Velocity after: " << velocity[0] << " " << velocity[1] << " " << velocity[2] << std::endl;
 }
 // Getters and setters for particle data
 Vector3 Particle::getPosition()
