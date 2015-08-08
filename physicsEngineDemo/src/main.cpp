@@ -11,10 +11,13 @@ using namespace PhysicsEngine;
 
 // Generate a new particle
 void createParticle(real speed, real size, Vector3 color);
+// Generate a new circular particle
+void createCircularParticle(real speed, real size, Vector3 color);
+// Draw the background of the scene
 void drawBackground();
 
 // Contains all of the particles in the scene
-Particle particles[MAX_PARTICLE_COUNT];
+Particle *particles[MAX_PARTICLE_COUNT];
 int currentParticles;
 // Camera control variables
 float theta;
@@ -53,7 +56,7 @@ void display()
 	// Integrate all of the particles
 	for (int particleIndex = 0; particleIndex < currentParticles; particleIndex++)
 	{
-		particles[particleIndex].integrate(duration);
+		particles[particleIndex]->integrate(duration);
 	}
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -71,10 +74,8 @@ void display()
 	// Draw all of the particles
 	for (int particleIndex = 0; particleIndex < currentParticles; particleIndex++)
 	{
-		glBegin(GL_QUADS);
-		Particle particle = particles[particleIndex];
-		particle.display();
-		glEnd();
+		Particle *particle = particles[particleIndex];
+		particle->display();
 	}
 
 	glFlush();
@@ -129,8 +130,6 @@ void drawBackground()
 	glVertex3f(-1 * AXES_WIDTH/2, .01, -20);
 	glVertex3f(AXES_WIDTH/2, .01, -20);
 	glEnd();
-
-
 }
 
 /**
@@ -164,6 +163,8 @@ void keyboard(unsigned char key, int x, int y)
 	case '2': createParticle(.8f, .1f, Vector3(0.0f, 0.5f, 0.5f)); break;
 	// Create a big particle
 	case '3': createParticle(.3f, .3f, Vector3(.75f, 0.23f, 0.68f)); break;
+	// Create a sphere particle
+	case '4': createCircularParticle(.3f, 0.1f, Vector3(.75f, 0.23f, 0.68f)); break;
 	}
 }
 
@@ -207,6 +208,34 @@ void initializeScene()
 	TimingData::init();
 }
 
+// Generate a new circular particle
+void createCircularParticle(real speed, real size, Vector3 color)
+{
+	if (currentParticles > MAX_PARTICLE_COUNT)
+	{
+		std::cout << "No more particles can be created!" << std::endl;
+		return;
+	}
+	CircleParticle *newParticle = new CircleParticle();
+	real xVelocity = ((real)((rand() % 200) - 100)) / 100;
+	real yVelocity = ((real)((rand() % 200) - 100)) / 100;
+	real zVelocity = ((real)((rand() % 200) - 100)) / 100;
+	xVelocity *= speed;
+	yVelocity *= speed;
+	zVelocity *= speed;
+	newParticle->setVelocity(Vector3(xVelocity, yVelocity, zVelocity));
+	// Add gravity onto this circular particle
+	newParticle->setAcceleration(Vector3(0.0f, -9.81f, 0.0f));
+	newParticle->setPosition(Vector3(0.0f, 4.0f, 6.0f));
+	newParticle->setColor(color);
+	newParticle->setSize(size);
+	newParticle->setLifeTime(3.0f);
+	// Add the newly created particle to the list of particles
+	particles[currentParticles] = newParticle;
+	// Increment the current number of particles
+	currentParticles++;
+}
+
 // Generate a new particle
 void createParticle(real speed, real size, Vector3 color)
 {
@@ -215,18 +244,18 @@ void createParticle(real speed, real size, Vector3 color)
 		std::cout << "No more particles can be created!" << std::endl;
 		return;
 	}
-	Particle newParticle;
+	Particle *newParticle = new Particle();
 	real xVelocity = ((real)((rand() % 200) - 100)) / 100;
 	real yVelocity = ((real)((rand() % 200) - 100)) / 100;
 	real zVelocity = ((real)((rand() % 200) - 100)) / 100;
 	xVelocity *= speed;
 	yVelocity *= speed;
 	zVelocity *= speed;
-	newParticle.setVelocity(Vector3(xVelocity, yVelocity, zVelocity));
-	newParticle.setPosition(Vector3(0.0f, 4.0f, 6.0f));
-	newParticle.setColor(color);
-	newParticle.setSize(size);
-	newParticle.setLifeTime(3.0f);
+	newParticle->setVelocity(Vector3(xVelocity, yVelocity, zVelocity));
+	newParticle->setPosition(Vector3(0.0f, 4.0f, 6.0f));
+	newParticle->setColor(color);
+	newParticle->setSize(size);
+	newParticle->setLifeTime(3.0f);
 	// Add the newly created particle to the list of particles
 	particles[currentParticles] = newParticle;
 	// Increment the current number of particles

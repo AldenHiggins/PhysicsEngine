@@ -16,6 +16,7 @@ namespace PhysicsEngine
 	protected:
 		Vector3 position;
 		Vector3 velocity;
+		Vector3 acceleration;
 		real size;
 		Vector3 color;
 		real lifeTime;
@@ -29,12 +30,14 @@ namespace PhysicsEngine
 		// Integrate the particle forward in time by the timestep
 		void integrate(real timeStep);
 		// Display this particle
-		void display();
+		virtual void display();
 		// Getters and setters for particle data
 		Vector3 getPosition();
 		void setPosition(Vector3 newPosition);
 		Vector3 getVelocity();
 		void setVelocity(Vector3 newVelocity);
+		Vector3 getAcceleration();
+		void setAcceleration(Vector3 newAcceleration);
 		real getSize();
 		void setSize(real newSize);
 		Vector3 getColor();
@@ -42,6 +45,13 @@ namespace PhysicsEngine
 		real getLifeTime();
 		void setLifeTime(real newLifeTime);
 		bool getIsDead();
+	};
+
+	class CircleParticle : public Particle
+	{
+	public:
+		// Display this particle
+		virtual void display();
 	};
 
 
