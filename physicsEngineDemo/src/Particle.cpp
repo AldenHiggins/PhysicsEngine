@@ -197,7 +197,7 @@ void FireworkParticle::onDeath()
 {
 	for (int particleIndex = 0; particleIndex < 5; particleIndex++)
 	{
-		deathParticles[particleIndex] = createFireWorkParticle(.3f, .1f, position, color);
+		deathParticles[particleIndex] = createFireWorkParticle(1.0f, .1f, position, color);
 	}
 }
 
@@ -206,10 +206,10 @@ Particle *createFireWorkParticle(real speed, real size, Vector3 position, Vector
 {
 	FireworkParticle *newParticle = new FireworkParticle();
 	real xVelocity = ((real)((rand() % 200) - 100)) / 100;
-	real yVelocity = 30.0f;
+	real yVelocity = 8.0f;
 	real zVelocity = ((real)((rand() % 200) - 100)) / 100;
 	xVelocity *= speed;
-	yVelocity *= speed;
+	//yVelocity *= speed;
 	zVelocity *= speed;
 	newParticle->setVelocity(Vector3(xVelocity, yVelocity, zVelocity));
 	// Add gravity onto this circular particle

@@ -261,7 +261,7 @@ void createFireworkParticle(real speed, real size, Vector3 color)
 	newParticle->setPosition(Vector3(0.0f, 4.0f, 6.0f));
 	newParticle->setColor(color);
 	newParticle->setSize(size);
-	newParticle->setLifeTime(2.0f);
+	newParticle->setLifeTime(1.0f);
 	// Add the newly created particle to the list of particles
 	particles[currentParticles] = newParticle;
 	// Increment the current number of particles
