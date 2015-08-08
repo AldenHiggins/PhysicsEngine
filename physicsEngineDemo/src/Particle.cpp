@@ -5,10 +5,20 @@
 
 using namespace PhysicsEngine;
 
+// Generate a new firework
+Particle *createFireWorkParticle(real speed, real size, Vector3 position, Vector3 color);
+
 // Integrate the particle forward in time by the timestep
 void Particle::integrate(real timeStep)
 {
 	timeAliveSoFar += timeStep;
+	// Don't display a dead particle
+	if (timeAliveSoFar > lifeTime && !isDead)
+	{
+		isDead = true;
+		onDeath();
+		return;
+	}
 	// Update the position based on the particle's velocity
 	position.addScaledVector(velocity, timeStep);
 
@@ -16,11 +26,15 @@ void Particle::integrate(real timeStep)
 	velocity.addScaledVector(acceleration, timeStep);
 }
 
+
+// Empty on death function
+void Particle::onDeath(){}
+
 // Display this particle
 void Particle::display()
 {
 	// Don't display a dead particle
-	if (timeAliveSoFar > lifeTime)
+	if (isDead)
 	{
 		return;
 	}
@@ -38,7 +52,11 @@ void Particle::display()
 // Display this circular particle
 void CircleParticle::display()
 {
-	std::cout << "Position: " << position[0] << " " << position[1] << " " << position[2] << std::endl;
+	// Don't display a dead particle
+	if (timeAliveSoFar > lifeTime)
+	{
+		return;
+	}
 	glColor3f(color[0], color[1], color[2]);
 	//glTranslatef(position[0], position[1], position[2]);
 	glPushMatrix();
@@ -112,4 +130,93 @@ bool Particle::getIsDead()
 {
 
 	return isDead;
+}
+
+//class FireworkParticle : public CircleParticle
+//{
+//private:
+//	Particle deathParticles[5];
+//public:
+//	// Display this particle
+//	virtual void display();
+//	// Call this when the particle dies
+//	virtual void onDeath();
+//};
+
+//// Integrate the particle forward in time by the timestep
+//void Particle::integrate(real timeStep)
+//{
+//	timeAliveSoFar += timeStep;
+//	// Don't display a dead particle
+//	if (timeAliveSoFar > lifeTime && !isDead)
+//	{
+//		isDead = true;
+//		onDeath();
+//		return;
+//	}
+//	// Update the position based on the particle's velocity
+//	position.addScaledVector(velocity, timeStep);
+//
+//	// Update velocity based on the acceleration
+//	velocity.addScaledVector(acceleration, timeStep);
+//}
+
+void FireworkParticle::integrate(real timeStep)
+{
+	if (isDead)
+	{
+		for (int particleIndex = 0; particleIndex < 5; particleIndex++)
+		{
+			deathParticles[particleIndex]->integrate(timeStep);
+		}
+	}
+	else
+	{
+		Particle::integrate(timeStep);
+	}
+}
+
+void FireworkParticle::display()
+{
+	// If the firework is dead display it's child particles
+	if (isDead)
+	{
+		for (int particleIndex = 0; particleIndex < 5; particleIndex++)
+		{
+			deathParticles[particleIndex]->display();
+		}
+	}
+	else
+	{
+		CircleParticle::display();
+	}
+}
+
+// Generate child particles of this firework
+void FireworkParticle::onDeath()
+{
+	for (int particleIndex = 0; particleIndex < 5; particleIndex++)
+	{
+		deathParticles[particleIndex] = createFireWorkParticle(.3f, .1f, position, color);
+	}
+}
+
+// Generate a new circular particle
+Particle *createFireWorkParticle(real speed, real size, Vector3 position, Vector3 color)
+{
+	FireworkParticle *newParticle = new FireworkParticle();
+	real xVelocity = ((real)((rand() % 200) - 100)) / 100;
+	real yVelocity = 30.0f;
+	real zVelocity = ((real)((rand() % 200) - 100)) / 100;
+	xVelocity *= speed;
+	yVelocity *= speed;
+	zVelocity *= speed;
+	newParticle->setVelocity(Vector3(xVelocity, yVelocity, zVelocity));
+	// Add gravity onto this circular particle
+	newParticle->setAcceleration(Vector3(0.0f, -9.81f, 0.0f));
+	newParticle->setPosition(position);
+	newParticle->setColor(color);
+	newParticle->setSize(size);
+	newParticle->setLifeTime(2.0f);
+	return newParticle;
 }

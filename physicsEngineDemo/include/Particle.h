@@ -20,7 +20,7 @@ namespace PhysicsEngine
 		real size;
 		Vector3 color;
 		real lifeTime;
-		bool isDead;
+		bool isDead = false;
 		real timeAliveSoFar;
 	public:
 		Particle()
@@ -28,9 +28,11 @@ namespace PhysicsEngine
 			timeAliveSoFar = 0;
 		}
 		// Integrate the particle forward in time by the timestep
-		void integrate(real timeStep);
+		virtual void integrate(real timeStep);
 		// Display this particle
 		virtual void display();
+		// Function called when this particle dies
+		virtual void onDeath();
 		// Getters and setters for particle data
 		Vector3 getPosition();
 		void setPosition(Vector3 newPosition);
@@ -53,6 +55,20 @@ namespace PhysicsEngine
 		// Display this particle
 		virtual void display();
 	};
+
+	class FireworkParticle : public CircleParticle
+	{
+	private:
+		Particle *deathParticles[5];
+	public:
+		// Display this particle
+		virtual void display();
+		// Call this when the particle dies
+		virtual void onDeath();
+		// Firework integrate that integrates all of its children
+		virtual void integrate(real timeStep);
+	};
+
 
 
 
