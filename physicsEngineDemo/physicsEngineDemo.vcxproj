@@ -87,12 +87,14 @@
     <ClInclude Include="include\MathDataTypes.h" />
     <ClInclude Include="include\Particle.h" />
     <ClInclude Include="include\Precision.h" />
+    <ClInclude Include="include\RigidBody.h" />
     <ClInclude Include="include\Timing.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MathDataTypes.cpp" />
     <ClCompile Include="src\Particle.cpp" />
+    <ClCompile Include="src\RigidBody.cpp" />
     <ClCompile Include="src\Timing.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
