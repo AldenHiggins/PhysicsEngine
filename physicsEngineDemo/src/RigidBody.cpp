@@ -1,3 +1,5 @@
+#include <iostream>
+#include "gl/glut.h"
 #include "RigidBody.h"
 
 using namespace PhysicsEngine;
@@ -5,6 +7,25 @@ using namespace PhysicsEngine;
 static inline void _calculateTransformMatrix(Matrix4 &transformMatrix, const Vector3 &position, const Quaternion &orientation);
 // Change the inertia tensor of the rigid body to be in world instead of object space (because our torques are going to be in world space)
 static inline void _transformInertiaTensor(Matrix3 &iitWorld, const Quaternion &q, const Matrix3 &iitBody, const Matrix4 &rotmat);
+
+// Display this square
+void Square::display()
+{
+	// Get the OpenGL transformation
+	GLfloat mat[16];
+	this->getGLTransform(mat);
+
+	std::cout << "Displaying square" << std::endl;
+	glColor3f(.5f, .1f, .9f);
+	glPushMatrix();
+	glMultMatrixf(mat);
+	//glScalef(halfSize.x * 2, halfSize.y * 2, halfSize.z * 2);
+	glutSolidCube(1.0f);
+	glPopMatrix();
+}
+
+// Empty display function for a rigid body
+void RigidBody::display(){}
 
 // Integrate this object based on the time elapsed this frame
 void RigidBody::integrate(real timeStep)
@@ -126,6 +147,29 @@ void RigidBody::setAcceleration(const Vector3 &accelerationInput)
 Vector3 RigidBody::getAcceleration() const
 {
 	return acceleration;
+}
+
+void RigidBody::getGLTransform(float matrix[16]) const
+{
+	matrix[0] = (float)transformationMatrix.data[0];
+	matrix[1] = (float)transformationMatrix.data[4];
+	matrix[2] = (float)transformationMatrix.data[8];
+	matrix[3] = 0;
+
+	matrix[4] = (float)transformationMatrix.data[1];
+	matrix[5] = (float)transformationMatrix.data[5];
+	matrix[6] = (float)transformationMatrix.data[9];
+	matrix[7] = 0;
+
+	matrix[8] = (float)transformationMatrix.data[2];
+	matrix[9] = (float)transformationMatrix.data[6];
+	matrix[10] = (float)transformationMatrix.data[10];
+	matrix[11] = 0;
+
+	matrix[12] = (float)transformationMatrix.data[3];
+	matrix[13] = (float)transformationMatrix.data[7];
+	matrix[14] = (float)transformationMatrix.data[11];
+	matrix[15] = 1;
 }
 
 // Calculates all of the derived data that results from the current state of the rigidbody, this happens

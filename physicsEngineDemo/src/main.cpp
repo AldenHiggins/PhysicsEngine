@@ -6,16 +6,23 @@
 #include "ApplicationSettings.h"
 #include "Particle.h"
 #include "Timing.h"
+#include "RigidBody.h"
 
 using namespace PhysicsEngine;
 
-
 // Draw the background of the scene
 void drawBackground();
+// Add a cube rigid body to the scene
+void addRigidCube();
+// Add force to the first cube
+void addForceToCube();
 
 // Contains all of the particles in the scene
 Particle *particles[MAX_PARTICLE_COUNT];
 int currentParticles;
+// Contains all the rigid bodies in the scene
+RigidBody *rigidBodies[MAX_RIGIDBODY_COUNT];
+int currentRigidBodies;
 // Camera control variables
 float theta;
 float phi;
@@ -55,6 +62,11 @@ void display()
 	{
 		particles[particleIndex]->integrate(duration);
 	}
+	// Integrate all rigid bodies
+	for (int rigidBodyIndex = 0; rigidBodyIndex < currentRigidBodies; rigidBodyIndex++)
+	{
+		rigidBodies[rigidBodyIndex]->integrate(duration);
+	}
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
@@ -73,6 +85,11 @@ void display()
 	{
 		Particle *particle = particles[particleIndex];
 		particle->display();
+	}
+	// Draw all rigid bodies
+	for (int rigidBodyIndex = 0; rigidBodyIndex < currentRigidBodies; rigidBodyIndex++)
+	{
+		rigidBodies[rigidBodyIndex]->display();
 	}
 
 	glFlush();
@@ -210,7 +227,38 @@ void keyboard(unsigned char key, int x, int y)
 		// Increment the current number of particles
 		currentParticles++;
 		break;
+
+	// Create a rigid cube
+	case '6':
+		addRigidCube();
+		break;
+	case '7':
+		addForceToCube();
+		break;
 	}
+}
+
+// Add force to the first cube
+void addForceToCube()
+{
+	rigidBodies[0]->addForceAtPoint(Vector3(10.0f, 0.0f, 0.0f), Vector3(0.0f, 5.0f, 6.0f));
+}
+
+
+
+// Add a cube rigid body to the scene
+void addRigidCube()
+{
+	Square *newSquare = new Square();
+	newSquare->setPosition(Vector3(0.0f, 4.0f, 6.0f));
+	newSquare->setVelocity(Vector3(0.0f, 0.1f, 0.0f));
+	Matrix3 tensor;
+	// Vector3 -> half the length, width, and height of the box, real-> mass
+	tensor.setBlockInertiaTensor(Vector3(.5f, .5f, .5f), 1.0f);
+	newSquare->setInertiaTensor(tensor);
+
+	rigidBodies[currentRigidBodies] = newSquare;
+	currentRigidBodies++;
 }
 
 /**
