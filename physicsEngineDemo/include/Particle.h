@@ -47,6 +47,8 @@ namespace PhysicsEngine
 		real getLifeTime();
 		void setLifeTime(real newLifeTime);
 		bool getIsDead();
+
+		
 	};
 
 	class CircleParticle : public Particle
@@ -69,7 +71,22 @@ namespace PhysicsEngine
 		virtual void integrate(real timeStep);
 	};
 
+	struct CreateParticle
+	{
+		// Generate a new firework
+		static Particle *createFireWorkParticle(real speed, real size, Vector3 position, Vector3 color);
+		// Generate a new particle
+		static Particle* CreateParticle::createParticle(real speed, real size, Vector3 color);
+		// Generate a new circular particle
+		static Particle* createCircularParticle(real speed, real size, Vector3 color);
+	private:
+		// These are private to stop instances being created: use get().
+		CreateParticle() {}
+		CreateParticle(const CreateParticle &) {}
+		CreateParticle& operator=(const CreateParticle &);
+	};
 
+	
 
 
 

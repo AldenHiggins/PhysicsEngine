@@ -9,12 +9,7 @@
 
 using namespace PhysicsEngine;
 
-// Generate a new particle
-void createParticle(real speed, real size, Vector3 color);
-// Generate a new circular particle
-void createCircularParticle(real speed, real size, Vector3 color);
-// Generate a new circular particle
-void createFireworkParticle(real speed, real size, Vector3 color);
+
 // Draw the background of the scene
 void drawBackground();
 
@@ -160,15 +155,61 @@ void keyboard(unsigned char key, int x, int y)
 	switch (key)
 	{
 	// Create a slow particle
-	case '1': createParticle(.3f, .1f, Vector3(.5f, 0.0f, 1.0f)); break;
+	case '1':
+		if (currentParticles > MAX_PARTICLE_COUNT)
+		{
+			std::cout << "No more particles can be created!" << std::endl;
+			break;
+		}
+		
+		particles[currentParticles] = CreateParticle::createParticle(.3f, .1f, Vector3(.5f, 0.0f, 1.0f));
+		currentParticles++;
+		break;
 	// Create a fast particle
-	case '2': createParticle(.8f, .1f, Vector3(0.0f, 0.5f, 0.5f)); break;
+	case '2':
+		if (currentParticles > MAX_PARTICLE_COUNT)
+		{
+			std::cout << "No more particles can be created!" << std::endl;
+			break;
+		}
+
+		particles[currentParticles] = CreateParticle::createParticle(.8f, .1f, Vector3(0.0f, 0.5f, 0.5f));
+		currentParticles++;
+		break;
 	// Create a big particle
-	case '3': createParticle(.3f, .3f, Vector3(.75f, 0.23f, 0.68f)); break;
+	case '3':
+		if (currentParticles > MAX_PARTICLE_COUNT)
+		{
+			std::cout << "No more particles can be created!" << std::endl;
+			break;
+		}
+
+		particles[currentParticles] = CreateParticle::createParticle(.3f, .3f, Vector3(.75f, 0.23f, 0.68f));
+		currentParticles++;
+		break;
 	// Create a sphere particle
-	case '4': createCircularParticle(.3f, 0.1f, Vector3(.75f, 0.23f, 0.68f)); break;
+	case '4':
+		if (currentParticles > MAX_PARTICLE_COUNT)
+		{
+			std::cout << "No more particles can be created!" << std::endl;
+			break;
+		}
+
+		particles[currentParticles] = CreateParticle::createCircularParticle(.3f, 0.1f, Vector3(.75f, 0.23f, 0.68f));
+		currentParticles++;
+		break;
 	// Create a sphere particle
-	case '5': createFireworkParticle(.3f, 0.1f, Vector3(.75f, 0.23f, 0.68f)); break;
+	case '5':
+		if (currentParticles > MAX_PARTICLE_COUNT)
+		{
+			std::cout << "No more particles can be created!" << std::endl;
+			break;
+		}
+		
+		particles[currentParticles] = CreateParticle::createFireWorkParticle(.3f, 0.1f, Vector3(0.0f, 4.0f, 6.0f), Vector3(.75f, 0.23f, 0.68f));
+		// Increment the current number of particles
+		currentParticles++;
+		break;
 	}
 }
 
@@ -210,88 +251,6 @@ void initializeScene()
 {
 	// Initialize the timers
 	TimingData::init();
-}
-
-// Generate a new circular particle
-void createCircularParticle(real speed, real size, Vector3 color)
-{
-	if (currentParticles > MAX_PARTICLE_COUNT)
-	{
-		std::cout << "No more particles can be created!" << std::endl;
-		return;
-	}
-	CircleParticle *newParticle = new CircleParticle();
-	real xVelocity = ((real)((rand() % 200) - 100)) / 100;
-	real yVelocity = 30.0f;
-	real zVelocity = ((real)((rand() % 200) - 100)) / 100;
-	xVelocity *= speed;
-	yVelocity *= speed;
-	zVelocity *= speed;
-	newParticle->setVelocity(Vector3(xVelocity, yVelocity, zVelocity));
-	// Add gravity onto this circular particle
-	newParticle->setAcceleration(Vector3(0.0f, -9.81f, 0.0f));
-	newParticle->setPosition(Vector3(0.0f, 4.0f, 6.0f));
-	newParticle->setColor(color);
-	newParticle->setSize(size);
-	newParticle->setLifeTime(2.0f);
-	// Add the newly created particle to the list of particles
-	particles[currentParticles] = newParticle;
-	// Increment the current number of particles
-	currentParticles++;
-}
-
-// Generate a new circular particle
-void createFireworkParticle(real speed, real size, Vector3 color)
-{
-	if (currentParticles > MAX_PARTICLE_COUNT)
-	{
-		std::cout << "No more particles can be created!" << std::endl;
-		return;
-	}
-	FireworkParticle *newParticle = new FireworkParticle();
-	real xVelocity = ((real)((rand() % 200) - 100)) / 100;
-	real yVelocity = 30.0f;
-	real zVelocity = ((real)((rand() % 200) - 100)) / 100;
-	xVelocity *= speed;
-	yVelocity *= speed;
-	zVelocity *= speed;
-	newParticle->setVelocity(Vector3(xVelocity, yVelocity, zVelocity));
-	// Add gravity onto this circular particle
-	newParticle->setAcceleration(Vector3(0.0f, -9.81f, 0.0f));
-	newParticle->setPosition(Vector3(0.0f, 4.0f, 6.0f));
-	newParticle->setColor(color);
-	newParticle->setSize(size);
-	newParticle->setLifeTime(1.0f);
-	// Add the newly created particle to the list of particles
-	particles[currentParticles] = newParticle;
-	// Increment the current number of particles
-	currentParticles++;
-}
-
-// Generate a new particle
-void createParticle(real speed, real size, Vector3 color)
-{
-	if (currentParticles > MAX_PARTICLE_COUNT)
-	{
-		std::cout << "No more particles can be created!" << std::endl;
-		return;
-	}
-	Particle *newParticle = new Particle();
-	real xVelocity = ((real)((rand() % 200) - 100)) / 100;
-	real yVelocity = ((real)((rand() % 200) - 100)) / 100;
-	real zVelocity = ((real)((rand() % 200) - 100)) / 100;
-	xVelocity *= speed;
-	yVelocity *= speed;
-	zVelocity *= speed;
-	newParticle->setVelocity(Vector3(xVelocity, yVelocity, zVelocity));
-	newParticle->setPosition(Vector3(0.0f, 4.0f, 6.0f));
-	newParticle->setColor(color);
-	newParticle->setSize(size);
-	newParticle->setLifeTime(3.0f);
-	// Add the newly created particle to the list of particles
-	particles[currentParticles] = newParticle;
-	// Increment the current number of particles
-	currentParticles++;
 }
 
 /**
