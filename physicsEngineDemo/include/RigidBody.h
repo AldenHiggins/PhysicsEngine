@@ -48,6 +48,9 @@ namespace PhysicsEngine
 		// Add a force at a position on this object in world space
 		void addForceAtPoint(const Vector3 &force, const Vector3 &point);
 
+		// Add a force at a position on this object in object space
+		void addForceAtBodyPoint(const Vector3 &force, const Vector3 &point);
+
 		// Clear all forces/torques active on the object
 		void clearAccumulators();
 
@@ -90,6 +93,9 @@ namespace PhysicsEngine
 
 		// Get this body's transformation matrix in a form that opengl can use
 		void getGLTransform(float matrix[16]) const;
+
+		// Transform a point from object space into world space
+		Vector3 getPointInWorldSpace(const Vector3 &point) const;
 	};
 
 	class Square : public RigidBody

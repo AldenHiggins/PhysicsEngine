@@ -241,10 +241,8 @@ void keyboard(unsigned char key, int x, int y)
 // Add force to the first cube
 void addForceToCube()
 {
-	rigidBodies[0]->addForceAtPoint(Vector3(10.0f, 0.0f, 0.0f), Vector3(0.0f, 5.0f, 6.0f));
+	rigidBodies[0]->addForceAtBodyPoint(Vector3(10.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f));
 }
-
-
 
 // Add a cube rigid body to the scene
 void addRigidCube()
@@ -252,6 +250,7 @@ void addRigidCube()
 	Square *newSquare = new Square();
 	newSquare->setPosition(Vector3(0.0f, 4.0f, 6.0f));
 	newSquare->setVelocity(Vector3(0.0f, 0.1f, 0.0f));
+	newSquare->setMass(1.0f);
 	Matrix3 tensor;
 	// Vector3 -> half the length, width, and height of the box, real-> mass
 	tensor.setBlockInertiaTensor(Vector3(.5f, .5f, .5f), 1.0f);

@@ -15,11 +15,9 @@ void Square::display()
 	GLfloat mat[16];
 	this->getGLTransform(mat);
 
-	std::cout << "Displaying square" << std::endl;
 	glColor3f(.5f, .1f, .9f);
 	glPushMatrix();
 	glMultMatrixf(mat);
-	//glScalef(halfSize.x * 2, halfSize.y * 2, halfSize.z * 2);
 	glutSolidCube(1.0f);
 	glPopMatrix();
 }
@@ -73,6 +71,14 @@ void RigidBody::addForceAtPoint(const Vector3 &force, const Vector3 &point)
 
 	forceAccum += force;
 	torqueAccum += pt % force;
+}
+
+// Add a force at a position on this object in object space
+void RigidBody::addForceAtBodyPoint(const Vector3 &force, const Vector3 &point)
+{
+	// Convert to coordinates relative to center of mass.
+	Vector3 pt = getPointInWorldSpace(point);
+	addForceAtPoint(force, pt);
 }
 
 // Clear all forces/torques active on the object
@@ -147,6 +153,12 @@ void RigidBody::setAcceleration(const Vector3 &accelerationInput)
 Vector3 RigidBody::getAcceleration() const
 {
 	return acceleration;
+}
+
+// Transform a point from object space into world space
+Vector3 RigidBody::getPointInWorldSpace(const Vector3 &point) const
+{
+	return transformationMatrix.transform(point);
 }
 
 void RigidBody::getGLTransform(float matrix[16]) const
