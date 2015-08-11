@@ -165,7 +165,7 @@ void reshape(int width, int height)
 */
 void keyboard(unsigned char key, int x, int y)
 {
-	keyCheck(key, &particles, &rigidBodies);
+	keyCheck(key, &particles, &rigidBodies, theta, phi);
 }
 
 

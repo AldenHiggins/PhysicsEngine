@@ -7,7 +7,7 @@
 
 namespace PhysicsEngine
 {
-	void keyCheck(unsigned char key, std::vector<Particle *> *particles, std::vector<RigidBody *> *rigidBodies);	
+	void keyCheck(unsigned char key, std::vector<Particle *> *particles, std::vector<RigidBody *> *rigidBodies, float theta, float phi);	
 }
 
 #endif // PHYSICS_ENGINE_CONTROLS_H

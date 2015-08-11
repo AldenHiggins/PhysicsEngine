@@ -1,20 +1,22 @@
 #include "Controls.h"
+#include <iostream>
 #include "ApplicationSettings.h"
 #include "MathDataTypes.h"
+#include <math.h>
 
 using namespace PhysicsEngine;
 
 // Add force to the first cube
 void addForceToCube(std::vector<RigidBody *> *rigidBodies);
 // Add a cube rigid body to the scene
-void addRigidCube(std::vector<RigidBody *> *rigidBodies);
-void rigidBodyKeyCheck(unsigned char key, std::vector<RigidBody *> *rigidBodies);
+void addRigidCube(std::vector<RigidBody *> *rigidBodies, float theta, float phi);
+void rigidBodyKeyCheck(unsigned char key, std::vector<RigidBody *> *rigidBodies, float theta, float phi);
 void particleKeyCheck(unsigned char key, std::vector<Particle *> *particles);
 
-void PhysicsEngine::keyCheck(unsigned char key, std::vector<Particle *> *particles, std::vector<RigidBody *> *rigidBodies)
+void PhysicsEngine::keyCheck(unsigned char key, std::vector<Particle *> *particles, std::vector<RigidBody *> *rigidBodies, float theta, float phi)
 {
 	particleKeyCheck(key, particles);
-	rigidBodyKeyCheck(key, rigidBodies);
+	rigidBodyKeyCheck(key, rigidBodies, theta, phi);
 }
 
 void particleKeyCheck(unsigned char key, std::vector<Particle *> *particles)
@@ -50,12 +52,12 @@ void particleKeyCheck(unsigned char key, std::vector<Particle *> *particles)
 	}
 }
 
-void rigidBodyKeyCheck(unsigned char key, std::vector<RigidBody *> *rigidBodies)
+void rigidBodyKeyCheck(unsigned char key, std::vector<RigidBody *> *rigidBodies, float theta, float phi)
 {
 	switch (key)
 	{
 	case '6':
-		addRigidCube(rigidBodies);
+		addRigidCube(rigidBodies, theta, phi);
 		break;
 	case '7':
 		addForceToCube(rigidBodies);
@@ -70,10 +72,19 @@ void addForceToCube(std::vector<RigidBody *> *rigidBodies)
 }
 
 // Add a cube rigid body to the scene
-void addRigidCube(std::vector<RigidBody *> *rigidBodies)
+void addRigidCube(std::vector<RigidBody *> *rigidBodies, float theta, float phi)
 {
 	Square *newSquare = new Square();
-	newSquare->setPosition(Vector3(0.0f, 4.0f, 6.0f));
+	//// Rotate the camera based on mouse movements
+	//glRotatef(-phi, 1, 0, 0);
+	//glRotatef(theta, 0, 1, 0);
+	Vector3 oldSquareCreationPosition(0.0f, 4.0f, 6.0f);
+	float thetaRads = theta * PI / 180.0;
+	Quaternion cameraRotation(cos(thetaRads / 2), 0.0f, 1.0f * sin(thetaRads / 2), 0.0f);
+	Matrix3 rotMatrix;
+	rotMatrix.setOrientation(cameraRotation);
+	Vector3 squareCreationPosition = rotMatrix.transform(oldSquareCreationPosition);
+	newSquare->setPosition(squareCreationPosition);
 	newSquare->setVelocity(Vector3(0.0f, 0.1f, 0.0f));
 	newSquare->setMass(1.0f);
 	Matrix3 tensor;

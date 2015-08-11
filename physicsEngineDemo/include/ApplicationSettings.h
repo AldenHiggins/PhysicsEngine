@@ -9,5 +9,6 @@
 #define MAX_RIGIDBODY_COUNT 10
 #define AXES_WIDTH .3
 
+#define PI 3.14159265
 
 #endif // APPLICATION_SETTINGS_H
