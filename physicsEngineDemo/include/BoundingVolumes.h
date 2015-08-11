@@ -26,8 +26,8 @@
 #include "MathDataTypes.h"
 #include "RigidBody.h"
 
-namespace PhysicsEngine {
-
+namespace PhysicsEngine 
+{
 	/**
 	* Represents a bounding sphere that can be tested for overlap.
 	*/

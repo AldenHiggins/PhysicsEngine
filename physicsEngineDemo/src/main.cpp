@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
+#include <vector>
 #include "MathDataTypes.h"
 #include "ApplicationSettings.h"
 #include "Particle.h"
@@ -18,11 +19,9 @@ void addRigidCube();
 void addForceToCube();
 
 // Contains all of the particles in the scene
-Particle *particles[MAX_PARTICLE_COUNT];
-int currentParticles;
+std::vector<Particle *> particles;
 // Contains all the rigid bodies in the scene
-RigidBody *rigidBodies[MAX_RIGIDBODY_COUNT];
-int currentRigidBodies;
+std::vector<RigidBody *> rigidBodies;
 // Camera control variables
 float theta;
 float phi;
@@ -58,12 +57,12 @@ void display()
 {
 	float duration = (float)TimingData::get().lastFrameDuration * 0.001f;
 	// Integrate all of the particles
-	for (int particleIndex = 0; particleIndex < currentParticles; particleIndex++)
+	for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
 	{
 		particles[particleIndex]->integrate(duration);
 	}
 	// Integrate all rigid bodies
-	for (int rigidBodyIndex = 0; rigidBodyIndex < currentRigidBodies; rigidBodyIndex++)
+	for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
 	{
 		rigidBodies[rigidBodyIndex]->integrate(duration);
 	}
@@ -81,13 +80,13 @@ void display()
 	// Draw the background
 	drawBackground();
 	// Draw all of the particles
-	for (int particleIndex = 0; particleIndex < currentParticles; particleIndex++)
+	for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
 	{
 		Particle *particle = particles[particleIndex];
 		particle->display();
 	}
 	// Draw all rigid bodies
-	for (int rigidBodyIndex = 0; rigidBodyIndex < currentRigidBodies; rigidBodyIndex++)
+	for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
 	{
 		rigidBodies[rigidBodyIndex]->display();
 	}
@@ -173,61 +172,54 @@ void keyboard(unsigned char key, int x, int y)
 	{
 	// Create a slow particle
 	case '1':
-		if (currentParticles > MAX_PARTICLE_COUNT)
+		if (particles.size() >= MAX_PARTICLE_COUNT)
 		{
 			std::cout << "No more particles can be created!" << std::endl;
 			break;
 		}
 		
-		particles[currentParticles] = CreateParticle::createParticle(.3f, .1f, Vector3(.5f, 0.0f, 1.0f));
-		currentParticles++;
+		particles.push_back(CreateParticle::createParticle(.3f, .1f, Vector3(.5f, 0.0f, 1.0f)));
 		break;
 	// Create a fast particle
 	case '2':
-		if (currentParticles > MAX_PARTICLE_COUNT)
+		if (particles.size() >= MAX_PARTICLE_COUNT)
 		{
 			std::cout << "No more particles can be created!" << std::endl;
 			break;
 		}
 
-		particles[currentParticles] = CreateParticle::createParticle(.8f, .1f, Vector3(0.0f, 0.5f, 0.5f));
-		currentParticles++;
+		particles.push_back(CreateParticle::createParticle(.8f, .1f, Vector3(0.0f, 0.5f, 0.5f)));
 		break;
 	// Create a big particle
 	case '3':
-		if (currentParticles > MAX_PARTICLE_COUNT)
+		if (particles.size() > MAX_PARTICLE_COUNT)
 		{
 			std::cout << "No more particles can be created!" << std::endl;
 			break;
 		}
 
-		particles[currentParticles] = CreateParticle::createParticle(.3f, .3f, Vector3(.75f, 0.23f, 0.68f));
-		currentParticles++;
+		particles.push_back(CreateParticle::createParticle(.3f, .3f, Vector3(.75f, 0.23f, 0.68f)));
 		break;
 	// Create a sphere particle
 	case '4':
-		if (currentParticles > MAX_PARTICLE_COUNT)
+		if (particles.size() > MAX_PARTICLE_COUNT)
 		{
 			std::cout << "No more particles can be created!" << std::endl;
 			break;
 		}
 
-		particles[currentParticles] = CreateParticle::createCircularParticle(.3f, 0.1f, Vector3(.75f, 0.23f, 0.68f));
-		currentParticles++;
+		particles.push_back(CreateParticle::createCircularParticle(.3f, 0.1f, Vector3(.75f, 0.23f, 0.68f)));
 		break;
 	// Create a sphere particle
 	case '5':
-		if (currentParticles > MAX_PARTICLE_COUNT)
+		if (particles.size() > MAX_PARTICLE_COUNT)
 		{
 			std::cout << "No more particles can be created!" << std::endl;
 			break;
 		}
 		
-		particles[currentParticles] = CreateParticle::createFireWorkParticle(.3f, 0.1f, Vector3(0.0f, 4.0f, 6.0f), Vector3(.75f, 0.23f, 0.68f));
-		// Increment the current number of particles
-		currentParticles++;
+		particles.push_back(CreateParticle::createFireWorkParticle(.3f, 0.1f, Vector3(0.0f, 4.0f, 6.0f), Vector3(.75f, 0.23f, 0.68f)));
 		break;
-
 	// Create a rigid cube
 	case '6':
 		addRigidCube();
@@ -256,8 +248,7 @@ void addRigidCube()
 	tensor.setBlockInertiaTensor(Vector3(.5f, .5f, .5f), 1.0f);
 	newSquare->setInertiaTensor(tensor);
 
-	rigidBodies[currentRigidBodies] = newSquare;
-	currentRigidBodies++;
+	rigidBodies.push_back(newSquare);
 }
 
 /**
