@@ -8,6 +8,7 @@
 #include "Particle.h"
 #include "Timing.h"
 #include "RigidBody.h"
+#include "Controls.h"
 
 using namespace PhysicsEngine;
 
@@ -69,8 +70,7 @@ void display()
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
-	// Look out towards the Z direction
-	// eye, center, up
+	// Look out towards the Z direction (eye, center, up)
 	gluLookAt(0.0, 4.0, 0.0, 0.0, 4.0, 6.0, 0.0, 1.0, 0.0);
 	// Rotate the camera based on mouse movements
 	glRotatef(-phi, 1, 0, 0);
@@ -82,15 +82,13 @@ void display()
 	// Draw all of the particles
 	for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
 	{
-		Particle *particle = particles[particleIndex];
-		particle->display();
+		particles[particleIndex]->display();
 	}
 	// Draw all rigid bodies
 	for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
 	{
 		rigidBodies[rigidBodyIndex]->display();
 	}
-
 	glFlush();
 	glutSwapBuffers();
 }
@@ -167,89 +165,9 @@ void reshape(int width, int height)
 */
 void keyboard(unsigned char key, int x, int y)
 {
-	// Note we omit passing on the x and y: they are rarely needed.
-	switch (key)
-	{
-	// Create a slow particle
-	case '1':
-		if (particles.size() >= MAX_PARTICLE_COUNT)
-		{
-			std::cout << "No more particles can be created!" << std::endl;
-			break;
-		}
-		
-		particles.push_back(CreateParticle::createParticle(.3f, .1f, Vector3(.5f, 0.0f, 1.0f)));
-		break;
-	// Create a fast particle
-	case '2':
-		if (particles.size() >= MAX_PARTICLE_COUNT)
-		{
-			std::cout << "No more particles can be created!" << std::endl;
-			break;
-		}
-
-		particles.push_back(CreateParticle::createParticle(.8f, .1f, Vector3(0.0f, 0.5f, 0.5f)));
-		break;
-	// Create a big particle
-	case '3':
-		if (particles.size() > MAX_PARTICLE_COUNT)
-		{
-			std::cout << "No more particles can be created!" << std::endl;
-			break;
-		}
-
-		particles.push_back(CreateParticle::createParticle(.3f, .3f, Vector3(.75f, 0.23f, 0.68f)));
-		break;
-	// Create a sphere particle
-	case '4':
-		if (particles.size() > MAX_PARTICLE_COUNT)
-		{
-			std::cout << "No more particles can be created!" << std::endl;
-			break;
-		}
-
-		particles.push_back(CreateParticle::createCircularParticle(.3f, 0.1f, Vector3(.75f, 0.23f, 0.68f)));
-		break;
-	// Create a sphere particle
-	case '5':
-		if (particles.size() > MAX_PARTICLE_COUNT)
-		{
-			std::cout << "No more particles can be created!" << std::endl;
-			break;
-		}
-		
-		particles.push_back(CreateParticle::createFireWorkParticle(.3f, 0.1f, Vector3(0.0f, 4.0f, 6.0f), Vector3(.75f, 0.23f, 0.68f)));
-		break;
-	// Create a rigid cube
-	case '6':
-		addRigidCube();
-		break;
-	case '7':
-		addForceToCube();
-		break;
-	}
+	keyCheck(key, &particles, &rigidBodies);
 }
 
-// Add force to the first cube
-void addForceToCube()
-{
-	rigidBodies[0]->addForceAtBodyPoint(Vector3(10.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f));
-}
-
-// Add a cube rigid body to the scene
-void addRigidCube()
-{
-	Square *newSquare = new Square();
-	newSquare->setPosition(Vector3(0.0f, 4.0f, 6.0f));
-	newSquare->setVelocity(Vector3(0.0f, 0.1f, 0.0f));
-	newSquare->setMass(1.0f);
-	Matrix3 tensor;
-	// Vector3 -> half the length, width, and height of the box, real-> mass
-	tensor.setBlockInertiaTensor(Vector3(.5f, .5f, .5f), 1.0f);
-	newSquare->setInertiaTensor(tensor);
-
-	rigidBodies.push_back(newSquare);
-}
 
 /**
 * Called when the mouse is dragged.
