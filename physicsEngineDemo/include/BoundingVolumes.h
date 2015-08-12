@@ -206,7 +206,7 @@ namespace PhysicsEngine
 		const BVHNode<BoundingVolumeClass> * other
 		) const
 	{
-		return volume->overlaps(other->volume);
+		return volume.overlaps(&(other->volume));
 	}
 
 	template<class BoundingVolumeClass>
@@ -351,7 +351,7 @@ namespace PhysicsEngine
 		// a leaf, then we descend the other. If both are branches,
 		// then we use the one with the largest size.
 		if (other->isLeaf() ||
-			(!isLeaf() && volume->getSize() >= other->volume->getSize()))
+			(!isLeaf() && volume.getSize() >= other->volume.getSize()))
 		{
 			// Recurse into ourself
 			unsigned count = children[0]->getPotentialContactsWith(

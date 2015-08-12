@@ -9,15 +9,12 @@
 #include "Timing.h"
 #include "RigidBody.h"
 #include "Controls.h"
+#include "BoundingVolumes.h"
 
 using namespace PhysicsEngine;
 
 // Draw the background of the scene
 void drawBackground();
-// Add a cube rigid body to the scene
-void addRigidCube();
-// Add force to the first cube
-void addForceToCube();
 
 // Contains all of the particles in the scene
 std::vector<Particle *> particles;
@@ -62,11 +59,38 @@ void display()
 	{
 		particles[particleIndex]->integrate(duration);
 	}
-	// Integrate all rigid bodies
-	for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
+	
+
+	if (rigidBodies.size() > 0)
 	{
-		rigidBodies[rigidBodyIndex]->integrate(duration);
+		// Integrate all rigid bodies
+		BVHNode<BoundingSphere> *parent = NULL;
+		BoundingSphere sphere(rigidBodies[0]->getPosition(), 1.0f);
+		BVHNode<BoundingSphere> newNode(parent, sphere);
+		newNode.body = rigidBodies[0];
+		
+		for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
+		{
+			RigidBody *body = rigidBodies[rigidBodyIndex];
+			body->integrate(duration);
+			BoundingSphere boundSphere(body->getPosition(), 1.0f);
+			if (rigidBodyIndex != 0)
+			{
+				newNode.insert(body, boundSphere);
+			}
+		}
+
+		// Once all of the rigid bodies have been included check for collisions
+		PotentialContact contacts[10];
+		int contactsFound = newNode.getPotentialContacts(contacts, 10);
+
+		if (contactsFound > 0)
+		{
+			std::cout << "Found contacts!" << std::endl;
+		}
 	}
+
+	
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
