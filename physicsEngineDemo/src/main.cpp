@@ -59,16 +59,16 @@ void display()
 	{
 		particles[particleIndex]->integrate(duration);
 	}
-	
 
 	if (rigidBodies.size() > 0)
 	{
-		// Integrate all rigid bodies
+		// Build up a list of bounding spheres for broad phase collision detection
 		BVHNode<BoundingSphere> *parent = NULL;
 		BoundingSphere sphere(rigidBodies[0]->getPosition(), 1.0f);
 		BVHNode<BoundingSphere> newNode(parent, sphere);
 		newNode.body = rigidBodies[0];
 		
+		// Integrate all of the rigid bodies and add them to the bounding sphere heirarchy
 		for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
 		{
 			RigidBody *body = rigidBodies[rigidBodyIndex];
@@ -86,11 +86,9 @@ void display()
 
 		if (contactsFound > 0)
 		{
-			std::cout << "Found contacts!" << std::endl;
+			std::cout << "Found " << contactsFound << " contacts!" << std::endl;
 		}
 	}
-
-	
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
@@ -108,11 +106,28 @@ void display()
 	{
 		particles[particleIndex]->display();
 	}
+	// Enable lighting stuff
+	const static GLfloat lightPosition[] = { 0.7f, -1, 0.4f, 0 };
+	const static GLfloat lightPositionMirror[] = { 0.7f, 1, 0.4f, 0 };
+
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+	glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
+	glEnable(GL_COLOR_MATERIAL);
 	// Draw all rigid bodies
 	for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
 	{
 		rigidBodies[rigidBodyIndex]->display();
 	}
+	// Disable lighting stuff
+	glDisable(GL_NORMALIZE);
+	glDisable(GL_LIGHTING);
+	glDisable(GL_COLOR_MATERIAL);
+	glDisable(GL_DEPTH_TEST);
+
 	glFlush();
 	glutSwapBuffers();
 }
@@ -213,6 +228,14 @@ void motion(int x, int y)
 
 void initializeGraphics()
 {
+	GLfloat lightAmbient[] = { 0.8f, 0.8f, 0.8f, 1.0f };
+	GLfloat lightDiffuse[] = { 0.9f, 0.95f, 1.0f, 1.0f };
+
+	glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
+
+	glEnable(GL_LIGHT0);
+
 	glClearColor(0.9f, 0.95f, 1.0f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glShadeModel(GL_SMOOTH);
