@@ -10,6 +10,7 @@
 #include "RigidBody.h"
 #include "Controls.h"
 #include "BoundingVolumes.h"
+#include "Debug.h"
 
 using namespace PhysicsEngine;
 
@@ -53,6 +54,29 @@ void update()
 */
 void display()
 {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();
+	// Look out towards the Z direction (eye, center, up)
+	gluLookAt(0.0, 4.0, 0.0, 0.0, 4.0, 6.0, 0.0, 1.0, 0.0);
+	// Rotate the camera based on mouse movements
+	glRotatef(-phi, 1, 0, 0);
+	glRotatef(theta, 0, 1, 0);
+
+	// Draw the background
+	drawBackground();
+
+	// Enable lighting stuff
+	const static GLfloat lightPosition[] = { 0.7f, -1, 0.4f, 0 };
+	const static GLfloat lightPositionMirror[] = { 0.7f, 1, 0.4f, 0 };
+
+	//glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+	glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
+	glEnable(GL_COLOR_MATERIAL);
+
 	float duration = (float)TimingData::get().lastFrameDuration * 0.001f;
 	// Integrate all of the particles
 	for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
@@ -80,43 +104,37 @@ void display()
 			}
 		}
 
-		// Once all of the rigid bodies have been included check for collisions
-		PotentialContact contacts[10];
-		int contactsFound = newNode.getPotentialContacts(contacts, 10);
-
-		if (contactsFound > 0)
+		if (rigidBodies.size() > 1)
 		{
-			std::cout << "Found " << contactsFound << " contacts!" << std::endl;
+			// Draw all of the bounding volumes
+			//std::cout << "Drawing bounding volumes!!" << std::endl;
+			//drawBoundingVolumes(&newNode);
+			// Once all of the rigid bodies have been included check for collisions
+			PotentialContact contacts[10];
+			int contactsFound = (*(newNode.children[0])).getPotentialContacts(contacts, 10);
+
+			if (contactsFound > 0)
+			{
+				std::cout << "Found " << contactsFound << " contacts!" << std::endl;
+			}
+
+			PotentialContact contactsTwo[10];
+			int secondContactsFound = (*(newNode.children[1])).getPotentialContacts(contactsTwo, 10);
+
+			if (secondContactsFound > 0)
+			{
+				std::cout << "Second Found: " << secondContactsFound << " contacts!" << std::endl;
+			}
 		}
 	}
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity();
-	// Look out towards the Z direction (eye, center, up)
-	gluLookAt(0.0, 4.0, 0.0, 0.0, 4.0, 6.0, 0.0, 1.0, 0.0);
-	// Rotate the camera based on mouse movements
-	glRotatef(-phi, 1, 0, 0);
-	glRotatef(theta, 0, 1, 0);
-
+	
 	// Now render the scene
-	// Draw the background
-	drawBackground();
 	// Draw all of the particles
 	for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
 	{
 		particles[particleIndex]->display();
 	}
-	// Enable lighting stuff
-	const static GLfloat lightPosition[] = { 0.7f, -1, 0.4f, 0 };
-	const static GLfloat lightPositionMirror[] = { 0.7f, 1, 0.4f, 0 };
-
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-
-	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-	glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
-	glEnable(GL_COLOR_MATERIAL);
+	
 	// Draw all rigid bodies
 	for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
 	{
@@ -239,6 +257,9 @@ void initializeGraphics()
 	glClearColor(0.9f, 0.95f, 1.0f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glShadeModel(GL_SMOOTH);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Now set the view
 	glMatrixMode(GL_PROJECTION);

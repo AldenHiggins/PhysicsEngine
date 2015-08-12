@@ -85,6 +85,7 @@
     <ClInclude Include="include\ApplicationSettings.h" />
     <ClInclude Include="include\BoundingVolumes.h" />
     <ClInclude Include="include\Controls.h" />
+    <ClInclude Include="include\Debug.h" />
     <ClInclude Include="include\gl\glut.h" />
     <ClInclude Include="include\MathDataTypes.h" />
     <ClInclude Include="include\Particle.h" />
@@ -95,6 +96,7 @@
   <ItemGroup>
     <ClCompile Include="src\BoundingVolumes.cpp" />
     <ClCompile Include="src\Controls.cpp" />
+    <ClCompile Include="src\Debug.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MathDataTypes.cpp" />
     <ClCompile Include="src\Particle.cpp" />

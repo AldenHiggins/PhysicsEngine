@@ -15,7 +15,7 @@ void Square::display()
 	GLfloat mat[16];
 	this->getGLTransform(mat);
 
-	glColor3f(.5f, .1f, .9f);
+	glColor4f(.5f, .1f, .9f, 1.0f);
 	glPushMatrix();
 	glMultMatrixf(mat);
 	glutSolidCube(1.0f);
