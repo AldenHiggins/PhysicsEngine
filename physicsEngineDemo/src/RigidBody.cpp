@@ -155,6 +155,12 @@ Vector3 RigidBody::getAcceleration() const
 	return acceleration;
 }
 
+// Get this rigid bodies transformation matrix
+Matrix4 RigidBody::getTransformMatrix() const
+{
+	return transformationMatrix;
+}
+
 // Transform a point from object space into world space
 Vector3 RigidBody::getPointInWorldSpace(const Vector3 &point) const
 {

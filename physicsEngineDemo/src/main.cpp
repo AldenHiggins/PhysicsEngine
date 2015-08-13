@@ -11,6 +11,7 @@
 #include "Controls.h"
 #include "BoundingVolumes.h"
 #include "Debug.h"
+#include "Collisions.h"
 
 using namespace PhysicsEngine;
 
@@ -69,7 +70,7 @@ void display()
 	const static GLfloat lightPosition[] = { 0.7f, -1, 0.4f, 0 };
 	const static GLfloat lightPositionMirror[] = { 0.7f, 1, 0.4f, 0 };
 
-	//glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 
@@ -84,6 +85,7 @@ void display()
 		particles[particleIndex]->integrate(duration);
 	}
 
+	// Integrate all of the rigid bodies
 	if (rigidBodies.size() > 0)
 	{
 		// Build up a list of bounding spheres for broad phase collision detection
@@ -127,6 +129,25 @@ void display()
 			}
 		}
 	}
+	// Now check for collisions
+
+	for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
+	{
+		for (int otherRigidBodyIndex = 0; otherRigidBodyIndex < rigidBodies.size(); otherRigidBodyIndex++)
+		{
+			// Don't check if the rigid body is colliding with itself
+			if (rigidBodyIndex == otherRigidBodyIndex)
+			{
+				continue;
+			}
+
+			// Do box/box collisions
+
+
+		}
+	}
+
+	// Now reconcile all of the found collisions
 	
 	// Now render the scene
 	// Draw all of the particles

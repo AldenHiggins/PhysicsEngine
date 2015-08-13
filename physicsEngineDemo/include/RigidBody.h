@@ -96,6 +96,9 @@ namespace PhysicsEngine
 
 		// Transform a point from object space into world space
 		Vector3 getPointInWorldSpace(const Vector3 &point) const;
+
+		// Get this rigid bodies transformation matrix
+		Matrix4 getTransformMatrix() const;
 	};
 
 	class Square : public RigidBody
