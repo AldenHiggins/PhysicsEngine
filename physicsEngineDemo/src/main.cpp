@@ -130,7 +130,7 @@ void display()
 		}
 	}
 	// Now check for collisions
-
+	std::vector<Collision> collisionList;
 	for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
 	{
 		for (int otherRigidBodyIndex = 0; otherRigidBodyIndex < rigidBodies.size(); otherRigidBodyIndex++)
@@ -141,10 +141,15 @@ void display()
 				continue;
 			}
 
-			// Do box/box collisions
-
-
+			// Search for box/box collisions
+			Collision::cubeCubeCollisionDetect(&collisionList, rigidBodies[rigidBodyIndex], rigidBodies[otherRigidBodyIndex]);
 		}
+	}
+
+	// Now reconcile the found collisions
+	if (collisionList.size() > 0)
+	{
+		Collision::resolveContacts(&collisionList, duration);
 	}
 
 	// Now reconcile all of the found collisions

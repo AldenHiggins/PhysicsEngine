@@ -81,6 +81,18 @@ void RigidBody::addForceAtBodyPoint(const Vector3 &force, const Vector3 &point)
 	addForceAtPoint(force, pt);
 }
 
+// Add the inputted velocity to this rigid body
+void RigidBody::addVelocity(const Vector3 &deltaVelocity)
+{
+	linearVelocity += deltaVelocity;
+}
+
+// Add the inputted rotation to this rigid body's rotational velocity
+void RigidBody::addRotation(const Vector3 &deltaRotation)
+{
+	angularVelocity += deltaRotation;
+}
+
 // Clear all forces/torques active on the object
 void RigidBody::clearAccumulators()
 {
@@ -94,6 +106,12 @@ void RigidBody::setInertiaTensor(const Matrix3 &inertiaTensor)
 	inverseInertiaTensor.setInverse(inertiaTensor);
 }
 
+// Get the inverse inertia tensor of this object in world coords
+void RigidBody::getInverseInertiaTensorWorld(Matrix3 *inverseInertiaTensor) const
+{
+	*inverseInertiaTensor = inverseInertiaTensorWorld;
+}
+
 // Set the mass of this object
 void RigidBody::setMass(real objectMass)
 {
@@ -104,6 +122,12 @@ void RigidBody::setMass(real objectMass)
 real RigidBody::getMass()
 {
 	return 1 / inverseMass;
+}
+
+// Get the inverse mass of this object
+real RigidBody::getInverseMass()
+{
+	return inverseMass;
 }
 
 // Set the position of this object
@@ -153,6 +177,18 @@ void RigidBody::setAcceleration(const Vector3 &accelerationInput)
 Vector3 RigidBody::getAcceleration() const
 {
 	return acceleration;
+}
+
+// Get the last frame's acceleration of this rigid body
+Vector3 RigidBody::getLastFrameAcceleration() const
+{
+	return lastFrameAcceleration;
+}
+
+// Get the angular velocity of this rigid body
+Vector3 RigidBody::getRotation() const
+{
+	return angularVelocity;
 }
 
 // Get this rigid bodies transformation matrix

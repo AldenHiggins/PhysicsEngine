@@ -38,7 +38,7 @@ inline Vector3 contactPointCalculate(
 	bool useOne);
 
 #define CHECK_OVERLAP(axis, index) \
-    tryAxis(first, other, (axis), toCentre, (index), pen, best);
+    if (!tryAxis(first, other, (axis), toCentre, (index), pen, best)) return 0;
 
 static inline bool tryAxis(
 	const RigidBody *one,
@@ -319,4 +319,444 @@ inline Vector3 contactPointCalculate(
 
 		return cOne * 0.5 + cTwo * 0.5;
 	}
+}
+
+
+
+void Collision::resolveContacts(std::vector<Collision> *collisionList, real duration)
+{
+	// Prepare the contacts for processing
+	prepareContacts(collisionList, duration);
+
+	// Resolve the interpenetration problems with the contacts.
+	adjustPositions(collisionList, duration);
+
+	// Resolve the velocity problems with the contacts.
+	adjustVelocities(collisionList, duration);
+}
+
+void Collision::prepareContacts(std::vector<Collision> *collisionList, real duration)
+{
+	// Generate contact velocity and axis information.
+	for (int collisionIndex = 0; collisionIndex < collisionList->size(); collisionIndex++)
+	{
+		// Calculate the internal contact data (inertia, basis, etc).
+		(*collisionList)[collisionIndex].calculateInternals(duration);
+	}
+}
+
+void Collision::adjustVelocities(std::vector<Collision> *collisionList, real duration)
+{
+	Vector3 velocityChange[2], rotationChange[2];
+	Vector3 deltaVel;
+
+	// iteratively handle impacts in order of severity.
+	int velocityIterationsUsed = 0;
+	int velocityIterations = 10;
+	while (velocityIterationsUsed < velocityIterations)
+	{
+		// Find contact with maximum magnitude of probable velocity change.
+		real max = .01f;
+		unsigned index = collisionList->size();
+		for (unsigned i = 0; i < collisionList->size(); i++)
+		{
+			if ((*collisionList)[i].desiredDeltaVelocity > max)
+			{
+				max = (*collisionList)[i].desiredDeltaVelocity;
+				index = i;
+			}
+		}
+		if (index == collisionList->size()) break;
+
+		//// Match the awake state at the contact
+		//(*collisionList)[index].matchAwakeState();
+
+		// Do the resolution on the contact that came out top.
+		(*collisionList)[index].applyVelocityChange(velocityChange, rotationChange);
+
+		// With the change in velocity of the two bodies, the update of
+		// contact velocities means that some of the relative closing
+		// velocities need recomputing.
+		for (unsigned i = 0; i < collisionList->size(); i++)
+		{
+			// Check each body in the contact
+			for (unsigned b = 0; b < 2; b++)
+			{
+				// Check for a match with each body in the newly
+				// resolved contact
+				for (unsigned d = 0; d < 2; d++)
+				{
+					RigidBody *firstRigidBody = NULL;
+					if (b == 0)
+					{
+						firstRigidBody = (*collisionList)[i].firstObject;
+					}
+					else
+					{
+						firstRigidBody = (*collisionList)[i].secondObject;
+					}
+
+					RigidBody *secondRigidBody = NULL;
+					if (d == 0)
+					{
+						secondRigidBody = (*collisionList)[index].firstObject;
+					}
+					else
+					{
+						secondRigidBody = (*collisionList)[index].secondObject;
+					}
+
+
+					if (firstRigidBody == secondRigidBody)
+					{
+						deltaVel = velocityChange[d] +
+							rotationChange[d].vectorProduct(
+							(*collisionList)[i].relativeContactPosition[b]);
+
+						// The sign of the change is negative if we're dealing
+						// with the second body in a contact.
+						(*collisionList)[i].contactVelocity +=
+							(*collisionList)[i].contactToWorld.transformTranspose(deltaVel)
+							* (b ? -1 : 1);
+						(*collisionList)[i].calculateDesiredDeltaVelocity(duration);
+					}
+				}
+			}
+		}
+		velocityIterationsUsed++;
+	}
+}
+
+void Collision::adjustPositions(std::vector<Collision> *collisionList, real duration)
+{
+	unsigned i, index;
+	Vector3 linearChange[2], angularChange[2];
+	real max;
+	Vector3 deltaPosition;
+
+	// iteratively resolve interpenetrations in order of severity.
+	int positionIterationsUsed = 0;
+	int positionIterations = 10;
+	while (positionIterationsUsed < positionIterations)
+	{
+		// Find biggest penetration
+		max = .01;
+		index = collisionList->size();
+		for (i = 0; i < collisionList->size(); i++)
+		{
+			if ((*collisionList)[i].penetration > max)
+			{
+				max = (*collisionList)[i].penetration;
+				index = i;
+			}
+		}
+		if (index == collisionList->size()) break;
+
+		//// Match the awake state at the contact
+		//(*collisionList)[index].matchAwakeState();
+
+		// Resolve the penetration.
+		(*collisionList)[index].applyPositionChange(
+			linearChange,
+			angularChange,
+			max);
+
+		// Again this action may have changed the penetration of other
+		// bodies, so we update contacts.
+		for (i = 0; i < collisionList->size(); i++)
+		{
+			// Check each body in the contact
+			for (unsigned b = 0; b < 2; b++)
+			{
+				// Check for a match with each body in the newly
+				// resolved contact
+				for (unsigned d = 0; d < 2; d++)
+				{
+					RigidBody *firstBody = NULL;
+					if (b == 0)
+					{
+						firstBody = (*collisionList)[i].firstObject;
+					}
+					else
+					{
+						firstBody = (*collisionList)[i].secondObject;
+					}
+
+					RigidBody *secondBody = NULL;
+					if (d == 0)
+					{
+						secondBody = (*collisionList)[index].firstObject;
+					}
+					else
+					{
+						secondBody = (*collisionList)[index].secondObject;
+					}
+
+
+					if (firstBody == secondBody)
+					{
+						deltaPosition = linearChange[d] +
+							angularChange[d].vectorProduct(
+							(*collisionList)[i].relativeContactPosition[b]);
+
+						// The sign of the change is positive if we're
+						// dealing with the second body in a contact
+						// and negative otherwise (because we're
+						// subtracting the resolution)..
+						(*collisionList)[i].penetration +=
+							deltaPosition.scalarProduct((*collisionList)[i].contactNormal)
+							* (b ? 1 : -1);
+					}
+				}
+			}
+		}
+		positionIterationsUsed++;
+	}
+}
+
+void Collision::calculateInternals(real duration)
+{
+	//// Check if the first object is NULL, and swap if it is.
+	//if (!body[0]) swapBodies();
+	//assert(body[0]);
+
+	// Calculate an set of axis at the contact point.
+	calculateContactBasis();
+
+	// Store the relative position of the contact relative to each body
+	relativeContactPosition[0] = contactPoint - firstObject->getPosition();
+	if (secondObject) {
+		relativeContactPosition[1] = contactPoint - secondObject->getPosition();
+	}
+
+	// Find the relative velocity of the bodies at the contact point.
+	contactVelocity = calculateLocalVelocity(0, duration);
+	if (secondObject) {
+		contactVelocity -= calculateLocalVelocity(1, duration);
+	}
+
+	// Calculate the desired change in velocity for resolution
+	calculateDesiredDeltaVelocity(duration);
+}
+
+inline void Collision::calculateContactBasis()
+{
+	Vector3 contactTangent[2];
+
+	// Check whether the Z-axis is nearer to the X or Y axis
+	if (real_abs(contactNormal.x) > real_abs(contactNormal.y))
+	{
+		// Scaling factor to ensure the results are normalised
+		const real s = (real)1.0f / real_sqrt(contactNormal.z*contactNormal.z +
+			contactNormal.x*contactNormal.x);
+
+		// The new X-axis is at right angles to the world Y-axis
+		contactTangent[0].x = contactNormal.z*s;
+		contactTangent[0].y = 0;
+		contactTangent[0].z = -contactNormal.x*s;
+
+		// The new Y-axis is at right angles to the new X- and Z- axes
+		contactTangent[1].x = contactNormal.y*contactTangent[0].x;
+		contactTangent[1].y = contactNormal.z*contactTangent[0].x -
+			contactNormal.x*contactTangent[0].z;
+		contactTangent[1].z = -contactNormal.y*contactTangent[0].x;
+	}
+	else
+	{
+		// Scaling factor to ensure the results are normalised
+		const real s = (real)1.0 / real_sqrt(contactNormal.z*contactNormal.z +
+			contactNormal.y*contactNormal.y);
+
+		// The new X-axis is at right angles to the world X-axis
+		contactTangent[0].x = 0;
+		contactTangent[0].y = -contactNormal.z*s;
+		contactTangent[0].z = contactNormal.y*s;
+
+		// The new Y-axis is at right angles to the new X- and Z- axes
+		contactTangent[1].x = contactNormal.y*contactTangent[0].z -
+			contactNormal.z*contactTangent[0].y;
+		contactTangent[1].y = -contactNormal.x*contactTangent[0].z;
+		contactTangent[1].z = contactNormal.x*contactTangent[0].y;
+	}
+
+	// Make a matrix from the three vectors.
+	contactToWorld.setComponents(
+		contactNormal,
+		contactTangent[0],
+		contactTangent[1]);
+}
+
+Vector3 Collision::calculateLocalVelocity(unsigned bodyIndex, real duration)
+{
+	RigidBody *thisBody = NULL;
+	if (bodyIndex == 0)
+	{
+		thisBody = firstObject;
+	}
+	else
+	{
+		thisBody = secondObject;
+	}
+
+	// Work out the velocity of the contact point.
+	Vector3 velocity =
+		thisBody->getRotation() % relativeContactPosition[bodyIndex];
+	velocity += thisBody->getVelocity();
+
+	// Turn the velocity into contact-coordinates.
+	Vector3 contactVelocity = contactToWorld.transformTranspose(velocity);
+
+	// Calculate the ammount of velocity that is due to forces without
+	// reactions.
+	Vector3 accVelocity = thisBody->getLastFrameAcceleration() * duration;
+
+	// Calculate the velocity in contact-coordinates.
+	accVelocity = contactToWorld.transformTranspose(accVelocity);
+
+	// We ignore any component of acceleration in the contact normal
+	// direction, we are only interested in planar acceleration
+	accVelocity.x = 0;
+
+	// Add the planar velocities - if there's enough friction they will
+	// be removed during velocity resolution
+	contactVelocity += accVelocity;
+
+	// And return it
+	return contactVelocity;
+}
+
+void Collision::calculateDesiredDeltaVelocity(real duration)
+{
+	const static real velocityLimit = (real)0.25f;
+
+	// Calculate the acceleration induced velocity accumulated this frame
+	real velocityFromAcc = 0;
+
+	//if (body[0]->getAwake())
+	//{
+	velocityFromAcc +=
+		firstObject->getLastFrameAcceleration() * duration * contactNormal;
+	//}
+
+	//if (body[1] && body[1]->getAwake())
+	//{
+	velocityFromAcc -=
+		secondObject->getLastFrameAcceleration() * duration * contactNormal;
+	//}
+
+	// If the velocity is very slow, limit the restitution
+	real thisRestitution = .01;
+	if (real_abs(contactVelocity.x) < velocityLimit)
+	{
+		thisRestitution = (real)0.0f;
+	}
+
+	// Combine the bounce velocity with the removed
+	// acceleration velocity.
+	desiredDeltaVelocity =
+		-contactVelocity.x
+		- thisRestitution * (contactVelocity.x - velocityFromAcc);
+}
+
+/**
+* Performs an inertia-weighted impulse based resolution of this
+* contact alone.
+*/
+void Collision::applyVelocityChange(Vector3 velocityChange[2], Vector3 rotationChange[2])
+{
+	// Get hold of the inverse mass and inverse inertia tensor, both in
+	// world coordinates.
+	Matrix3 inverseInertiaTensor[2];
+	firstObject->getInverseInertiaTensorWorld(&inverseInertiaTensor[0]);
+	if (secondObject)
+		secondObject->getInverseInertiaTensorWorld(&inverseInertiaTensor[1]);
+
+	// We will calculate the impulse for each contact axis
+	Vector3 impulseContact;
+
+	//if (friction == (real)0.0)
+	//{
+		// Use the short format for frictionless contacts
+		impulseContact = calculateFrictionlessImpulse(inverseInertiaTensor);
+	//}
+	//else
+	//{
+	//	// Otherwise we may have impulses that aren't in the direction of the
+	//	// contact, so we need the more complex version.
+	//	impulseContact = calculateFrictionImpulse(inverseInertiaTensor);
+	//}
+
+	// Convert impulse to world coordinates
+	Vector3 impulse = contactToWorld.transform(impulseContact);
+
+	// Split in the impulse into linear and rotational components
+	Vector3 impulsiveTorque = relativeContactPosition[0] % impulse;
+	rotationChange[0] = inverseInertiaTensor[0].transform(impulsiveTorque);
+	velocityChange[0].clear();
+	velocityChange[0].addScaledVector(impulse, firstObject->getInverseMass());
+
+	// Apply the changes
+	firstObject->addVelocity(velocityChange[0]);
+	firstObject->addRotation(rotationChange[0]);
+
+	if (secondObject)
+	{
+		// Work out body one's linear and angular changes
+		Vector3 impulsiveTorque = impulse % relativeContactPosition[1];
+		rotationChange[1] = inverseInertiaTensor[1].transform(impulsiveTorque);
+		velocityChange[1].clear();
+		velocityChange[1].addScaledVector(impulse, -secondObject->getInverseMass());
+
+		// And apply them.
+		secondObject->addVelocity(velocityChange[1]);
+		secondObject->addRotation(rotationChange[1]);
+	}
+}
+
+/**
+* Performs an inertia weighted penetration resolution of this
+* contact alone.
+*/
+void Collision::applyPositionChange(Vector3 linearChange[2], Vector3 angularChange[2], real penetration)
+{
+
+}
+
+inline Vector3 Collision::calculateFrictionlessImpulse(Matrix3 * inverseInertiaTensor)
+{
+	Vector3 impulseContact;
+
+	// Build a vector that shows the change in velocity in
+	// world space for a unit impulse in the direction of the contact
+	// normal.
+	Vector3 deltaVelWorld = relativeContactPosition[0] % contactNormal;
+	deltaVelWorld = inverseInertiaTensor[0].transform(deltaVelWorld);
+	deltaVelWorld = deltaVelWorld % relativeContactPosition[0];
+
+	// Work out the change in velocity in contact coordiantes.
+	real deltaVelocity = deltaVelWorld * contactNormal;
+
+	// Add the linear component of velocity change
+	deltaVelocity += firstObject->getInverseMass();
+
+	// Check if we need to the second body's data
+	if (firstObject)
+	{
+		// Go through the same transformation sequence again
+		Vector3 deltaVelWorld = relativeContactPosition[1] % contactNormal;
+		deltaVelWorld = inverseInertiaTensor[1].transform(deltaVelWorld);
+		deltaVelWorld = deltaVelWorld % relativeContactPosition[1];
+
+		// Add the change in velocity due to rotation
+		deltaVelocity += deltaVelWorld * contactNormal;
+
+		// Add the change in velocity due to linear motion
+		deltaVelocity += secondObject->getInverseMass();
+	}
+
+	// Calculate the required size of the impulse
+	impulseContact.x = desiredDeltaVelocity / deltaVelocity;
+	impulseContact.y = 0;
+	impulseContact.z = 0;
+	return impulseContact;
 }

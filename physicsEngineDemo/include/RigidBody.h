@@ -51,6 +51,12 @@ namespace PhysicsEngine
 		// Add a force at a position on this object in object space
 		void addForceAtBodyPoint(const Vector3 &force, const Vector3 &point);
 
+		// Add the inputted velocity to this rigid body
+		void addVelocity(const Vector3 &deltaVelocity);
+
+		// Add the inputted rotation to this rigid body's rotational velocity
+		void addRotation(const Vector3 &deltaRotation);
+
 		// Clear all forces/torques active on the object
 		void clearAccumulators();
 
@@ -61,11 +67,17 @@ namespace PhysicsEngine
 		// Set the inertia tensor of this rigid body
 		void setInertiaTensor(const Matrix3 &inertiaTensor);
 
+		// Get the inverse inertia tensor of this object in world coords
+		void RigidBody::getInverseInertiaTensorWorld(Matrix3 *inverseInertiaTensor) const;
+
 		// Set the mass of this object
 		void setMass(real objectMass);
 
 		// Get the mass of this object
 		real getMass();
+
+		// Get the inverse mass of this object
+		real getInverseMass();
 
 		// Set the position of this object
 		void setPosition(Vector3 &positionInput);
@@ -90,6 +102,12 @@ namespace PhysicsEngine
 
 		// Get the acceleration of the rigid body
 		Vector3 getAcceleration() const;
+
+		// Get the last frame's acceleration of this rigid body
+		Vector3 getLastFrameAcceleration() const;
+
+		// Get the angular velocity of this rigid body
+		Vector3 getRotation() const;
 
 		// Get this body's transformation matrix in a form that opengl can use
 		void getGLTransform(float matrix[16]) const;
