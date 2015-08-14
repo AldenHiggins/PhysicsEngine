@@ -85,7 +85,7 @@ void addRigidCube(std::vector<RigidBody *> *rigidBodies, float theta, float phi)
 	rotMatrix.setOrientation(cameraRotation);
 	Vector3 squareCreationPosition = rotMatrix.transform(oldSquareCreationPosition);
 	newSquare->setPosition(squareCreationPosition);
-	newSquare->setVelocity(Vector3(0.0f, 0.1f, 0.0f));
+	newSquare->setVelocity(Vector3(0.0f, 0.0f, 0.0f));
 	newSquare->setMass(1.0f);
 	Matrix3 tensor;
 	// Vector3 -> half the length, width, and height of the box, real-> mass
