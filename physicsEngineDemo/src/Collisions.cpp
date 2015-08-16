@@ -355,7 +355,7 @@ void Collision::adjustVelocities(std::vector<Collision> *collisionList, real dur
 
 	// iteratively handle impacts in order of severity.
 	int velocityIterationsUsed = 0;
-	int velocityIterations = 20;
+	int velocityIterations = 10;
 	while (velocityIterationsUsed < velocityIterations)
 	{
 		// Find contact with maximum magnitude of probable velocity change.
@@ -439,7 +439,7 @@ void Collision::adjustPositions(std::vector<Collision> *collisionList, real dura
 
 	// iteratively resolve interpenetrations in order of severity.
 	int positionIterationsUsed = 0;
-	int positionIterations = 20;
+	int positionIterations = 10;
 	while (positionIterationsUsed < positionIterations)
 	{
 		// Find biggest penetration
@@ -700,7 +700,7 @@ void Collision::applyVelocityChange(Vector3 velocityChange[2], Vector3 rotationC
 
 	// Apply the changes
 	firstObject->addVelocity(velocityChange[0]);
-	firstObject->addRotation(rotationChange[0]);
+	//firstObject->addRotation(rotationChange[0]);
 
 	if (secondObject)
 	{
@@ -858,10 +858,19 @@ void Collision::applyPositionChange(Vector3 linearChange[2], Vector3 angularChan
 		pos.addScaledVector(contactNormal, linearMove[i]);
 		body->setPosition(pos);
 
-		// And the change in orientation
-		Quaternion q = body->getOrientation();
-		q.addScaledVector(angularChange[i], ((real)1.0));
-		body->setOrientation(q);
+		//// And the change in orientation
+		//Quaternion q = body->getOrientation();
+		//q.addScaledVector(angularChange[i], ((real)1.0));
+		//body->setOrientation(q);
+
+		// Print out the velocity and rotational changes
+		std::cout << "First: " << std::endl;
+		std::cout << "Contact normal: " << contactNormal[0] << " " << contactNormal[1] << " " << contactNormal[2] << std::endl;
+		std::cout << "Velocity: " << linearMove[0] << std::endl;
+		std::cout << "Angular change: " << angularChange[0][0] << " " << angularChange[0][1] << " " << angularChange[0][2] << std::endl;
+		std::cout << "Second: " << std::endl;
+		std::cout << "Velocity: " << linearMove[1] << std::endl;
+		std::cout << "Angular change: " << angularChange[1][0] << " " << angularChange[1][1] << " " << angularChange[1][2] << std::endl;
 
 		// We need to calculate the derived data for any body that is
 		// asleep, so that the changes are reflected in the object's
