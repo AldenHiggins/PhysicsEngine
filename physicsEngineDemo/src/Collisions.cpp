@@ -219,6 +219,7 @@ unsigned int Collision::cubeCubeCollisionDetect(std::vector<Collision> *collisio
 		newCollision.contactPoint = vertex;
 		newCollision.firstObject = first;
 		newCollision.secondObject = other;
+		newCollision.friction = 0.9f;
 
 		collisionList->push_back(newCollision);
 		return 1;
@@ -648,7 +649,7 @@ void Collision::calculateDesiredDeltaVelocity(real duration)
 	//}
 
 	// If the velocity is very slow, limit the restitution
-	real thisRestitution = .01;
+	real thisRestitution = .2;
 	if (real_abs(contactVelocity.x) < velocityLimit)
 	{
 		thisRestitution = (real)0.0f;
@@ -677,17 +678,17 @@ void Collision::applyVelocityChange(Vector3 velocityChange[2], Vector3 rotationC
 	// We will calculate the impulse for each contact axis
 	Vector3 impulseContact;
 
-	//if (friction == (real)0.0)
-	//{
+	if (friction == (real)0.0)
+	{
 		// Use the short format for frictionless contacts
 		impulseContact = calculateFrictionlessImpulse(inverseInertiaTensor);
-	//}
-	//else
-	//{
-	//	// Otherwise we may have impulses that aren't in the direction of the
-	//	// contact, so we need the more complex version.
-	//	impulseContact = calculateFrictionImpulse(inverseInertiaTensor);
-	//}
+	}
+	else
+	{
+		// Otherwise we may have impulses that aren't in the direction of the
+		// contact, so we need the more complex version.
+		impulseContact = calculateFrictionImpulse(inverseInertiaTensor);
+	}
 
 	// Convert impulse to world coordinates
 	Vector3 impulse = contactToWorld.transform(impulseContact);
@@ -700,7 +701,7 @@ void Collision::applyVelocityChange(Vector3 velocityChange[2], Vector3 rotationC
 
 	// Apply the changes
 	firstObject->addVelocity(velocityChange[0]);
-	//firstObject->addRotation(rotationChange[0]);
+	firstObject->addRotation(rotationChange[0]);
 
 	if (secondObject)
 	{
@@ -858,19 +859,19 @@ void Collision::applyPositionChange(Vector3 linearChange[2], Vector3 angularChan
 		pos.addScaledVector(contactNormal, linearMove[i]);
 		body->setPosition(pos);
 
-		//// And the change in orientation
-		//Quaternion q = body->getOrientation();
-		//q.addScaledVector(angularChange[i], ((real)1.0));
-		//body->setOrientation(q);
+		// And the change in orientation
+		Quaternion q = body->getOrientation();
+		q.addScaledVector(angularChange[i], ((real)1.0));
+		body->setOrientation(q);
 
-		// Print out the velocity and rotational changes
-		std::cout << "First: " << std::endl;
-		std::cout << "Contact normal: " << contactNormal[0] << " " << contactNormal[1] << " " << contactNormal[2] << std::endl;
-		std::cout << "Velocity: " << linearMove[0] << std::endl;
-		std::cout << "Angular change: " << angularChange[0][0] << " " << angularChange[0][1] << " " << angularChange[0][2] << std::endl;
-		std::cout << "Second: " << std::endl;
-		std::cout << "Velocity: " << linearMove[1] << std::endl;
-		std::cout << "Angular change: " << angularChange[1][0] << " " << angularChange[1][1] << " " << angularChange[1][2] << std::endl;
+		//// Print out the velocity and rotational changes
+		//std::cout << "First: " << std::endl;
+		//std::cout << "Contact normal: " << contactNormal[0] << " " << contactNormal[1] << " " << contactNormal[2] << std::endl;
+		//std::cout << "Velocity: " << linearMove[0] << std::endl;
+		//std::cout << "Angular change: " << angularChange[0][0] << " " << angularChange[0][1] << " " << angularChange[0][2] << std::endl;
+		//std::cout << "Second: " << std::endl;
+		//std::cout << "Velocity: " << linearMove[1] << std::endl;
+		//std::cout << "Angular change: " << angularChange[1][0] << " " << angularChange[1][1] << " " << angularChange[1][2] << std::endl;
 
 		// We need to calculate the derived data for any body that is
 		// asleep, so that the changes are reflected in the object's
@@ -899,7 +900,7 @@ inline Vector3 Collision::calculateFrictionlessImpulse(Matrix3 * inverseInertiaT
 	deltaVelocity += firstObject->getInverseMass();
 
 	// Check if we need to the second body's data
-	if (firstObject)
+	if (secondObject)
 	{
 		// Go through the same transformation sequence again
 		Vector3 deltaVelWorld = relativeContactPosition[1] % contactNormal;
@@ -917,5 +918,84 @@ inline Vector3 Collision::calculateFrictionlessImpulse(Matrix3 * inverseInertiaT
 	impulseContact.x = desiredDeltaVelocity / deltaVelocity;
 	impulseContact.y = 0;
 	impulseContact.z = 0;
+	return impulseContact;
+}
+
+inline Vector3 Collision::calculateFrictionImpulse(Matrix3 * inverseInertiaTensor)
+{
+	Vector3 impulseContact;
+	real inverseMass = firstObject->getInverseMass();
+
+	// The equivalent of a cross product in matrices is multiplication
+	// by a skew symmetric matrix - we build the matrix for converting
+	// between linear and angular quantities.
+	Matrix3 impulseToTorque;
+	impulseToTorque.setSkewSymmetric(relativeContactPosition[0]);
+
+	// Build the matrix to convert contact impulse to change in velocity
+	// in world coordinates.
+	Matrix3 deltaVelWorld = impulseToTorque;
+	deltaVelWorld *= inverseInertiaTensor[0];
+	deltaVelWorld *= impulseToTorque;
+	deltaVelWorld *= -1;
+
+	// Check if we need to add body two's data
+	if (secondObject)
+	{
+		// Set the cross product matrix
+		impulseToTorque.setSkewSymmetric(relativeContactPosition[1]);
+
+		// Calculate the velocity change matrix
+		Matrix3 deltaVelWorld2 = impulseToTorque;
+		deltaVelWorld2 *= inverseInertiaTensor[1];
+		deltaVelWorld2 *= impulseToTorque;
+		deltaVelWorld2 *= -1;
+
+		// Add to the total delta velocity.
+		deltaVelWorld += deltaVelWorld2;
+
+		// Add to the inverse mass
+		inverseMass += secondObject->getInverseMass();
+	}
+
+	// Do a change of basis to convert into contact coordinates.
+	Matrix3 deltaVelocity = contactToWorld.transpose();
+	deltaVelocity *= deltaVelWorld;
+	deltaVelocity *= contactToWorld;
+
+	// Add in the linear velocity change
+	deltaVelocity.data[0] += inverseMass;
+	deltaVelocity.data[4] += inverseMass;
+	deltaVelocity.data[8] += inverseMass;
+
+	// Invert to get the impulse needed per unit velocity
+	Matrix3 impulseMatrix = deltaVelocity.inverse();
+
+	// Find the target velocities to kill
+	Vector3 velKill(desiredDeltaVelocity,
+		-contactVelocity.y,
+		-contactVelocity.z);
+
+	// Find the impulse to kill target velocities
+	impulseContact = impulseMatrix.transform(velKill);
+
+	// Check for exceeding friction
+	real planarImpulse = real_sqrt(
+		impulseContact.y*impulseContact.y +
+		impulseContact.z*impulseContact.z
+		);
+	if (planarImpulse > impulseContact.x * friction)
+	{
+		// We need to use dynamic friction
+		impulseContact.y /= planarImpulse;
+		impulseContact.z /= planarImpulse;
+
+		impulseContact.x = deltaVelocity.data[0] +
+			deltaVelocity.data[1] * friction*impulseContact.y +
+			deltaVelocity.data[2] * friction*impulseContact.z;
+		impulseContact.x = desiredDeltaVelocity / impulseContact.x;
+		impulseContact.y *= friction * impulseContact.x;
+		impulseContact.z *= friction * impulseContact.x;
+	}
 	return impulseContact;
 }

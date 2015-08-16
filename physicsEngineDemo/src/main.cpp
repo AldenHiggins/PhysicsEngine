@@ -63,14 +63,13 @@ void display()
 	glRotatef(-phi, 1, 0, 0);
 	glRotatef(theta, 0, 1, 0);
 
-	// Draw the background
-	drawBackground();
-
 	// Enable lighting stuff
 	const static GLfloat lightPosition[] = { 0.7f, -1, 0.4f, 0 };
 	const static GLfloat lightPositionMirror[] = { 0.7f, 1, 0.4f, 0 };
 
 	glEnable(GL_DEPTH_TEST);
+	// Draw the background
+	drawBackground();
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 

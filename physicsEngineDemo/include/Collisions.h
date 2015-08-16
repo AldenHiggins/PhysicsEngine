@@ -15,6 +15,7 @@ namespace PhysicsEngine
 		Vector3 contactPoint;
 		Vector3 contactNormal;
 		real penetration;
+		real friction;
 
 		static unsigned int cubeCubeCollisionDetect(std::vector<Collision> *collisionList, RigidBody *first, RigidBody *other);
 		static void resolveContacts(std::vector<Collision> *collisionList, real duration);
@@ -64,6 +65,7 @@ namespace PhysicsEngine
 		*/
 		void applyPositionChange(Vector3 linearChange[2], Vector3 angularChange[2], real penetration);
 		inline Vector3 calculateFrictionlessImpulse(Matrix3 * inverseInertiaTensor);
+		inline Vector3 calculateFrictionImpulse(Matrix3 * inverseInertiaTensor);
 	};
 
 
