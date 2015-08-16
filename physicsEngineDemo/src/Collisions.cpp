@@ -1,5 +1,6 @@
 #include "Collisions.h"
 #include <assert.h>
+#include <iostream>
 
 using namespace PhysicsEngine;
 
@@ -109,7 +110,7 @@ unsigned int Collision::cubeCubeCollisionDetect(std::vector<Collision> *collisio
 
 	// Find the vector between the two centres
 	//Vector3 toCentre = two.getAxis(3) - one.getAxis(3);
-	Vector3 toCentre = first->getPosition() - other->getPosition();
+	Vector3 toCentre = other->getPosition() - first->getPosition();
 
 	Matrix4 firstTransform = first->getTransformMatrix();
 	Matrix4 secondTransform = other->getTransformMatrix();
@@ -252,6 +253,8 @@ void fillPointFaceBoxBox(
 	// Work out which vertex of box two we're colliding with.
 	// Using toCentre doesn't work!
 	Vector3 vertex = Vector3(.5f, .5f, .5f);
+	Vector3 thisAxisVector = two->getTransformMatrix().getAxisVector(0);
+	real testValue = thisAxisVector * normal;
 	if (two->getTransformMatrix().getAxisVector(0) * normal < 0) vertex.x = -vertex.x;
 	if (two->getTransformMatrix().getAxisVector(1) * normal < 0) vertex.y = -vertex.y;
 	if (two->getTransformMatrix().getAxisVector(2) * normal < 0) vertex.z = -vertex.z;
@@ -352,7 +355,7 @@ void Collision::adjustVelocities(std::vector<Collision> *collisionList, real dur
 
 	// iteratively handle impacts in order of severity.
 	int velocityIterationsUsed = 0;
-	int velocityIterations = 2;
+	int velocityIterations = 20;
 	while (velocityIterationsUsed < velocityIterations)
 	{
 		// Find contact with maximum magnitude of probable velocity change.
@@ -436,7 +439,7 @@ void Collision::adjustPositions(std::vector<Collision> *collisionList, real dura
 
 	// iteratively resolve interpenetrations in order of severity.
 	int positionIterationsUsed = 0;
-	int positionIterations = 2;
+	int positionIterations = 20;
 	while (positionIterationsUsed < positionIterations)
 	{
 		// Find biggest penetration
@@ -711,6 +714,14 @@ void Collision::applyVelocityChange(Vector3 velocityChange[2], Vector3 rotationC
 		secondObject->addVelocity(velocityChange[1]);
 		secondObject->addRotation(rotationChange[1]);
 	}
+
+	// Print out the velocity and rotational changes
+	std::cout << "First: " << std::endl;
+	std::cout << "Velocity: " << velocityChange[0][0] << " " << velocityChange[0][1] << " " << velocityChange[0][2] << std::endl;
+	std::cout << "RotationalVelocity: " << rotationChange[0][0] << " " << rotationChange[0][1] << " " << rotationChange[0][2] << std::endl;
+	std::cout << "Second: " << std::endl;
+	std::cout << "Velocity: " << velocityChange[1][0] << " " << velocityChange[1][1] << " " << velocityChange[1][2] << std::endl;
+	std::cout << "RotationalVelocity: " << rotationChange[1][0] << " " << rotationChange[1][1] << " " << rotationChange[1][2] << std::endl;
 }
 
 /**

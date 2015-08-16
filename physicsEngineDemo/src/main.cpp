@@ -149,6 +149,7 @@ void display()
 	// Now reconcile the found collisions
 	if (collisionList.size() > 0)
 	{
+		std::cout << "Number of contacts: " << collisionList.size() << std::endl;
 		Collision::resolveContacts(&collisionList, duration);
 	}
 

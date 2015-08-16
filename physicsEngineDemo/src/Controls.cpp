@@ -9,7 +9,9 @@ using namespace PhysicsEngine;
 // Add force to the first cube
 void addForceToCube(std::vector<RigidBody *> *rigidBodies);
 // Add a cube rigid body to the scene
-void addRigidCube(std::vector<RigidBody *> *rigidBodies, float theta, float phi);
+void addRigidCubeWhereYouLook(std::vector<RigidBody *> *rigidBodies, float theta, float phi);
+// Add a rigid cube with the inputted parameters
+void addRigidCube(std::vector<RigidBody *> *rigidBodies, Vector3 position, Vector3 velocity, real mass, real halfSize);
 void rigidBodyKeyCheck(unsigned char key, std::vector<RigidBody *> *rigidBodies, float theta, float phi);
 void particleKeyCheck(unsigned char key, std::vector<Particle *> *particles);
 
@@ -57,10 +59,14 @@ void rigidBodyKeyCheck(unsigned char key, std::vector<RigidBody *> *rigidBodies,
 	switch (key)
 	{
 	case '6':
-		addRigidCube(rigidBodies, theta, phi);
+		addRigidCubeWhereYouLook(rigidBodies, theta, phi);
 		break;
 	case '7':
 		addForceToCube(rigidBodies);
+		break;
+	case '8':
+		addRigidCube(rigidBodies, Vector3(0.0f, 2.0f, 6.0f), Vector3(1.0f, 0.0f, 0.0f), 1.0f, .5f);
+		addRigidCube(rigidBodies, Vector3(4.0f, 2.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 1.0f, .5f);
 		break;
 	}
 }
@@ -71,10 +77,24 @@ void addForceToCube(std::vector<RigidBody *> *rigidBodies)
 	(*rigidBodies)[0]->addForceAtBodyPoint(Vector3(10.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f));
 }
 
-// Add a cube rigid body to the scene
-void addRigidCube(std::vector<RigidBody *> *rigidBodies, float theta, float phi)
+// Add a rigid cube with the inputted parameters
+void addRigidCube(std::vector<RigidBody *> *rigidBodies, Vector3 position, Vector3 velocity, real mass, real halfSize)
 {
 	Square *newSquare = new Square();
+	newSquare->setPosition(position);
+	newSquare->setVelocity(velocity);
+	newSquare->setMass(mass);
+	Matrix3 tensor;
+	// Vector3 -> half the length, width, and height of the box, real-> mass
+	tensor.setBlockInertiaTensor(Vector3(halfSize, halfSize, halfSize), mass);
+	newSquare->setInertiaTensor(tensor);
+
+	rigidBodies->push_back(newSquare);
+}
+
+// Add a cube rigid body to the scene
+void addRigidCubeWhereYouLook(std::vector<RigidBody *> *rigidBodies, float theta, float phi)
+{
 	//// Rotate the camera based on mouse movements
 	//glRotatef(-phi, 1, 0, 0);
 	//glRotatef(theta, 0, 1, 0);
@@ -84,13 +104,6 @@ void addRigidCube(std::vector<RigidBody *> *rigidBodies, float theta, float phi)
 	Matrix3 rotMatrix;
 	rotMatrix.setOrientation(cameraRotation);
 	Vector3 squareCreationPosition = rotMatrix.transform(oldSquareCreationPosition);
-	newSquare->setPosition(squareCreationPosition);
-	newSquare->setVelocity(Vector3(0.0f, 0.0f, 0.0f));
-	newSquare->setMass(1.0f);
-	Matrix3 tensor;
-	// Vector3 -> half the length, width, and height of the box, real-> mass
-	tensor.setBlockInertiaTensor(Vector3(.5f, .5f, .5f), 1.0f);
-	newSquare->setInertiaTensor(tensor);
 
-	rigidBodies->push_back(newSquare);
+	addRigidCube(rigidBodies, squareCreationPosition, Vector3(0.0f, 0.0f, 0.0f), 1.0f, 0.5f);
 }
