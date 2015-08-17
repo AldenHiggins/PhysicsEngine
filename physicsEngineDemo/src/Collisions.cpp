@@ -266,6 +266,7 @@ void fillPointFaceBoxBox(
 	newCollision.contactPoint = two->getTransformMatrix() * vertex;
 	newCollision.firstObject = one;
 	newCollision.secondObject = two;
+	newCollision.friction = 0.9f;
 	// Now add the new contact to the list
 	data->push_back(newCollision);
 }
