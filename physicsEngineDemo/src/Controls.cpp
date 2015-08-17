@@ -65,8 +65,13 @@ void rigidBodyKeyCheck(unsigned char key, std::vector<RigidBody *> *rigidBodies,
 		addForceToCube(rigidBodies);
 		break;
 	case '8':
-		addRigidCube(rigidBodies, Vector3(0.0f, 2.0f, 6.0f), Vector3(1.0f, 0.0f, 0.0f), 10.0f, .5f);
+		addRigidCube(rigidBodies, Vector3(0.0f, 2.4f, 6.0f), Vector3(1.0f, 0.0f, 0.0f), 10.0f, .5f);
 		addRigidCube(rigidBodies, Vector3(4.0f, 2.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, .5f);
+		addRigidCube(rigidBodies, Vector3(0.0f, 3.4f, 6.0f), Vector3(1.0f, 0.0f, 0.0f), 10.0f, .5f);
+		addRigidCube(rigidBodies, Vector3(4.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, .5f);
+		break;
+	case '9':
+		addRigidCube(rigidBodies, Vector3(0.0f, 2.4f, 6.0f), Vector3(10.0f, 0.0f, 0.0f), 10.0f, .5f);
 		break;
 	}
 }

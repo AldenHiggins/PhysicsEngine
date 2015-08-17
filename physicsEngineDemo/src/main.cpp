@@ -56,6 +56,11 @@ void update()
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// Light up the scene
+	GLfloat light_position[] = { -4.0, 50.0, -10.0, 0.0 };
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
 	glLoadIdentity();
 	// Look out towards the Z direction (eye, center, up)
 	gluLookAt(0.0, 4.0, 0.0, 0.0, 4.0, 6.0, 0.0, 1.0, 0.0);
@@ -63,19 +68,8 @@ void display()
 	glRotatef(-phi, 1, 0, 0);
 	glRotatef(theta, 0, 1, 0);
 
-	// Enable lighting stuff
-	const static GLfloat lightPosition[] = { 0.7f, -1, 0.4f, 0 };
-	const static GLfloat lightPositionMirror[] = { 0.7f, 1, 0.4f, 0 };
-
-	glEnable(GL_DEPTH_TEST);
 	// Draw the background
 	drawBackground();
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-
-	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-	glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
-	glEnable(GL_COLOR_MATERIAL);
 
 	float duration = (float)TimingData::get().lastFrameDuration * 0.001f;
 	// Integrate all of the particles
@@ -111,24 +105,14 @@ void display()
 			//std::cout << "Drawing bounding volumes!!" << std::endl;
 			//drawBoundingVolumes(&newNode);
 			// Once all of the rigid bodies have been included check for collisions
-			PotentialContact contacts[10];
-			int contactsFound = (*(newNode.children[0])).getPotentialContacts(contacts, 10);
+			PotentialContact contacts[MAX_CONTACTS_PER_FRAME];
+			int contactsFound = (*(newNode.children[0])).getPotentialContacts(contacts, MAX_CONTACTS_PER_FRAME);
 
-			if (contactsFound > 0)
-			{
-				std::cout << "Found " << contactsFound << " contacts!" << std::endl;
-			}
-
-			PotentialContact contactsTwo[10];
-			int secondContactsFound = (*(newNode.children[1])).getPotentialContacts(contactsTwo, 10);
-
-			if (secondContactsFound > 0)
-			{
-				std::cout << "Second Found: " << secondContactsFound << " contacts!" << std::endl;
-			}
+			PotentialContact contactsTwo[MAX_CONTACTS_PER_FRAME];
+			int secondContactsFound = (*(newNode.children[1])).getPotentialContacts(contactsTwo, MAX_CONTACTS_PER_FRAME);
 		}
 	}
-	// Now check for collisions
+	// Check for collisions
 	std::vector<Collision> collisionList;
 	for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
 	{
@@ -145,16 +129,14 @@ void display()
 		}
 	}
 
-	// Now reconcile the found collisions
+	// Reconcile the found collisions
 	if (collisionList.size() > 0)
 	{
 		std::cout << "Number of contacts: " << collisionList.size() << std::endl;
 		Collision::resolveContacts(&collisionList, duration);
 	}
-
-	// Now reconcile all of the found collisions
 	
-	// Now render the scene
+	//// Render the scene ////
 	// Draw all of the particles
 	for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
 	{
@@ -166,11 +148,6 @@ void display()
 	{
 		rigidBodies[rigidBodyIndex]->display();
 	}
-	// Disable lighting stuff
-	glDisable(GL_NORMALIZE);
-	glDisable(GL_LIGHTING);
-	glDisable(GL_COLOR_MATERIAL);
-	glDisable(GL_DEPTH_TEST);
 
 	glFlush();
 	glutSwapBuffers();
@@ -182,6 +159,7 @@ void drawBackground()
 	// Draw the ground
 	glBegin(GL_QUADS);
 	glColor3f(1.0f, 1.0f, 1.0f);
+	glNormal3f(0, 1, 0);
 	glVertex3f(20, 0, 20);
 	glVertex3f(20, 0, -20);
 	glVertex3f(-20, 0, -20);
@@ -189,24 +167,28 @@ void drawBackground()
 	// Draw the walls
 	// Front wall
 	glColor3f(0.9f, 0.9f, 0.9f);
+	glNormal3f(0, 0, -1);
 	glVertex3f(20, 0, 20);
 	glVertex3f(20, 20, 20);
 	glVertex3f(-20, 20, 20);
 	glVertex3f(-20, 0, 20);
 	// Back Wall
 	glColor3f(0.8f, 0.8f, 0.8f);
+	glNormal3f(0, 0, 1);
 	glVertex3f(20, 0, -20);
 	glVertex3f(20, 20, -20);
 	glVertex3f(-20, 20, -20);
 	glVertex3f(-20, 0, -20);
 	// Left Wall
 	glColor3f(0.7f, 0.7f, 0.7f);
+	glNormal3f(-1, 0, 0);
 	glVertex3f(20, 0, -20);
 	glVertex3f(20, 20, -20);
 	glVertex3f(20, 20, 20);
 	glVertex3f(20, 0, 20);
 	// Right Wall
 	glColor3f(0.6f, 0.6f, 0.6f);
+	glNormal3f(1, 0, 0);
 	glVertex3f(-20, 0, 20);
 	glVertex3f(-20, 20, 20);
 	glVertex3f(-20, 20, -20);
@@ -272,29 +254,30 @@ void motion(int x, int y)
 
 void initializeGraphics()
 {
-	GLfloat lightAmbient[] = { 0.8f, 0.8f, 0.8f, 1.0f };
-	GLfloat lightDiffuse[] = { 0.9f, 0.95f, 1.0f, 1.0f };
-
-	glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
-
-	glEnable(GL_LIGHT0);
-
-	glClearColor(0.9f, 0.95f, 1.0f, 1.0f);
-	glEnable(GL_DEPTH_TEST);
+	// Create a light
+	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat mat_shininess[] = { 50.0 };
+	GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
+	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glShadeModel(GL_SMOOTH);
 
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_DEPTH_TEST);
+	
+	// Enable color
+	glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
+	glEnable(GL_COLOR_MATERIAL);
 
 	// Now set the view
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(60.0, (double)SCREEN_WIDTH / (double)SCREEN_HEIGHT, 1.0, 500.0);
 	glMatrixMode(GL_MODELVIEW);
-
-	// But override the clear color
-	glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
 }
 
 void initializeScene()

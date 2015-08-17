@@ -716,14 +716,6 @@ void Collision::applyVelocityChange(Vector3 velocityChange[2], Vector3 rotationC
 		secondObject->addVelocity(velocityChange[1]);
 		secondObject->addRotation(rotationChange[1]);
 	}
-
-	// Print out the velocity and rotational changes
-	std::cout << "First: " << std::endl;
-	std::cout << "Velocity: " << velocityChange[0][0] << " " << velocityChange[0][1] << " " << velocityChange[0][2] << std::endl;
-	std::cout << "RotationalVelocity: " << rotationChange[0][0] << " " << rotationChange[0][1] << " " << rotationChange[0][2] << std::endl;
-	std::cout << "Second: " << std::endl;
-	std::cout << "Velocity: " << velocityChange[1][0] << " " << velocityChange[1][1] << " " << velocityChange[1][2] << std::endl;
-	std::cout << "RotationalVelocity: " << rotationChange[1][0] << " " << rotationChange[1][1] << " " << rotationChange[1][2] << std::endl;
 }
 
 /**
@@ -864,15 +856,6 @@ void Collision::applyPositionChange(Vector3 linearChange[2], Vector3 angularChan
 		Quaternion q = body->getOrientation();
 		q.addScaledVector(angularChange[i], ((real)1.0));
 		body->setOrientation(q);
-
-		//// Print out the velocity and rotational changes
-		//std::cout << "First: " << std::endl;
-		//std::cout << "Contact normal: " << contactNormal[0] << " " << contactNormal[1] << " " << contactNormal[2] << std::endl;
-		//std::cout << "Velocity: " << linearMove[0] << std::endl;
-		//std::cout << "Angular change: " << angularChange[0][0] << " " << angularChange[0][1] << " " << angularChange[0][2] << std::endl;
-		//std::cout << "Second: " << std::endl;
-		//std::cout << "Velocity: " << linearMove[1] << std::endl;
-		//std::cout << "Angular change: " << angularChange[1][0] << " " << angularChange[1][1] << " " << angularChange[1][2] << std::endl;
 
 		// We need to calculate the derived data for any body that is
 		// asleep, so that the changes are reflected in the object's
