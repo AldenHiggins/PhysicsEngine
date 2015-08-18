@@ -118,7 +118,13 @@ void display()
 	for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
 	{
 		// Check for collisions against the ground
-		Collision::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(0,1,0), 0, &collisionList);
+		Collision::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(0, 1, 0), 0, &collisionList);
+		// Check for collisions against the walls
+		Collision::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(-1, 0, 0), -20, &collisionList);
+		Collision::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(1, 0, 0), -20, &collisionList);
+		Collision::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(0, 0, -1), -20, &collisionList);
+		Collision::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(0, 0, 1), -20, &collisionList);
+
 
 		for (int otherRigidBodyIndex = 0; otherRigidBodyIndex < rigidBodies.size(); otherRigidBodyIndex++)
 		{
