@@ -62,7 +62,15 @@ void rigidBodyKeyCheck(unsigned char key, std::vector<RigidBody *> *rigidBodies,
 		addRigidCubeWhereYouLook(rigidBodies, theta, phi);
 		break;
 	case '7':
-		addForceToCube(rigidBodies);
+		//addForceToCube(rigidBodies);
+		addRigidCube(rigidBodies, Vector3(8.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, .5f);
+		addRigidCube(rigidBodies, Vector3(8.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, .5f);
+		addRigidCube(rigidBodies, Vector3(8.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, .5f);
+		addRigidCube(rigidBodies, Vector3(8.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, .5f);
+		addRigidCube(rigidBodies, Vector3(8.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, .5f);
+		addRigidCube(rigidBodies, Vector3(8.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, .5f);
+		addRigidCube(rigidBodies, Vector3(8.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, .5f);
+		addRigidCube(rigidBodies, Vector3(8.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, .5f);
 		break;
 	case '8':
 		addRigidCube(rigidBodies, Vector3(0.0f, 2.4f, 6.0f), Vector3(1.0f, 0.0f, 0.0f), 10.0f, .5f);
@@ -72,6 +80,9 @@ void rigidBodyKeyCheck(unsigned char key, std::vector<RigidBody *> *rigidBodies,
 		break;
 	case '9':
 		addRigidCube(rigidBodies, Vector3(0.0f, 2.4f, 6.0f), Vector3(10.0f, 0.0f, 0.0f), 10.0f, .5f);
+		break;
+	case '0':
+		addRigidCube(rigidBodies, Vector3(0.0f, 2.4f, 6.0f), Vector3(60.0f, 0.0f, 0.0f), 10.0f, .5f);
 		break;
 	}
 }
@@ -100,9 +111,6 @@ void addRigidCube(std::vector<RigidBody *> *rigidBodies, Vector3 position, Vecto
 // Add a cube rigid body to the scene
 void addRigidCubeWhereYouLook(std::vector<RigidBody *> *rigidBodies, float theta, float phi)
 {
-	//// Rotate the camera based on mouse movements
-	//glRotatef(-phi, 1, 0, 0);
-	//glRotatef(theta, 0, 1, 0);
 	Vector3 oldSquareCreationPosition(0.0f, 4.0f, 6.0f);
 	float thetaRads = theta * PI / 180.0;
 	Quaternion cameraRotation(cos(thetaRads / 2), 0.0f, 1.0f * sin(thetaRads / 2), 0.0f);

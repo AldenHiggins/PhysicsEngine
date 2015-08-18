@@ -72,13 +72,13 @@ void display()
 	drawBackground();
 
 	float duration = (float)TimingData::get().lastFrameDuration * 0.001f;
-	// Integrate all of the particles
+	//// Integrate all of the particles ////
 	for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
 	{
 		particles[particleIndex]->integrate(duration);
 	}
 
-	// Integrate all of the rigid bodies
+	//// Integrate all of the rigid bodies ////
 	if (rigidBodies.size() > 0)
 	{
 		// Build up a list of bounding spheres for broad phase collision detection
@@ -112,7 +112,8 @@ void display()
 			int secondContactsFound = (*(newNode.children[1])).getPotentialContacts(contactsTwo, MAX_CONTACTS_PER_FRAME);
 		}
 	}
-	// Check for collisions
+
+	//// Check for collisions ////
 	std::vector<Collision> collisionList;
 	for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
 	{
@@ -129,10 +130,9 @@ void display()
 		}
 	}
 
-	// Reconcile the found collisions
+	//// Resolve the found collisions ////
 	if (collisionList.size() > 0)
 	{
-		std::cout << "Number of contacts: " << collisionList.size() << std::endl;
 		Collision::resolveContacts(&collisionList, duration);
 	}
 	

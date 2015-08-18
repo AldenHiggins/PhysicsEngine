@@ -746,7 +746,6 @@ void Collision::applyPositionChange(Vector3 linearChange[2], Vector3 angularChan
 			body = secondObject;
 		}
 
-
 		Matrix3 inverseInertiaTensor;
 		body->getInverseInertiaTensorWorld(&inverseInertiaTensor);
 
