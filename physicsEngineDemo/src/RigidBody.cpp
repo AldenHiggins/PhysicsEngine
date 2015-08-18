@@ -29,7 +29,7 @@ void RigidBody::display(){}
 void RigidBody::integrate(real timeStep)
 {
 	// Calculate linear acceleration from force inputs.
-	lastFrameAcceleration = linearAcceleration;
+	lastFrameAcceleration = acceleration;
 	lastFrameAcceleration.addScaledVector(forceAccum, inverseMass);
 
 	// Calculate angular acceleration from torque inputs.

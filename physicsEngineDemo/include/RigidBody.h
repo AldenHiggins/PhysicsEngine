@@ -15,7 +15,6 @@ namespace PhysicsEngine
 		Vector3 position;
 		// Linear movement values
 		Vector3 linearVelocity;
-		Vector3 linearAcceleration;
 		Vector3 acceleration;
 		Vector3 lastFrameAcceleration;
 		// Angular movemement values

@@ -99,6 +99,7 @@ void addRigidCube(std::vector<RigidBody *> *rigidBodies, Vector3 position, Vecto
 	Square *newSquare = new Square();
 	newSquare->setPosition(position);
 	newSquare->setVelocity(velocity);
+	newSquare->setAcceleration(Vector3::GRAVITY);
 	newSquare->setMass(mass);
 	Matrix3 tensor;
 	// Vector3 -> half the length, width, and height of the box, real-> mass
