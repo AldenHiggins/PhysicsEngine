@@ -18,6 +18,7 @@ namespace PhysicsEngine
 		real friction;
 
 		static unsigned int cubeCubeCollisionDetect(std::vector<Collision> *collisionList, RigidBody *first, RigidBody *other);
+		static unsigned boxAndHalfSpace(RigidBody *box, const Vector3 planeDirection, real planeOffset, std::vector<Collision> *collisionList);
 		static void resolveContacts(std::vector<Collision> *collisionList, real duration);
 	protected:
 		/**
@@ -53,6 +54,7 @@ namespace PhysicsEngine
 		void calculateInternals(real duration);
 		Vector3 calculateLocalVelocity(unsigned bodyIndex, real duration);
 		void calculateDesiredDeltaVelocity(real duration);
+		static bool boxAndHalfSpaceIntersect(const RigidBody *box, Vector3 planeDirection, real planeOffset);
 		/**
 		* Performs an inertia-weighted impulse based resolution of this
 		* contact alone.

@@ -117,6 +117,9 @@ void display()
 	std::vector<Collision> collisionList;
 	for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
 	{
+		// Check for collisions against the ground
+		Collision::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(0,1,0), 0, &collisionList);
+
 		for (int otherRigidBodyIndex = 0; otherRigidBodyIndex < rigidBodies.size(); otherRigidBodyIndex++)
 		{
 			// Don't check if the rigid body is colliding with itself

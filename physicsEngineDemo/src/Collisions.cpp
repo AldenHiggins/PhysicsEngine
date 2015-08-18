@@ -645,8 +645,11 @@ void Collision::calculateDesiredDeltaVelocity(real duration)
 
 	//if (body[1] && body[1]->getAwake())
 	//{
-	velocityFromAcc -=
-		secondObject->getLastFrameAcceleration() * duration * contactNormal;
+	if (secondObject)
+	{
+		velocityFromAcc -=
+			secondObject->getLastFrameAcceleration() * duration * contactNormal;
+	}
 	//}
 
 	// If the velocity is very slow, limit the restitution
@@ -744,6 +747,10 @@ void Collision::applyPositionChange(Vector3 linearChange[2], Vector3 angularChan
 		else
 		{
 			body = secondObject;
+			if (secondObject == NULL)
+			{
+				continue;
+			}
 		}
 
 		Matrix3 inverseInertiaTensor;
@@ -782,6 +789,10 @@ void Collision::applyPositionChange(Vector3 linearChange[2], Vector3 angularChan
 		else
 		{
 			body = secondObject;
+			if (secondObject == NULL)
+			{
+				continue;
+			}
 		}
 
 		// The linear and angular movements required are in proportion to
@@ -981,4 +992,74 @@ inline Vector3 Collision::calculateFrictionImpulse(Matrix3 * inverseInertiaTenso
 		impulseContact.z *= friction * impulseContact.x;
 	}
 	return impulseContact;
+}
+
+bool Collision::boxAndHalfSpaceIntersect(const RigidBody *box, Vector3 planeDirection, real planeOffset)
+{
+	// Work out the projected radius of the box onto the plane direction
+	real projectedRadius = transformToAxis(box, planeDirection);
+
+	// Work out how far the box is from the origin
+	real boxDistance =
+		planeDirection *
+		box->getTransformMatrix().getAxisVector(3) -
+		projectedRadius;
+
+	// Check for the intersection
+	return boxDistance <= planeOffset;
+}
+
+unsigned Collision::boxAndHalfSpace(RigidBody *box, const Vector3 planeDirection, real planeOffset, std::vector<Collision> *collisionList)
+{
+	//// Make sure we have contacts
+	//if (data->contactsLeft <= 0) return 0
+
+	// Check for intersection
+	if (!boxAndHalfSpaceIntersect(box, planeDirection, planeOffset))
+	{
+		return 0;
+	}
+
+	// We have an intersection, so find the intersection points. We can make
+	// do with only checking vertices. If the box is resting on a plane
+	// or on an edge, it will be reported as four or two contact points.
+
+	// Go through each combination of + and - for each half-size
+	static real mults[8][3] = { { 1, 1, 1 }, { -1, 1, 1 }, { 1, -1, 1 }, { -1, -1, 1 },
+	{ 1, 1, -1 }, { -1, 1, -1 }, { 1, -1, -1 }, { -1, -1, -1 } };
+
+	unsigned contactsUsed = 0;
+	for (unsigned i = 0; i < 8; i++) 
+	{
+		// Calculate the position of each vertex
+		Vector3 vertexPos(mults[i][0], mults[i][1], mults[i][2]);
+		vertexPos.componentProductUpdate(Vector3(.5f, .5f, .5f));
+		vertexPos = box->getTransformMatrix().transform(vertexPos);
+
+		// Calculate the distance from the plane
+		real vertexDistance = vertexPos * planeDirection;
+
+		// Compare this to the plane's distance
+		if (vertexDistance <= planeOffset)
+		{
+			// Create the contact data.
+			// The contact point is halfway between the vertex and the
+			// plane - we multiply the direction by half the separation
+			// distance and add the vertex location.
+			Collision newCollision;
+			newCollision.contactPoint = planeDirection;
+			newCollision.contactPoint *= (vertexDistance - planeOffset);
+			newCollision.contactPoint += vertexPos;
+			newCollision.contactNormal = planeDirection;
+			newCollision.penetration = planeOffset - vertexDistance;
+			newCollision.firstObject = box;
+			newCollision.secondObject = NULL;
+			newCollision.friction = 0.9;
+
+			// Add the new collision to the list
+			contactsUsed++;
+			collisionList->push_back(newCollision);
+		}
+	}
+	return contactsUsed;
 }
