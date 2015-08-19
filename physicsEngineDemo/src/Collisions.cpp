@@ -357,7 +357,7 @@ void Collision::adjustVelocities(std::vector<Collision> *collisionList, real dur
 
 	// iteratively handle impacts in order of severity.
 	int velocityIterationsUsed = 0;
-	int velocityIterations = 10;
+	int velocityIterations = collisionList->size() * 4;
 	while (velocityIterationsUsed < velocityIterations)
 	{
 		// Find contact with maximum magnitude of probable velocity change.
@@ -401,6 +401,11 @@ void Collision::adjustVelocities(std::vector<Collision> *collisionList, real dur
 						firstRigidBody = (*collisionList)[i].secondObject;
 					}
 
+					if (firstRigidBody == NULL)
+					{
+						continue;
+					}
+
 					RigidBody *secondRigidBody = NULL;
 					if (d == 0)
 					{
@@ -441,7 +446,7 @@ void Collision::adjustPositions(std::vector<Collision> *collisionList, real dura
 
 	// iteratively resolve interpenetrations in order of severity.
 	int positionIterationsUsed = 0;
-	int positionIterations = 10;
+	int positionIterations = collisionList->size() * 4;
 	while (positionIterationsUsed < positionIterations)
 	{
 		// Find biggest penetration
@@ -487,6 +492,11 @@ void Collision::adjustPositions(std::vector<Collision> *collisionList, real dura
 						firstBody = (*collisionList)[i].secondObject;
 					}
 
+					if (firstBody == NULL)
+					{
+						continue;
+					}
+
 					RigidBody *secondBody = NULL;
 					if (d == 0)
 					{
@@ -496,7 +506,6 @@ void Collision::adjustPositions(std::vector<Collision> *collisionList, real dura
 					{
 						secondBody = (*collisionList)[index].secondObject;
 					}
-
 
 					if (firstBody == secondBody)
 					{
@@ -637,20 +646,14 @@ void Collision::calculateDesiredDeltaVelocity(real duration)
 	// Calculate the acceleration induced velocity accumulated this frame
 	real velocityFromAcc = 0;
 
-	//if (body[0]->getAwake())
-	//{
 	velocityFromAcc +=
 		firstObject->getLastFrameAcceleration() * duration * contactNormal;
-	//}
 
-	//if (body[1] && body[1]->getAwake())
-	//{
 	if (secondObject)
 	{
 		velocityFromAcc -=
 			secondObject->getLastFrameAcceleration() * duration * contactNormal;
 	}
-	//}
 
 	// If the velocity is very slow, limit the restitution
 	real thisRestitution = .2;
