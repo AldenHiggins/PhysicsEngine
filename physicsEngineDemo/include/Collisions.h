@@ -9,16 +9,23 @@ namespace PhysicsEngine
 	class Collision
 	{
 	public:
+		// The first object taking part in this collision
 		RigidBody *firstObject;
+		// The second object in the collision
 		RigidBody *secondObject;
-
+		// The point where the collision occured
 		Vector3 contactPoint;
+		// The normal pointing outwards in the direction of the collision
 		Vector3 contactNormal;
+		// The amount the two objects are interpenetrating
 		real penetration;
+		// Reduces the amount of velocity resulting from a collision
 		real friction;
-
+		// Determine if there is a collision between two cubic rigid bodies
 		static unsigned int cubeCubeCollisionDetect(std::vector<Collision> *collisionList, RigidBody *first, RigidBody *other);
+		// Find collisions between a cube and a plane
 		static unsigned boxAndHalfSpace(RigidBody *box, const Vector3 planeDirection, real planeOffset, std::vector<Collision> *collisionList);
+		// Add the required velocities and change the positions of the rigid bodies involved in the contacts in contactList
 		static void resolveContacts(std::vector<Collision> *collisionList, real duration);
 	protected:
 		/**

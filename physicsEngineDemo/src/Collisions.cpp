@@ -104,6 +104,7 @@ static inline real transformToAxis(
 		.5f * real_abs(axis * box->getTransformMatrix().getAxisVector(2));
 }
 
+// Determine if there is a collision between two cubic rigid bodies
 unsigned int Collision::cubeCubeCollisionDetect(std::vector<Collision> *collisionList, RigidBody *first, RigidBody *other)
 {
 	//if (!IntersectionTests::boxAndBox(one, two)) return 0;
@@ -326,8 +327,7 @@ inline Vector3 contactPointCalculate(
 	}
 }
 
-
-
+// Add the required velocities and change the positions of the rigid bodies involved in the contacts in contactList
 void Collision::resolveContacts(std::vector<Collision> *collisionList, real duration)
 {
 	// Prepare the contacts for processing
@@ -1012,6 +1012,7 @@ bool Collision::boxAndHalfSpaceIntersect(const RigidBody *box, Vector3 planeDire
 	return boxDistance <= planeOffset;
 }
 
+// Find collisions between a cube and a plane
 unsigned Collision::boxAndHalfSpace(RigidBody *box, const Vector3 planeDirection, real planeOffset, std::vector<Collision> *collisionList)
 {
 	//// Make sure we have contacts
