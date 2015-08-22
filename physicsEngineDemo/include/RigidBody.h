@@ -34,6 +34,8 @@ namespace PhysicsEngine
 		// All the accumulated torque on this object this frame
 		Vector3 torqueAccum;
 
+		// Denotes whether the rigid body is awake or moving/colliding/etc.. to prevent it from being updated unnecessarily
+		bool isAwake;
 	public:
 		// Integrate this object based on the time elapsed this frame
 		void integrate(real timeStep);
@@ -67,7 +69,7 @@ namespace PhysicsEngine
 		void setInertiaTensor(const Matrix3 &inertiaTensor);
 
 		// Get the inverse inertia tensor of this object in world coords
-		void RigidBody::getInverseInertiaTensorWorld(Matrix3 *inverseInertiaTensor) const;
+		void getInverseInertiaTensorWorld(Matrix3 *inverseInertiaTensor) const;
 
 		// Set the mass of this object
 		void setMass(real objectMass);
@@ -107,6 +109,12 @@ namespace PhysicsEngine
 
 		// Get the angular velocity of this rigid body
 		Vector3 getRotation() const;
+
+		// Get whether or not this body is awake
+		bool getIsAwake() const;
+
+		// Set this rigid body to be awake or asleep
+		void setIsAwake(bool isAwakeInput);
 
 		// Get this body's transformation matrix in a form that opengl can use
 		void getGLTransform(float matrix[16]) const;

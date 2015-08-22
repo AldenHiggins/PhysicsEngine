@@ -90,7 +90,10 @@ void rigidBodyKeyCheck(unsigned char key, std::vector<RigidBody *> *rigidBodies,
 		addRigidCube(rigidBodies, Vector3(0.0f, 6.4f, 6.0f), Vector3(0.0f, 0.0f, -10.0f), 10.0f, .5f);
 		break;
 	case '0':
-		addRigidCube(rigidBodies, Vector3(0.0f, 2.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 1.0f, .5f);
+		for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies->size(); rigidBodyIndex++)
+		{
+			(*rigidBodies)[rigidBodyIndex]->setIsAwake(false);
+		}
 		break;
 	}
 }

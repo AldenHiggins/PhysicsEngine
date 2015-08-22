@@ -28,6 +28,12 @@ void RigidBody::display(){}
 // Integrate this object based on the time elapsed this frame
 void RigidBody::integrate(real timeStep)
 {
+	// If this rigid body isn't awake skip the integration
+	if (!isAwake)
+	{
+		return;
+	}
+
 	// Calculate linear acceleration from force inputs.
 	lastFrameAcceleration = acceleration;
 	lastFrameAcceleration.addScaledVector(forceAccum, inverseMass);
@@ -189,6 +195,18 @@ Vector3 RigidBody::getLastFrameAcceleration() const
 Vector3 RigidBody::getRotation() const
 {
 	return angularVelocity;
+}
+
+// Get whether or not this body is awake
+bool RigidBody::getIsAwake() const
+{
+	return isAwake;
+}
+
+// Set this rigid body to be awake or asleep
+void RigidBody::setIsAwake(bool isAwakeInput)
+{
+	isAwake = isAwakeInput;
 }
 
 // Get this rigid bodies transformation matrix
