@@ -25,6 +25,9 @@ namespace PhysicsEngine
 		// Store the inertia tensor in world coordinates to be used in conjunction with torque (also in world coords)
 		Matrix3 inverseInertiaTensorWorld;
 
+		// Holds the amount of motion of the body
+		real motion;
+
 		// Transformation matrix for this object
 		Matrix4 transformationMatrix;
 

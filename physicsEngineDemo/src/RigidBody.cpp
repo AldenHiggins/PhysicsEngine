@@ -61,6 +61,21 @@ void RigidBody::integrate(real timeStep)
 
 	// Clear all forces and torques active on the body because we've already added them to the body's velocity
 	clearAccumulators();
+
+	// Update the kinetic energy store, and possibly put the body to
+	// sleep.
+	real currentMotion = linearVelocity.scalarProduct(linearVelocity) +	angularVelocity.scalarProduct(angularVelocity);
+	real bias = real_pow(0.5, timeStep);
+	motion = bias*motion + (1 - bias)*currentMotion;
+
+	if (motion < sleepEpsilon)
+	{
+		setIsAwake(false);
+	}
+	else if (motion > 10 * sleepEpsilon)
+	{
+		motion = 10 * sleepEpsilon;
+	}
 }
 
 // Add a force to this object's center of mass
