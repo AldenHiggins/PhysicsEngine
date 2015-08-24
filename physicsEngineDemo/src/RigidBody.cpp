@@ -38,6 +38,10 @@ void RigidBody::integrate(real timeStep)
 	lastFrameAcceleration = acceleration;
 	lastFrameAcceleration.addScaledVector(forceAccum, inverseMass);
 
+	// Impose drag.
+	linearVelocity *= real_pow(linearDamping, timeStep);
+	angularVelocity *= real_pow(angularDamping, timeStep);
+
 	// Calculate angular acceleration from torque inputs.
 	Vector3 angularAcceleration = inverseInertiaTensorWorld.transform(torqueAccum);
 
@@ -170,6 +174,13 @@ void RigidBody::setOrientation(const Quaternion &orientationInput)
 	orientation.normalise();
 }
 
+// Set the damping values for this rigid body
+void RigidBody::setDamping(const real linearDampingInput, const real angularDampingInput)
+{
+	linearDamping = linearDampingInput;
+	angularDamping = angularDampingInput;
+}
+
 // Get the orientation of this rigid body
 Quaternion RigidBody::getOrientation()
 {
@@ -221,7 +232,19 @@ bool RigidBody::getIsAwake() const
 // Set this rigid body to be awake or asleep
 void RigidBody::setIsAwake(bool isAwakeInput)
 {
-	isAwake = isAwakeInput;
+	if (isAwakeInput)
+	{
+		isAwake = true;
+
+		// Add a bit of motion to avoid it falling asleep immediately.
+		motion = sleepEpsilon*2.0f;
+	}
+	else 
+	{
+		isAwake = false;
+		linearVelocity.clear();
+		angularVelocity.clear();
+	}
 }
 
 // Get this rigid bodies transformation matrix

@@ -374,6 +374,11 @@ void Collision::adjustVelocities(std::vector<Collision> *collisionList, real dur
 		if (index == collisionList->size()) break;
 
 		//// Match the awake state at the contact
+		if ((*collisionList)[index].secondObject != NULL)
+		{
+			(*collisionList)[index].firstObject->setIsAwake(true);
+			(*collisionList)[index].secondObject->setIsAwake(true);
+		}
 		//(*collisionList)[index].matchAwakeState();
 
 		// Do the resolution on the contact that came out top.
@@ -405,6 +410,8 @@ void Collision::adjustVelocities(std::vector<Collision> *collisionList, real dur
 					{
 						continue;
 					}
+
+					firstRigidBody->setIsAwake(true);
 
 					RigidBody *secondRigidBody = NULL;
 					if (d == 0)
@@ -463,6 +470,22 @@ void Collision::adjustPositions(std::vector<Collision> *collisionList, real dura
 		if (index == collisionList->size()) break;
 
 		//// Match the awake state at the contact
+		if ((*collisionList)[index].secondObject != NULL)
+		{
+			bool firstAwake = (*collisionList)[index].firstObject->getIsAwake();
+			bool secondAwake = (*collisionList)[index].secondObject->getIsAwake();
+			if (firstAwake == false || secondAwake == false)
+			{
+				if (!firstAwake)
+				{
+					(*collisionList)[index].firstObject->setIsAwake(true);
+				}
+				else
+				{
+					(*collisionList)[index].secondObject->setIsAwake(true);
+				}
+			}
+		}
 		//(*collisionList)[index].matchAwakeState();
 
 		// Resolve the penetration.
@@ -496,6 +519,8 @@ void Collision::adjustPositions(std::vector<Collision> *collisionList, real dura
 					{
 						continue;
 					}
+
+					firstBody->setIsAwake(true);
 
 					RigidBody *secondBody = NULL;
 					if (d == 0)

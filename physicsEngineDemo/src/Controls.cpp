@@ -63,22 +63,22 @@ void rigidBodyKeyCheck(unsigned char key, std::vector<RigidBody *> *rigidBodies,
 		break;
 	case '7':
 		//addForceToCube(rigidBodies);
-		addRigidCube(rigidBodies, Vector3(-4.0f, 3.0f, 6.0f), Vector3(1.0f, 0.0f, 0.0f), 10.0f, .5f);
-		addRigidCube(rigidBodies, Vector3(-4.0f, 4.0f, 6.0f), Vector3(0.0f, 2.0f, 0.0f), 10.0f, .5f);
-		addRigidCube(rigidBodies, Vector3(-3.0f, 5.0f, 6.0f), Vector3(0.0f, 0.0f, 2.0f), 10.0f, .5f);
-		addRigidCube(rigidBodies, Vector3(-2.0f, 6.0f, 6.0f), Vector3(0.0f, 2.0f, 0.0f), 10.0f, .5f);
-		addRigidCube(rigidBodies, Vector3(-1.0f, 7.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, .5f);
-		addRigidCube(rigidBodies, Vector3(2.0f, 4.0f, 6.0f), Vector3(2.0f, 0.0f, 0.0f), 10.0f, .5f);
-		addRigidCube(rigidBodies, Vector3(1.0f, 5.0f, 6.0f), Vector3(0.0f, 0.0f, 3.0f), 10.0f, .5f);
-		addRigidCube(rigidBodies, Vector3(0.0f, 6.0f, 6.0f), Vector3(0.0f, 10.0f, 0.0f), 10.0f, .5f);
-		addRigidCube(rigidBodies, Vector3(4.0f, 13.0f, 6.0f), Vector3(1.0f, 0.0f, 0.0f), 10.0f, .5f);
-		addRigidCube(rigidBodies, Vector3(-1.0f, 4.0f, 6.0f), Vector3(0.0f, 2.0f, 0.0f), 10.0f, .5f);
-		addRigidCube(rigidBodies, Vector3(-3.0f, 5.0f, 6.0f), Vector3(0.0f, 0.0f, 2.0f), 10.0f, .5f);
-		addRigidCube(rigidBodies, Vector3(-2.0f, 6.0f, 9.0f), Vector3(0.0f, 2.0f, 0.0f), 10.0f, .5f);
-		addRigidCube(rigidBodies, Vector3(-1.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, .5f);
-		addRigidCube(rigidBodies, Vector3(0.0f, 4.0f, 6.0f), Vector3(2.0f, 0.0f, 0.0f), 10.0f, .5f);
-		addRigidCube(rigidBodies, Vector3(1.0f, 9.0f, 6.0f), Vector3(0.0f, 0.0f, 3.0f), 10.0f, .5f);
-		addRigidCube(rigidBodies, Vector3(3.0f, 6.0f, 6.0f), Vector3(0.0f, 10.0f, 0.0f), 10.0f, .5f);
+		addRigidCube(rigidBodies, Vector3(-4.0f, 3.0f, 6.0f), Vector3(6.0f, 0.0f, 0.0f), 10.0f, .5f);
+		//addRigidCube(rigidBodies, Vector3(-4.0f, 4.0f, 6.0f), Vector3(0.0f, 2.0f, 0.0f), 10.0f, .5f);
+		//addRigidCube(rigidBodies, Vector3(-3.0f, 5.0f, 6.0f), Vector3(0.0f, 0.0f, 2.0f), 10.0f, .5f);
+		//addRigidCube(rigidBodies, Vector3(-2.0f, 6.0f, 6.0f), Vector3(0.0f, 2.0f, 0.0f), 10.0f, .5f);
+		//addRigidCube(rigidBodies, Vector3(-1.0f, 7.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, .5f);
+		//addRigidCube(rigidBodies, Vector3(2.0f, 4.0f, 6.0f), Vector3(2.0f, 0.0f, 0.0f), 10.0f, .5f);
+		//addRigidCube(rigidBodies, Vector3(1.0f, 5.0f, 6.0f), Vector3(0.0f, 0.0f, 3.0f), 10.0f, .5f);
+		//addRigidCube(rigidBodies, Vector3(0.0f, 6.0f, 6.0f), Vector3(0.0f, 10.0f, 0.0f), 10.0f, .5f);
+		//addRigidCube(rigidBodies, Vector3(4.0f, 13.0f, 6.0f), Vector3(1.0f, 0.0f, 0.0f), 10.0f, .5f);
+		//addRigidCube(rigidBodies, Vector3(-1.0f, 4.0f, 6.0f), Vector3(0.0f, 2.0f, 0.0f), 10.0f, .5f);
+		//addRigidCube(rigidBodies, Vector3(-3.0f, 5.0f, 6.0f), Vector3(0.0f, 0.0f, 2.0f), 10.0f, .5f);
+		//addRigidCube(rigidBodies, Vector3(-2.0f, 6.0f, 9.0f), Vector3(0.0f, 2.0f, 0.0f), 10.0f, .5f);
+		//addRigidCube(rigidBodies, Vector3(-1.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, .5f);
+		//addRigidCube(rigidBodies, Vector3(0.0f, 4.0f, 6.0f), Vector3(2.0f, 0.0f, 0.0f), 10.0f, .5f);
+		//addRigidCube(rigidBodies, Vector3(1.0f, 9.0f, 6.0f), Vector3(0.0f, 0.0f, 3.0f), 10.0f, .5f);
+		//addRigidCube(rigidBodies, Vector3(3.0f, 6.0f, 6.0f), Vector3(0.0f, 10.0f, 0.0f), 10.0f, .5f);
 		break;
 	case '8':
 		addRigidCube(rigidBodies, Vector3(0.0f, 2.4f, 6.0f), Vector3(1.0f, 0.0f, 0.0f), 10.0f, .5f);
@@ -112,6 +112,7 @@ void addRigidCube(std::vector<RigidBody *> *rigidBodies, Vector3 position, Vecto
 	newSquare->setVelocity(velocity);
 	newSquare->setAcceleration(Vector3::GRAVITY);
 	newSquare->setMass(mass);
+	newSquare->setDamping(1.2f, 1.2f);
 	Matrix3 tensor;
 	// Vector3 -> half the length, width, and height of the box, real-> mass
 	tensor.setBlockInertiaTensor(Vector3(halfSize, halfSize, halfSize), mass);

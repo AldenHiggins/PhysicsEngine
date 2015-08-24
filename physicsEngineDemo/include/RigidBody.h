@@ -28,6 +28,12 @@ namespace PhysicsEngine
 		// Holds the amount of motion of the body
 		real motion;
 
+		// Damping applied to linear motion of the rigid body to remove excess energy added by the integrator
+		real linearDamping;
+
+		// Damping applied to angular motion of the rigid body to remove excess energy added by the integrator
+		real angularDamping;
+
 		// Transformation matrix for this object
 		Matrix4 transformationMatrix;
 
@@ -112,6 +118,9 @@ namespace PhysicsEngine
 
 		// Get the angular velocity of this rigid body
 		Vector3 getRotation() const;
+
+		// Set the damping values for this rigid body
+		void setDamping(const real linearDampingInput, const real angularDampingInput);
 
 		// Get whether or not this body is awake
 		bool getIsAwake() const;
