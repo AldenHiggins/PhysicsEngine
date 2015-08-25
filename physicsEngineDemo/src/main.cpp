@@ -12,6 +12,7 @@
 #include "BoundingVolumes.h"
 #include "Debug.h"
 #include "Collisions.h"
+#include "CollisionResolver.h"
 
 using namespace PhysicsEngine;
 
@@ -142,7 +143,13 @@ void display()
 	//// Resolve the found collisions ////
 	if (collisionList.size() > 0)
 	{
-		Collision::resolveContacts(&collisionList, duration);
+		//CollisionResolver::CollisionResolver(unsigned velocityIterations,
+		//	unsigned positionIterations,
+		//	real velocityEpsilon,
+		//	real positionEpsilon)
+		CollisionResolver resolver(collisionList.size() * 4, collisionList.size() * 4);
+		resolver.resolveContacts(&collisionList, duration);
+		//Collision::resolveContacts(&collisionList, duration);
 	}
 	
 	//// Render the scene ////
