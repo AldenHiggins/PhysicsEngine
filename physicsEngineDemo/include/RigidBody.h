@@ -46,6 +46,11 @@ namespace PhysicsEngine
 		// Denotes whether the rigid body is awake or moving/colliding/etc.. to prevent it from being updated unnecessarily
 		bool isAwake;
 	public:
+		RigidBody()
+		{
+			motion = 0.0f;
+		}
+
 		// Integrate this object based on the time elapsed this frame
 		void integrate(real timeStep);
 

@@ -333,8 +333,6 @@ inline Vector3 contactPointCalculate(
 
 void Collision::calculateInternals(real duration)
 {
-	//// Check if the first object is NULL, and swap if it is.
-	//if (!body[0]) swapBodies();
 	//assert(body[0]);
 
 	// Calculate an set of axis at the contact point.
@@ -342,13 +340,15 @@ void Collision::calculateInternals(real duration)
 
 	// Store the relative position of the contact relative to each body
 	relativeContactPosition[0] = contactPoint - firstObject->getPosition();
-	if (secondObject) {
+	if (secondObject)
+	{
 		relativeContactPosition[1] = contactPoint - secondObject->getPosition();
 	}
 
 	// Find the relative velocity of the bodies at the contact point.
 	contactVelocity = calculateLocalVelocity(0, duration);
-	if (secondObject) {
+	if (secondObject)
+	{
 		contactVelocity -= calculateLocalVelocity(1, duration);
 	}
 
@@ -449,17 +449,20 @@ void Collision::calculateDesiredDeltaVelocity(real duration)
 	// Calculate the acceleration induced velocity accumulated this frame
 	real velocityFromAcc = 0;
 
-	velocityFromAcc +=
-		firstObject->getLastFrameAcceleration() * duration * contactNormal;
+	if (firstObject->getIsAwake())
+	{
+		velocityFromAcc +=
+			firstObject->getLastFrameAcceleration() * duration * contactNormal;
+	}
 
-	if (secondObject)
+	if (secondObject && secondObject->getIsAwake())
 	{
 		velocityFromAcc -=
 			secondObject->getLastFrameAcceleration() * duration * contactNormal;
 	}
 
 	// If the velocity is very slow, limit the restitution
-	real thisRestitution = .2;
+	real thisRestitution = .2f;
 	if (real_abs(contactVelocity.x) < velocityLimit)
 	{
 		thisRestitution = (real)0.0f;
@@ -483,7 +486,9 @@ void Collision::applyVelocityChange(Vector3 velocityChange[2], Vector3 rotationC
 	Matrix3 inverseInertiaTensor[2];
 	firstObject->getInverseInertiaTensorWorld(&inverseInertiaTensor[0]);
 	if (secondObject)
+	{
 		secondObject->getInverseInertiaTensorWorld(&inverseInertiaTensor[1]);
+	}
 
 	// We will calculate the impulse for each contact axis
 	Vector3 impulseContact;
@@ -678,7 +683,10 @@ void Collision::applyPositionChange(Vector3 linearChange[2], Vector3 angularChan
 		// data. Otherwise the resolution will not change the position
 		// of the object, and the next collision detection round will
 		// have the same penetration.
-		//if (!body[i]->getAwake()) body[i]->calculateDerivedData();
+		if (!body->getIsAwake())
+		{
+			body->calculateDerivedData();
+		}
 	}
 }
 
@@ -861,7 +869,7 @@ unsigned Collision::boxAndHalfSpace(RigidBody *box, const Vector3 planeDirection
 			newCollision.penetration = planeOffset - vertexDistance;
 			newCollision.firstObject = box;
 			newCollision.secondObject = NULL;
-			newCollision.friction = 0.9;
+			newCollision.friction = 0.9f;
 
 			// Add the new collision to the list
 			contactsUsed++;

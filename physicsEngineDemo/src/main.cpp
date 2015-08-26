@@ -127,14 +127,8 @@ void display()
 		Collision::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(0, 0, 1), -20, &collisionList);
 
 
-		for (int otherRigidBodyIndex = 0; otherRigidBodyIndex < rigidBodies.size(); otherRigidBodyIndex++)
+		for (int otherRigidBodyIndex = rigidBodyIndex + 1; otherRigidBodyIndex < rigidBodies.size(); otherRigidBodyIndex++)
 		{
-			// Don't check if the rigid body is colliding with itself
-			if (rigidBodyIndex == otherRigidBodyIndex)
-			{
-				continue;
-			}
-
 			// Search for box/box collisions
 			Collision::cubeCubeCollisionDetect(&collisionList, rigidBodies[rigidBodyIndex], rigidBodies[otherRigidBodyIndex]);
 		}

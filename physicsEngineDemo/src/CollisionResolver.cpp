@@ -6,6 +6,12 @@ using namespace PhysicsEngine;
 // Add the required velocities and change the positions of the rigid bodies involved in the contacts in contactList
 void CollisionResolver::resolveContacts(std::vector<Collision> *collisionList, real duration)
 {
+	// Early exit out if the objects are barely penetrating etc... to prevent vibrations
+	if (!isValid())
+	{
+		return;
+	}
+
 	// Prepare the contacts for processing
 	prepareContacts(collisionList, duration);
 
@@ -36,7 +42,7 @@ void CollisionResolver::adjustVelocities(std::vector<Collision> *collisionList, 
 	while (velocityIterationsUsed < velocityIterations)
 	{
 		// Find contact with maximum magnitude of probable velocity change.
-		real max = .01f;
+		real max = velocityEpsilon;
 		unsigned index = collisionList->size();
 		for (unsigned i = 0; i < collisionList->size(); i++)
 		{
@@ -48,11 +54,22 @@ void CollisionResolver::adjustVelocities(std::vector<Collision> *collisionList, 
 		}
 		if (index == collisionList->size()) break;
 
-		//// Match the awake state at the contact
+		// Match the awake state at the contact
 		if ((*collisionList)[index].secondObject != NULL)
 		{
-			(*collisionList)[index].firstObject->setIsAwake(true);
-			(*collisionList)[index].secondObject->setIsAwake(true);
+			bool firstAwake = (*collisionList)[index].firstObject->getIsAwake();
+			bool secondAwake = (*collisionList)[index].secondObject->getIsAwake();
+			if (firstAwake == false || secondAwake == false)
+			{
+				if (!firstAwake)
+				{
+					(*collisionList)[index].firstObject->setIsAwake(true);
+				}
+				else
+				{
+					(*collisionList)[index].secondObject->setIsAwake(true);
+				}
+			}
 		}
 		//(*collisionList)[index].matchAwakeState();
 
@@ -85,8 +102,6 @@ void CollisionResolver::adjustVelocities(std::vector<Collision> *collisionList, 
 					{
 						continue;
 					}
-
-					firstRigidBody->setIsAwake(true);
 
 					RigidBody *secondRigidBody = NULL;
 					if (d == 0)
@@ -131,7 +146,7 @@ void CollisionResolver::adjustPositions(std::vector<Collision> *collisionList, r
 	while (positionIterationsUsed < positionIterations)
 	{
 		// Find biggest penetration
-		max = .01;
+		max = positionEpsilon;
 		index = collisionList->size();
 		for (i = 0; i < collisionList->size(); i++)
 		{
@@ -160,13 +175,9 @@ void CollisionResolver::adjustPositions(std::vector<Collision> *collisionList, r
 				}
 			}
 		}
-		//(*collisionList)[index].matchAwakeState();
 
 		// Resolve the penetration.
-		(*collisionList)[index].applyPositionChange(
-			linearChange,
-			angularChange,
-			max);
+		(*collisionList)[index].applyPositionChange(linearChange, angularChange, max);
 
 		// Again this action may have changed the penetration of other
 		// bodies, so we update contacts.
@@ -193,8 +204,6 @@ void CollisionResolver::adjustPositions(std::vector<Collision> *collisionList, r
 					{
 						continue;
 					}
-
-					firstBody->setIsAwake(true);
 
 					RigidBody *secondBody = NULL;
 					if (d == 0)
