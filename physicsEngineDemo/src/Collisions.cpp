@@ -1,4 +1,5 @@
 #include "Collisions.h"
+#include "ApplicationSettings.h"
 #include <assert.h>
 #include <iostream>
 
@@ -111,7 +112,7 @@ unsigned int Collision::cubeCubeCollisionDetect(std::vector<Collision> *collisio
 
 	// Find the vector between the two centres
 	//Vector3 toCentre = two.getAxis(3) - one.getAxis(3);
-	Vector3 toCentre = other->getPosition() - first->getPosition();
+	Vector3 toCentre = other->getTransformMatrix().getAxisVector(3) - first->getTransformMatrix().getAxisVector(3);
 
 	Matrix4 firstTransform = first->getTransformMatrix();
 	Matrix4 secondTransform = other->getTransformMatrix();
@@ -164,7 +165,7 @@ unsigned int Collision::cubeCubeCollisionDetect(std::vector<Collision> *collisio
 		// We use the same algorithm as above, but swap around
 		// one and two (and therefore also the vector between their
 		// centres).
-		fillPointFaceBoxBox(first, other, toCentre*-1.0f, collisionList, best - 3, pen);
+		fillPointFaceBoxBox(other, first, toCentre*-1.0f, collisionList, best - 3, pen);
 		return 1;
 	}
 	else
@@ -241,7 +242,7 @@ void fillPointFaceBoxBox(
 	// box two is in contact with box one.
 
 	//Contact* contact = data->contacts;
-	Collision newCollision;
+	
 
 	// We know which axis the collision is on (i.e. best),
 	// but we need to work out which of the two faces on
@@ -255,13 +256,12 @@ void fillPointFaceBoxBox(
 	// Work out which vertex of box two we're colliding with.
 	// Using toCentre doesn't work!
 	Vector3 vertex = Vector3(.5f, .5f, .5f);
-	Vector3 thisAxisVector = two->getTransformMatrix().getAxisVector(0);
-	real testValue = thisAxisVector * normal;
 	if (two->getTransformMatrix().getAxisVector(0) * normal < 0) vertex.x = -vertex.x;
 	if (two->getTransformMatrix().getAxisVector(1) * normal < 0) vertex.y = -vertex.y;
 	if (two->getTransformMatrix().getAxisVector(2) * normal < 0) vertex.z = -vertex.z;
 
 	// Create the contact data
+	Collision newCollision;
 	newCollision.contactNormal = normal;
 	newCollision.penetration = pen;
 	newCollision.contactPoint = two->getTransformMatrix() * vertex;
@@ -327,14 +327,8 @@ inline Vector3 contactPointCalculate(
 	}
 }
 
-
-
-
-
 void Collision::calculateInternals(real duration)
 {
-	//assert(body[0]);
-
 	// Calculate an set of axis at the contact point.
 	calculateContactBasis();
 
@@ -462,7 +456,7 @@ void Collision::calculateDesiredDeltaVelocity(real duration)
 	}
 
 	// If the velocity is very slow, limit the restitution
-	real thisRestitution = .2f;
+	real thisRestitution = GLOBAL_RESTITUTION;
 	if (real_abs(contactVelocity.x) < velocityLimit)
 	{
 		thisRestitution = (real)0.0f;
@@ -554,6 +548,10 @@ void Collision::applyPositionChange(Vector3 linearChange[2], Vector3 angularChan
 		if (i == 0)
 		{
 			body = firstObject;
+			if (firstObject == NULL)
+			{
+				continue;
+			}
 		}
 		else
 		{
@@ -676,7 +674,7 @@ void Collision::applyPositionChange(Vector3 linearChange[2], Vector3 angularChan
 		// And the change in orientation
 		Quaternion q = body->getOrientation();
 		q.addScaledVector(angularChange[i], ((real)1.0));
-		body->setOrientation(q);
+ 		body->setOrientation(q);
 
 		// We need to calculate the derived data for any body that is
 		// asleep, so that the changes are reflected in the object's
@@ -727,6 +725,28 @@ inline Vector3 Collision::calculateFrictionlessImpulse(Matrix3 * inverseInertiaT
 	impulseContact.y = 0;
 	impulseContact.z = 0;
 	return impulseContact;
+}
+
+// Wakes up sleeping objects involved in a collision
+void Collision::matchAwakeState()
+{
+	// Match the awake state at the contact
+	if (secondObject != NULL)
+	{
+		bool firstAwake = firstObject->getIsAwake();
+		bool secondAwake = secondObject->getIsAwake();
+		if (firstAwake == false || secondAwake == false)
+		{
+			if (!firstAwake)
+			{
+				firstObject->setIsAwake(true);
+			}
+			else
+			{
+				secondObject->setIsAwake(true);
+			}
+		}
+	}
 }
 
 inline Vector3 Collision::calculateFrictionImpulse(Matrix3 * inverseInertiaTensor)

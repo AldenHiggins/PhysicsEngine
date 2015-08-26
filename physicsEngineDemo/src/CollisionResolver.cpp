@@ -55,23 +55,7 @@ void CollisionResolver::adjustVelocities(std::vector<Collision> *collisionList, 
 		if (index == collisionList->size()) break;
 
 		// Match the awake state at the contact
-		if ((*collisionList)[index].secondObject != NULL)
-		{
-			bool firstAwake = (*collisionList)[index].firstObject->getIsAwake();
-			bool secondAwake = (*collisionList)[index].secondObject->getIsAwake();
-			if (firstAwake == false || secondAwake == false)
-			{
-				if (!firstAwake)
-				{
-					(*collisionList)[index].firstObject->setIsAwake(true);
-				}
-				else
-				{
-					(*collisionList)[index].secondObject->setIsAwake(true);
-				}
-			}
-		}
-		//(*collisionList)[index].matchAwakeState();
+		(*collisionList)[index].matchAwakeState();
 
 		// Do the resolution on the contact that came out top.
 		(*collisionList)[index].applyVelocityChange(velocityChange, rotationChange);
@@ -158,23 +142,8 @@ void CollisionResolver::adjustPositions(std::vector<Collision> *collisionList, r
 		}
 		if (index == collisionList->size()) break;
 
-		//// Match the awake state at the contact
-		if ((*collisionList)[index].secondObject != NULL)
-		{
-			bool firstAwake = (*collisionList)[index].firstObject->getIsAwake();
-			bool secondAwake = (*collisionList)[index].secondObject->getIsAwake();
-			if (firstAwake == false || secondAwake == false)
-			{
-				if (!firstAwake)
-				{
-					(*collisionList)[index].firstObject->setIsAwake(true);
-				}
-				else
-				{
-					(*collisionList)[index].secondObject->setIsAwake(true);
-				}
-			}
-		}
+		// Match the awake state at the contact
+		(*collisionList)[index].matchAwakeState();
 
 		// Resolve the penetration.
 		(*collisionList)[index].applyPositionChange(linearChange, angularChange, max);

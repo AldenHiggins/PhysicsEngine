@@ -73,6 +73,9 @@ void display()
 	drawBackground();
 
 	float duration = (float)TimingData::get().lastFrameDuration * 0.001f;
+	if (duration <= 0.0f) return;
+	else if (duration > 0.05f) duration = 0.05f;
+
 	//// Integrate all of the particles ////
 	for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
 	{
@@ -83,35 +86,35 @@ void display()
 	if (rigidBodies.size() > 0)
 	{
 		// Build up a list of bounding spheres for broad phase collision detection
-		BVHNode<BoundingSphere> *parent = NULL;
-		BoundingSphere sphere(rigidBodies[0]->getPosition(), 1.0f);
-		BVHNode<BoundingSphere> newNode(parent, sphere);
-		newNode.body = rigidBodies[0];
+		//BVHNode<BoundingSphere> *parent = NULL;
+		//BoundingSphere sphere(rigidBodies[0]->getPosition(), 1.0f);
+		//BVHNode<BoundingSphere> newNode(parent, sphere);
+		//newNode.body = rigidBodies[0];
 		
 		// Integrate all of the rigid bodies and add them to the bounding sphere heirarchy
 		for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
 		{
 			RigidBody *body = rigidBodies[rigidBodyIndex];
 			body->integrate(duration);
-			BoundingSphere boundSphere(body->getPosition(), 1.0f);
-			if (rigidBodyIndex != 0)
-			{
-				newNode.insert(body, boundSphere);
-			}
+			//BoundingSphere boundSphere(body->getPosition(), 1.0f);
+			//if (rigidBodyIndex != 0)
+			//{
+			//	newNode.insert(body, boundSphere);
+			//}
 		}
 
-		if (rigidBodies.size() > 1)
-		{
+		//if (rigidBodies.size() > 1)
+		//{
 			// Draw all of the bounding volumes
 			//std::cout << "Drawing bounding volumes!!" << std::endl;
 			//drawBoundingVolumes(&newNode);
 			// Once all of the rigid bodies have been included check for collisions
-			PotentialContact contacts[MAX_CONTACTS_PER_FRAME];
-			int contactsFound = (*(newNode.children[0])).getPotentialContacts(contacts, MAX_CONTACTS_PER_FRAME);
+			//PotentialContact contacts[MAX_CONTACTS_PER_FRAME];
+			//int contactsFound = (*(newNode.children[0])).getPotentialContacts(contacts, MAX_CONTACTS_PER_FRAME);
 
-			PotentialContact contactsTwo[MAX_CONTACTS_PER_FRAME];
-			int secondContactsFound = (*(newNode.children[1])).getPotentialContacts(contactsTwo, MAX_CONTACTS_PER_FRAME);
-		}
+			//PotentialContact contactsTwo[MAX_CONTACTS_PER_FRAME];
+			//int secondContactsFound = (*(newNode.children[1])).getPotentialContacts(contactsTwo, MAX_CONTACTS_PER_FRAME);
+		//}
 	}
 
 	//// Check for collisions ////
@@ -126,10 +129,9 @@ void display()
 		Collision::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(0, 0, -1), -20, &collisionList);
 		Collision::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(0, 0, 1), -20, &collisionList);
 
-
+		// Search for box/box collisions
 		for (int otherRigidBodyIndex = rigidBodyIndex + 1; otherRigidBodyIndex < rigidBodies.size(); otherRigidBodyIndex++)
 		{
-			// Search for box/box collisions
 			Collision::cubeCubeCollisionDetect(&collisionList, rigidBodies[rigidBodyIndex], rigidBodies[otherRigidBodyIndex]);
 		}
 	}
@@ -137,13 +139,8 @@ void display()
 	//// Resolve the found collisions ////
 	if (collisionList.size() > 0)
 	{
-		//CollisionResolver::CollisionResolver(unsigned velocityIterations,
-		//	unsigned positionIterations,
-		//	real velocityEpsilon,
-		//	real positionEpsilon)
-		CollisionResolver resolver(collisionList.size() * 4, collisionList.size() * 4);
+		CollisionResolver resolver(collisionList.size() * 2, collisionList.size() * 2);
 		resolver.resolveContacts(&collisionList, duration);
-		//Collision::resolveContacts(&collisionList, duration);
 	}
 	
 	//// Render the scene ////

@@ -48,7 +48,7 @@ namespace PhysicsEngine
 	public:
 		RigidBody()
 		{
-			motion = 0.0f;
+			motion = sleepEpsilon * 2.0f;
 		}
 
 		// Integrate this object based on the time elapsed this frame
