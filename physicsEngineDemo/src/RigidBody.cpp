@@ -38,10 +38,6 @@ void RigidBody::integrate(real timeStep)
 	lastFrameAcceleration = acceleration;
 	lastFrameAcceleration.addScaledVector(forceAccum, inverseMass);
 
-	// Impose drag.
-	linearVelocity *= real_pow(linearDamping, timeStep);
-	angularVelocity *= real_pow(angularDamping, timeStep);
-
 	// Calculate angular acceleration from torque inputs.
 	Vector3 angularAcceleration = inverseInertiaTensorWorld.transform(torqueAccum);
 
@@ -51,6 +47,10 @@ void RigidBody::integrate(real timeStep)
 
 	// Update angular velocity from both acceleration and impulse.
 	angularVelocity.addScaledVector(angularAcceleration, timeStep);
+
+	// Impose drag.
+	linearVelocity *= real_pow(linearDamping, timeStep);
+	angularVelocity *= real_pow(angularDamping, timeStep);
 
 	// Adjust positions
 	// Update linear position.

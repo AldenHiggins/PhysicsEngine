@@ -548,10 +548,6 @@ void Collision::applyPositionChange(Vector3 linearChange[2], Vector3 angularChan
 		if (i == 0)
 		{
 			body = firstObject;
-			if (firstObject == NULL)
-			{
-				continue;
-			}
 		}
 		else
 		{

@@ -139,7 +139,7 @@ void display()
 	//// Resolve the found collisions ////
 	if (collisionList.size() > 0)
 	{
-		CollisionResolver resolver(collisionList.size() * 2, collisionList.size() * 2);
+		CollisionResolver resolver(collisionList.size() * 4, collisionList.size() * 4);
 		resolver.resolveContacts(&collisionList, duration);
 	}
 	
