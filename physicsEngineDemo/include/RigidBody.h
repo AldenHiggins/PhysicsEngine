@@ -54,9 +54,6 @@ namespace PhysicsEngine
 		// Integrate this object based on the time elapsed this frame
 		void integrate(real timeStep);
 
-		// Display this rigid body
-		virtual void display();
-
 		// Add a force to this object's center of mass
 		void addForce(const Vector3 &force);
 
@@ -142,14 +139,6 @@ namespace PhysicsEngine
 		// Get this rigid bodies transformation matrix
 		Matrix4 getTransformMatrix() const;
 	};
-
-	class Square : public RigidBody
-	{
-	public:
-		// Display this square
-		virtual void display();
-	};
-
 }
 
 

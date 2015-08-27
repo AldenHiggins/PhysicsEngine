@@ -8,23 +8,6 @@ static inline void _calculateTransformMatrix(Matrix4 &transformMatrix, const Vec
 // Change the inertia tensor of the rigid body to be in world instead of object space (because our torques are going to be in world space)
 static inline void _transformInertiaTensor(Matrix3 &iitWorld, const Quaternion &q, const Matrix3 &iitBody, const Matrix4 &rotmat);
 
-// Display this square
-void Square::display()
-{
-	// Get the OpenGL transformation
-	GLfloat mat[16];
-	this->getGLTransform(mat);
-
-	glColor4f(.5f, .1f, .9f, 1.0f);
-	glPushMatrix();
-	glMultMatrixf(mat);
-	glutSolidCube(1.0f);
-	glPopMatrix();
-}
-
-// Empty display function for a rigid body
-void RigidBody::display(){}
-
 // Integrate this object based on the time elapsed this frame
 void RigidBody::integrate(real timeStep)
 {

@@ -84,6 +84,7 @@
   <ItemGroup>
     <ClInclude Include="include\ApplicationSettings.h" />
     <ClInclude Include="include\BoundingVolumes.h" />
+    <ClInclude Include="include\CollisionPrimitives.h" />
     <ClInclude Include="include\CollisionResolver.h" />
     <ClInclude Include="include\Collisions.h" />
     <ClInclude Include="include\Controls.h" />
@@ -92,6 +93,7 @@
     <ClInclude Include="include\MathDataTypes.h" />
     <ClInclude Include="include\Particle.h" />
     <ClInclude Include="include\Precision.h" />
+    <ClInclude Include="include\RenderableObjects.h" />
     <ClInclude Include="include\RigidBody.h" />
     <ClInclude Include="include\Timing.h" />
   </ItemGroup>
@@ -104,6 +106,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MathDataTypes.cpp" />
     <ClCompile Include="src\Particle.cpp" />
+    <ClCompile Include="src\RenderableObjects.cpp" />
     <ClCompile Include="src\RigidBody.cpp" />
     <ClCompile Include="src\Timing.cpp" />
   </ItemGroup>

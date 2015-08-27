@@ -6,14 +6,14 @@
 using namespace PhysicsEngine;
 
 static inline real penetrationOnAxis(
-	const RigidBody *one,
-	const RigidBody *two,
+	const RectangleObject *one,
+	const RectangleObject *two,
 	const Vector3 &axis,
 	const Vector3 &toCentre
 	);
 
 static inline real transformToAxis(
-	const RigidBody *box,
+	const RectangleObject *box,
 	const Vector3 &axis
 	);
 
@@ -40,11 +40,11 @@ inline Vector3 contactPointCalculate(
 	bool useOne);
 
 #define CHECK_OVERLAP(axis, index) \
-    if (!tryAxis(first, other, (axis), toCentre, (index), pen, best)) return 0;
+    if (!tryAxis(firstRect, otherRect, (axis), toCentre, (index), pen, best)) return 0;
 
 static inline bool tryAxis(
-	const RigidBody *one,
-	const RigidBody *two,
+	const RectangleObject *one,
+	const RectangleObject *two,
 	Vector3 axis,
 	const Vector3& toCentre,
 	unsigned index,
@@ -76,8 +76,8 @@ static inline bool tryAxis(
 * points, to avoid having to recalculate it each time.
 */
 static inline real penetrationOnAxis(
-	const RigidBody *one,
-	const RigidBody *two,
+	const RectangleObject *one,
+	const RectangleObject *two,
 	const Vector3 &axis,
 	const Vector3 &toCentre
 	)
@@ -95,23 +95,25 @@ static inline real penetrationOnAxis(
 }
 
 static inline real transformToAxis(
-	const RigidBody *box,
+	const RectangleObject *box,
 	const Vector3 &axis
 	)
 {
 	return 
-		.5f * real_abs(axis * box->getTransformMatrix().getAxisVector(0)) +
-		.5f * real_abs(axis * box->getTransformMatrix().getAxisVector(1)) +
-		.5f * real_abs(axis * box->getTransformMatrix().getAxisVector(2));
+		box->halfSize[0] * real_abs(axis * box->body->getTransformMatrix().getAxisVector(0)) +
+		box->halfSize[1] * real_abs(axis * box->body->getTransformMatrix().getAxisVector(1)) +
+		box->halfSize[2] * real_abs(axis * box->body->getTransformMatrix().getAxisVector(2));
 }
 
 // Determine if there is a collision between two cubic rigid bodies
-unsigned int Collision::cubeCubeCollisionDetect(std::vector<Collision> *collisionList, RigidBody *first, RigidBody *other)
+unsigned int Collision::cubeCubeCollisionDetect(std::vector<Collision> *collisionList, RectangleObject *firstRect, RectangleObject *otherRect)
 {
 	//if (!IntersectionTests::boxAndBox(one, two)) return 0;
 
 	// Find the vector between the two centres
 	//Vector3 toCentre = two.getAxis(3) - one.getAxis(3);
+	RigidBody *first = firstRect->body;
+	RigidBody *other = otherRect->body;
 	Vector3 toCentre = other->getTransformMatrix().getAxisVector(3) - first->getTransformMatrix().getAxisVector(3);
 
 	Matrix4 firstTransform = first->getTransformMatrix();
@@ -824,7 +826,7 @@ inline Vector3 Collision::calculateFrictionImpulse(Matrix3 * inverseInertiaTenso
 	return impulseContact;
 }
 
-bool Collision::boxAndHalfSpaceIntersect(const RigidBody *box, Vector3 planeDirection, real planeOffset)
+bool Collision::boxAndHalfSpaceIntersect(const RectangleObject *box, Vector3 planeDirection, real planeOffset)
 {
 	// Work out the projected radius of the box onto the plane direction
 	real projectedRadius = transformToAxis(box, planeDirection);
@@ -832,7 +834,7 @@ bool Collision::boxAndHalfSpaceIntersect(const RigidBody *box, Vector3 planeDire
 	// Work out how far the box is from the origin
 	real boxDistance =
 		planeDirection *
-		box->getTransformMatrix().getAxisVector(3) -
+		box->body->getTransformMatrix().getAxisVector(3) -
 		projectedRadius;
 
 	// Check for the intersection
@@ -840,7 +842,7 @@ bool Collision::boxAndHalfSpaceIntersect(const RigidBody *box, Vector3 planeDire
 }
 
 // Find collisions between a cube and a plane
-unsigned Collision::boxAndHalfSpace(RigidBody *box, const Vector3 planeDirection, real planeOffset, std::vector<Collision> *collisionList)
+unsigned Collision::boxAndHalfSpace(RectangleObject *box, const Vector3 planeDirection, real planeOffset, std::vector<Collision> *collisionList)
 {
 	//// Make sure we have contacts
 	//if (data->contactsLeft <= 0) return 0
@@ -864,8 +866,8 @@ unsigned Collision::boxAndHalfSpace(RigidBody *box, const Vector3 planeDirection
 	{
 		// Calculate the position of each vertex
 		Vector3 vertexPos(mults[i][0], mults[i][1], mults[i][2]);
-		vertexPos.componentProductUpdate(Vector3(.5f, .5f, .5f));
-		vertexPos = box->getTransformMatrix().transform(vertexPos);
+		vertexPos.componentProductUpdate(box->halfSize);
+		vertexPos = box->body->getTransformMatrix().transform(vertexPos);
 
 		// Calculate the distance from the plane
 		real vertexDistance = vertexPos * planeDirection;
@@ -883,7 +885,7 @@ unsigned Collision::boxAndHalfSpace(RigidBody *box, const Vector3 planeDirection
 			newCollision.contactPoint += vertexPos;
 			newCollision.contactNormal = planeDirection;
 			newCollision.penetration = planeOffset - vertexDistance;
-			newCollision.firstObject = box;
+			newCollision.firstObject = box->body;
 			newCollision.secondObject = NULL;
 			newCollision.friction = 0.9f;
 

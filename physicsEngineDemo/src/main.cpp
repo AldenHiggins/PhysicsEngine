@@ -13,6 +13,7 @@
 #include "Debug.h"
 #include "Collisions.h"
 #include "CollisionResolver.h"
+#include "RenderableObjects.h"
 
 using namespace PhysicsEngine;
 
@@ -22,7 +23,7 @@ void drawBackground();
 // Contains all of the particles in the scene
 std::vector<Particle *> particles;
 // Contains all the rigid bodies in the scene
-std::vector<RigidBody *> rigidBodies;
+std::vector<RectangleObject *> rigidBodies;
 // Camera control variables
 float theta;
 float phi;
@@ -94,7 +95,7 @@ void display()
 		// Integrate all of the rigid bodies and add them to the bounding sphere heirarchy
 		for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
 		{
-			RigidBody *body = rigidBodies[rigidBodyIndex];
+			RigidBody *body = rigidBodies[rigidBodyIndex]->body;
 			body->integrate(duration);
 			//BoundingSphere boundSphere(body->getPosition(), 1.0f);
 			//if (rigidBodyIndex != 0)

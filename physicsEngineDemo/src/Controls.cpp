@@ -7,15 +7,15 @@
 using namespace PhysicsEngine;
 
 // Add force to the first cube
-void addForceToCube(std::vector<RigidBody *> *rigidBodies);
+void addForceToCube(std::vector<RectangleObject *> *rigidBodies);
 // Add a cube rigid body to the scene
-void addRigidCubeWhereYouLook(std::vector<RigidBody *> *rigidBodies, float theta, float phi);
+void addRigidCubeWhereYouLook(std::vector<RectangleObject *> *rigidBodies, float theta, float phi);
 // Add a rigid cube with the inputted parameters
-void addRigidCube(std::vector<RigidBody *> *rigidBodies, Vector3 position, Vector3 velocity, real mass, real halfSize);
-void rigidBodyKeyCheck(unsigned char key, std::vector<RigidBody *> *rigidBodies, float theta, float phi);
+void addRigidCube(std::vector<RectangleObject *> *rigidBodies, Vector3 position, Vector3 velocity, real mass, Vector3 halfSize);
+void rigidBodyKeyCheck(unsigned char key, std::vector<RectangleObject *> *rigidBodies, float theta, float phi);
 void particleKeyCheck(unsigned char key, std::vector<Particle *> *particles);
 
-void PhysicsEngine::keyCheck(unsigned char key, std::vector<Particle *> *particles, std::vector<RigidBody *> *rigidBodies, float theta, float phi)
+void PhysicsEngine::keyCheck(unsigned char key, std::vector<Particle *> *particles, std::vector<RectangleObject *> *rigidBodies, float theta, float phi)
 {
 	particleKeyCheck(key, particles);
 	rigidBodyKeyCheck(key, rigidBodies, theta, phi);
@@ -54,7 +54,7 @@ void particleKeyCheck(unsigned char key, std::vector<Particle *> *particles)
 	}
 }
 
-void rigidBodyKeyCheck(unsigned char key, std::vector<RigidBody *> *rigidBodies, float theta, float phi)
+void rigidBodyKeyCheck(unsigned char key, std::vector<RectangleObject *> *rigidBodies, float theta, float phi)
 {
 	switch (key)
 	{
@@ -63,7 +63,7 @@ void rigidBodyKeyCheck(unsigned char key, std::vector<RigidBody *> *rigidBodies,
 		break;
 	case '7':
 		//addForceToCube(rigidBodies);
-		addRigidCube(rigidBodies, Vector3(0.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, .5f);
+		addRigidCube(rigidBodies, Vector3(0.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, Vector3(1.0f, .5f, .5f));
 		//addRigidCube(rigidBodies, Vector3(0.0f, 7.0f, 6.0f), Vector3(0.0f, -1.0f, 0.0f), 10.0f, .5f);
 		//addRigidCube(rigidBodies, Vector3(-4.0f, 4.0f, 6.0f), Vector3(0.0f, 2.0f, 0.0f), 10.0f, .5f);
 		//addRigidCube(rigidBodies, Vector3(-3.0f, 5.0f, 6.0f), Vector3(0.0f, 0.0f, 2.0f), 10.0f, .5f);
@@ -82,48 +82,39 @@ void rigidBodyKeyCheck(unsigned char key, std::vector<RigidBody *> *rigidBodies,
 		//addRigidCube(rigidBodies, Vector3(3.0f, 6.0f, 6.0f), Vector3(0.0f, 10.0f, 0.0f), 10.0f, .5f);
 		break;
 	case '8':
-		addRigidCube(rigidBodies, Vector3(0.0f, 2.4f, 6.0f), Vector3(1.0f, 0.0f, 0.0f), 10.0f, .5f);
-		addRigidCube(rigidBodies, Vector3(4.0f, 2.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, .5f);
-		addRigidCube(rigidBodies, Vector3(0.0f, 3.4f, 6.0f), Vector3(1.0f, 0.0f, 0.0f), 10.0f, .5f);
-		addRigidCube(rigidBodies, Vector3(4.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, .5f);
+		addRigidCube(rigidBodies, Vector3(0.0f, 2.4f, 6.0f), Vector3(1.0f, 0.0f, 0.0f), 10.0f, Vector3(1.0f, .5f, .5f));
+		addRigidCube(rigidBodies, Vector3(4.0f, 2.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, Vector3(1.0f, .5f, .5f));
+		addRigidCube(rigidBodies, Vector3(0.0f, 3.4f, 6.0f), Vector3(1.0f, 0.0f, 0.0f), 10.0f, Vector3(1.0f, .5f, .5f));
+		addRigidCube(rigidBodies, Vector3(4.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, Vector3(1.0f, .5f, .5f));
 		break;
 	case '9':
-		addRigidCube(rigidBodies, Vector3(0.0f, 6.4f, 6.0f), Vector3(0.0f, 0.0f, -10.0f), 10.0f, .5f);
+		addRigidCube(rigidBodies, Vector3(0.0f, 6.4f, 6.0f), Vector3(0.0f, 0.0f, -10.0f), 10.0f, Vector3(1.0f, .5f, .5f));
 		break;
 	case '0':
 		for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies->size(); rigidBodyIndex++)
 		{
-			(*rigidBodies)[rigidBodyIndex]->setIsAwake(false);
+			(*rigidBodies)[rigidBodyIndex]->body->setIsAwake(false);
 		}
 		break;
 	}
 }
 
 // Add force to the first cube
-void addForceToCube(std::vector<RigidBody *> *rigidBodies)
+void addForceToCube(std::vector<RectangleObject *> *rigidBodies)
 {
-	(*rigidBodies)[0]->addForceAtBodyPoint(Vector3(10.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f));
+	(*rigidBodies)[0]->body->addForceAtBodyPoint(Vector3(10.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f));
 }
 
 // Add a rigid cube with the inputted parameters
-void addRigidCube(std::vector<RigidBody *> *rigidBodies, Vector3 position, Vector3 velocity, real mass, real halfSize)
+void addRigidCube(std::vector<RectangleObject *> *rigidBodies, Vector3 position, Vector3 velocity, real mass, Vector3 halfSize)
 {
-	Square *newSquare = new Square();
-	newSquare->setPosition(position);
-	newSquare->setVelocity(velocity);
-	newSquare->setAcceleration(Vector3::GRAVITY);
-	newSquare->setMass(mass);
-	newSquare->setDamping(0.99f, 0.8f);
-	Matrix3 tensor;
-	// Vector3 -> half the length, width, and height of the box, real-> mass
-	tensor.setBlockInertiaTensor(Vector3(halfSize, halfSize, halfSize), mass);
-	newSquare->setInertiaTensor(tensor);
-
+	RectangleObject *newSquare = new RectangleObject();
+	newSquare->setState(position, velocity, Vector3::GRAVITY, mass, halfSize);
 	rigidBodies->push_back(newSquare);
 }
 
 // Add a cube rigid body to the scene
-void addRigidCubeWhereYouLook(std::vector<RigidBody *> *rigidBodies, float theta, float phi)
+void addRigidCubeWhereYouLook(std::vector<RectangleObject *> *rigidBodies, float theta, float phi)
 {
 	Vector3 oldSquareCreationPosition(0.0f, 4.0f, 6.0f);
 	float thetaRads = theta * PI / 180.0;
@@ -132,5 +123,5 @@ void addRigidCubeWhereYouLook(std::vector<RigidBody *> *rigidBodies, float theta
 	rotMatrix.setOrientation(cameraRotation);
 	Vector3 squareCreationPosition = rotMatrix.transform(oldSquareCreationPosition);
 
-	addRigidCube(rigidBodies, squareCreationPosition, Vector3(0.0f, 0.0f, 0.0f), 1.0f, 0.5f);
+	addRigidCube(rigidBodies, squareCreationPosition, Vector3(0.0f, 0.0f, 0.0f), 1.0f, Vector3(.5f, .5f, .5f));
 }
