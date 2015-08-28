@@ -18,8 +18,8 @@ static inline real transformToAxis(
 	);
 
 void fillPointFaceBoxBox(
-	RigidBody *one,
-	RigidBody *two,
+	RectangleObject *one,
+	RectangleObject *two,
 	const Vector3 &toCentre,
 	std::vector<Collision> *data,
 	unsigned best,
@@ -158,7 +158,7 @@ unsigned int Collision::cubeCubeCollisionDetect(std::vector<Collision> *collisio
 	if (best < 3)
 	{
 		// We've got a vertex of box two on a face of box one.
-		fillPointFaceBoxBox(first, other, toCentre, collisionList, best, pen);
+		fillPointFaceBoxBox(firstRect, otherRect, toCentre, collisionList, best, pen);
 		return 1;
 	}
 	else if (best < 6)
@@ -167,7 +167,7 @@ unsigned int Collision::cubeCubeCollisionDetect(std::vector<Collision> *collisio
 		// We use the same algorithm as above, but swap around
 		// one and two (and therefore also the vector between their
 		// centres).
-		fillPointFaceBoxBox(other, first, toCentre*-1.0f, collisionList, best - 3, pen);
+		fillPointFaceBoxBox(otherRect, firstRect, toCentre*-1.0f, collisionList, best - 3, pen);
 		return 1;
 	}
 	else
@@ -190,8 +190,8 @@ unsigned int Collision::cubeCubeCollisionDetect(std::vector<Collision> *collisio
 		// its component in the direction of the box's collision axis is zero
 		// (its a mid-point) and we determine which of the extremes in each
 		// of the other axes is closest.
-		Vector3 ptOnOneEdge = Vector3(.5f, .5f, .5f);
-		Vector3 ptOnTwoEdge = Vector3(.5f, .5f, .5f);
+		Vector3 ptOnOneEdge = firstRect->halfSize;
+		Vector3 ptOnTwoEdge = otherRect->halfSize;
 		for (unsigned i = 0; i < 3; i++)
 		{
 			if (i == oneAxisIndex) ptOnOneEdge[i] = 0;
@@ -210,8 +210,8 @@ unsigned int Collision::cubeCubeCollisionDetect(std::vector<Collision> *collisio
 		// We need to find out point of closest approach of the two
 		// line-segments.
 		Vector3 vertex = contactPointCalculate(
-			ptOnOneEdge, oneAxis, .5f,
-			ptOnTwoEdge, twoAxis, .5f,
+			ptOnOneEdge, oneAxis, firstRect->halfSize[oneAxisIndex],
+			ptOnTwoEdge, twoAxis, otherRect->halfSize[twoAxisIndex],
 			bestSingleAxis > 2
 			);
 
@@ -232,8 +232,8 @@ unsigned int Collision::cubeCubeCollisionDetect(std::vector<Collision> *collisio
 }
 
 void fillPointFaceBoxBox(
-	RigidBody *one,
-	RigidBody *two,
+	RectangleObject *one,
+	RectangleObject *two,
 	const Vector3 &toCentre,
 	std::vector<Collision> *data,
 	unsigned best,
@@ -244,31 +244,30 @@ void fillPointFaceBoxBox(
 	// box two is in contact with box one.
 
 	//Contact* contact = data->contacts;
-	
 
 	// We know which axis the collision is on (i.e. best),
 	// but we need to work out which of the two faces on
 	// this axis.
-	Vector3 normal = one->getTransformMatrix().getAxisVector(best);
-	if (one->getTransformMatrix().getAxisVector(best) * toCentre > 0)
+	Vector3 normal = one->body->getTransformMatrix().getAxisVector(best);
+	if (one->body->getTransformMatrix().getAxisVector(best) * toCentre > 0)
 	{
 		normal = normal * -1.0f;
 	}
 
 	// Work out which vertex of box two we're colliding with.
 	// Using toCentre doesn't work!
-	Vector3 vertex = Vector3(.5f, .5f, .5f);
-	if (two->getTransformMatrix().getAxisVector(0) * normal < 0) vertex.x = -vertex.x;
-	if (two->getTransformMatrix().getAxisVector(1) * normal < 0) vertex.y = -vertex.y;
-	if (two->getTransformMatrix().getAxisVector(2) * normal < 0) vertex.z = -vertex.z;
+	Vector3 vertex = two->halfSize;
+	if (two->body->getTransformMatrix().getAxisVector(0) * normal < 0) vertex.x = -vertex.x;
+	if (two->body->getTransformMatrix().getAxisVector(1) * normal < 0) vertex.y = -vertex.y;
+	if (two->body->getTransformMatrix().getAxisVector(2) * normal < 0) vertex.z = -vertex.z;
 
 	// Create the contact data
 	Collision newCollision;
 	newCollision.contactNormal = normal;
 	newCollision.penetration = pen;
-	newCollision.contactPoint = two->getTransformMatrix() * vertex;
-	newCollision.firstObject = one;
-	newCollision.secondObject = two;
+	newCollision.contactPoint = two->body->getTransformMatrix() * vertex;
+	newCollision.firstObject = one->body;
+	newCollision.secondObject = two->body;
 	newCollision.friction = 0.9f;
 	// Now add the new contact to the list
 	data->push_back(newCollision);
@@ -301,8 +300,9 @@ inline Vector3 contactPointCalculate(
 
 	denom = smOne * smTwo - dpOneTwo * dpOneTwo;
 
-	// Zero denominator indicates parrallel lines
-	if (real_abs(denom) < 0.0001f) {
+	// Zero denominator indicates parallel lines
+	if (real_abs(denom) < 0.0001f)
+	{
 		return useOne ? pOne : pTwo;
 	}
 
@@ -463,6 +463,13 @@ void Collision::calculateDesiredDeltaVelocity(real duration)
 	{
 		thisRestitution = (real)0.0f;
 	}
+
+	//real thisRestitution = GLOBAL_RESTITUTION;
+	//real speed = contactVelocity.magnitude();
+	//if (speed < velocityLimit)
+	//{
+	//	thisRestitution = GLOBAL_RESTITUTION * (speed / velocityLimit);
+	//}
 
 	// Combine the bounce velocity with the removed
 	// acceleration velocity.

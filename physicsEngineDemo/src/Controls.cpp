@@ -62,33 +62,13 @@ void rigidBodyKeyCheck(unsigned char key, std::vector<RectangleObject *> *rigidB
 		addRigidCubeWhereYouLook(rigidBodies, theta, phi);
 		break;
 	case '7':
-		//addForceToCube(rigidBodies);
 		addRigidCube(rigidBodies, Vector3(0.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, Vector3(1.0f, .5f, .5f));
-		//addRigidCube(rigidBodies, Vector3(0.0f, 7.0f, 6.0f), Vector3(0.0f, -1.0f, 0.0f), 10.0f, .5f);
-		//addRigidCube(rigidBodies, Vector3(-4.0f, 4.0f, 6.0f), Vector3(0.0f, 2.0f, 0.0f), 10.0f, .5f);
-		//addRigidCube(rigidBodies, Vector3(-3.0f, 5.0f, 6.0f), Vector3(0.0f, 0.0f, 2.0f), 10.0f, .5f);
-		//addRigidCube(rigidBodies, Vector3(-2.0f, 6.0f, 6.0f), Vector3(0.0f, 2.0f, 0.0f), 10.0f, .5f);
-		//addRigidCube(rigidBodies, Vector3(-1.0f, 7.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, .5f);
-		//addRigidCube(rigidBodies, Vector3(2.0f, 4.0f, 6.0f), Vector3(2.0f, 0.0f, 0.0f), 10.0f, .5f);
-		//addRigidCube(rigidBodies, Vector3(1.0f, 5.0f, 6.0f), Vector3(0.0f, 0.0f, 3.0f), 10.0f, .5f);
-		//addRigidCube(rigidBodies, Vector3(0.0f, 6.0f, 6.0f), Vector3(0.0f, 10.0f, 0.0f), 10.0f, .5f);
-		//addRigidCube(rigidBodies, Vector3(4.0f, 13.0f, 6.0f), Vector3(1.0f, 0.0f, 0.0f), 10.0f, .5f);
-		//addRigidCube(rigidBodies, Vector3(-1.0f, 4.0f, 6.0f), Vector3(0.0f, 2.0f, 0.0f), 10.0f, .5f);
-		//addRigidCube(rigidBodies, Vector3(-3.0f, 5.0f, 6.0f), Vector3(0.0f, 0.0f, 2.0f), 10.0f, .5f);
-		//addRigidCube(rigidBodies, Vector3(-2.0f, 6.0f, 9.0f), Vector3(0.0f, 2.0f, 0.0f), 10.0f, .5f);
-		//addRigidCube(rigidBodies, Vector3(-1.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, .5f);
-		//addRigidCube(rigidBodies, Vector3(0.0f, 4.0f, 6.0f), Vector3(2.0f, 0.0f, 0.0f), 10.0f, .5f);
-		//addRigidCube(rigidBodies, Vector3(1.0f, 9.0f, 6.0f), Vector3(0.0f, 0.0f, 3.0f), 10.0f, .5f);
-		//addRigidCube(rigidBodies, Vector3(3.0f, 6.0f, 6.0f), Vector3(0.0f, 10.0f, 0.0f), 10.0f, .5f);
 		break;
 	case '8':
-		addRigidCube(rigidBodies, Vector3(0.0f, 2.4f, 6.0f), Vector3(1.0f, 0.0f, 0.0f), 10.0f, Vector3(1.0f, .5f, .5f));
-		addRigidCube(rigidBodies, Vector3(4.0f, 2.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, Vector3(1.0f, .5f, .5f));
-		addRigidCube(rigidBodies, Vector3(0.0f, 3.4f, 6.0f), Vector3(1.0f, 0.0f, 0.0f), 10.0f, Vector3(1.0f, .5f, .5f));
-		addRigidCube(rigidBodies, Vector3(4.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, Vector3(1.0f, .5f, .5f));
+		addRigidCube(rigidBodies, Vector3(0.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, Vector3(0.5f, 1.0f, .5f));
 		break;
 	case '9':
-		addRigidCube(rigidBodies, Vector3(0.0f, 6.4f, 6.0f), Vector3(0.0f, 0.0f, -10.0f), 10.0f, Vector3(1.0f, .5f, .5f));
+		addRigidCube(rigidBodies, Vector3(0.0f, 10.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, Vector3(1.5f, .2f, 0.5f));
 		break;
 	case '0':
 		for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies->size(); rigidBodyIndex++)
