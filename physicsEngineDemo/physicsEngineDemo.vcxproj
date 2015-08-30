@@ -84,6 +84,7 @@
   <ItemGroup>
     <ClInclude Include="include\ApplicationSettings.h" />
     <ClInclude Include="include\BoundingVolumes.h" />
+    <ClInclude Include="include\CollisionDetection.h" />
     <ClInclude Include="include\CollisionPrimitives.h" />
     <ClInclude Include="include\CollisionResolver.h" />
     <ClInclude Include="include\Collisions.h" />
@@ -99,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BoundingVolumes.cpp" />
+    <ClCompile Include="src\CollisionDetection.cpp" />
     <ClCompile Include="src\CollisionResolver.cpp" />
     <ClCompile Include="src\Collisions.cpp" />
     <ClCompile Include="src\Controls.cpp" />

@@ -13,6 +13,7 @@
 #include "Debug.h"
 #include "Collisions.h"
 #include "CollisionResolver.h"
+#include "CollisionDetection.h"
 #include "RenderableObjects.h"
 
 using namespace PhysicsEngine;
@@ -123,17 +124,17 @@ void display()
 	for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
 	{
 		// Check for collisions against the ground
-		Collision::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(0, 1, 0), 0, &collisionList);
+		CollisionDetection::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(0, 1, 0), 0, &collisionList);
 		// Check for collisions against the walls
-		Collision::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(-1, 0, 0), -20, &collisionList);
-		Collision::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(1, 0, 0), -20, &collisionList);
-		Collision::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(0, 0, -1), -20, &collisionList);
-		Collision::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(0, 0, 1), -20, &collisionList);
+		CollisionDetection::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(-1, 0, 0), -20, &collisionList);
+		CollisionDetection::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(1, 0, 0), -20, &collisionList);
+		CollisionDetection::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(0, 0, -1), -20, &collisionList);
+		CollisionDetection::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(0, 0, 1), -20, &collisionList);
 
 		// Search for box/box collisions
 		for (int otherRigidBodyIndex = rigidBodyIndex + 1; otherRigidBodyIndex < rigidBodies.size(); otherRigidBodyIndex++)
 		{
-			Collision::cubeCubeCollisionDetect(&collisionList, rigidBodies[rigidBodyIndex], rigidBodies[otherRigidBodyIndex]);
+			CollisionDetection::cubeCubeCollisionDetect(&collisionList, rigidBodies[rigidBodyIndex], rigidBodies[otherRigidBodyIndex]);
 		}
 	}
 

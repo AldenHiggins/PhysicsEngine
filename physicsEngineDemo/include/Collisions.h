@@ -31,10 +31,7 @@ namespace PhysicsEngine
 		// Holds the closing velocity at the point of contact. This is set when the calculateInternals function is run.
 		Vector3 contactVelocity;
 
-		// Determine if there is a collision between two cubic rigid bodies
-		static unsigned int cubeCubeCollisionDetect(std::vector<Collision> *collisionList, RectangleObject *first, RectangleObject *other);
-		// Find collisions between a cube and a plane
-		static unsigned boxAndHalfSpace(RectangleObject *box, const Vector3 planeDirection, real planeOffset, std::vector<Collision> *collisionList);
+		
 		// Calculate the internals of this collision
 		void calculateInternals(real duration);
 		Vector3 calculateLocalVelocity(unsigned bodyIndex, real duration);
@@ -48,8 +45,6 @@ namespace PhysicsEngine
 	private:
 		// Generate the contact basis for this collision
 		inline void calculateContactBasis();
-		// Perform an intersection test between the given box and plane
-		static bool boxAndHalfSpaceIntersect(const RectangleObject *box, Vector3 planeDirection, real planeOffset);
 		inline Vector3 calculateFrictionlessImpulse(Matrix3 * inverseInertiaTensor);
 		inline Vector3 calculateFrictionImpulse(Matrix3 * inverseInertiaTensor);
 		// Set the number of iterations for every resolution stage
