@@ -163,6 +163,12 @@ void detectCollisions(std::vector<Collision> *collisionList)
 		{
 			CollisionDetection::sphereSphereCollisionDetect(sphereObjects[sphereIndex], sphereObjects[otherSphereIndex], collisionList);
 		}
+
+		// Check for collisions against cubes
+		for (int cubeIndex = 0; cubeIndex < rectangleObjects.size(); cubeIndex++)
+		{
+			CollisionDetection::sphereCubeCollisionDetect(sphereObjects[sphereIndex], rectangleObjects[cubeIndex], collisionList);
+		}
 	}
 }
 

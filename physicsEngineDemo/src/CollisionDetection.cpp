@@ -258,6 +258,64 @@ unsigned CollisionDetection::sphereSphereCollisionDetect
 	collisionList->push_back(newCollision);
 }
 
+// Determine if a sphere has collided with a cube
+unsigned CollisionDetection::sphereCubeCollisionDetect
+(
+	SphereObject *sphere,
+	RectangleObject *cube,
+	std::vector<Collision> *collisionList
+)
+{
+	// Transform the centre of the sphere into box coordinates
+	Vector3 centre = sphere->body->getTransformMatrix().getAxisVector(3);
+	Vector3 relCentre = cube->body->getTransformMatrix().transformInverse(centre);
+
+	// Early out check to see if we can exclude the contact
+	if (real_abs(relCentre.x) - sphere->radius > cube->halfSize.x ||
+		real_abs(relCentre.y) - sphere->radius > cube->halfSize.y ||
+		real_abs(relCentre.z) - sphere->radius >  cube->halfSize.z)
+	{
+		return 0;
+	}
+
+	Vector3 closestPt(0, 0, 0);
+	real dist;
+
+	// Clamp each coordinate to the box.
+	dist = relCentre.x;
+	if (dist > cube->halfSize.x) dist = cube->halfSize.x;
+	if (dist < -cube->halfSize.x) dist = -cube->halfSize.x;
+	closestPt.x = dist;
+
+	dist = relCentre.y;
+	if (dist > cube->halfSize.y) dist = cube->halfSize.y;
+	if (dist < -cube->halfSize.y) dist = -cube->halfSize.y;
+	closestPt.y = dist;
+
+	dist = relCentre.z;
+	if (dist > cube->halfSize.z) dist = cube->halfSize.z;
+	if (dist < -cube->halfSize.z) dist = -cube->halfSize.z;
+	closestPt.z = dist;
+
+	// Check we're in contact
+	dist = (closestPt - relCentre).squareMagnitude();
+	if (dist > sphere->radius * sphere->radius) return 0;
+
+	// Compile the contact
+	Vector3 closestPtWorld = cube->body->getTransformMatrix().transform(closestPt);
+
+	Collision newCollision;
+	newCollision.contactPoint = closestPtWorld;
+	newCollision.contactNormal = (closestPtWorld - centre);
+	newCollision.contactNormal.normalise();
+	newCollision.penetration = sphere->radius - real_sqrt(dist);
+	newCollision.firstObject = cube->body;
+	newCollision.secondObject = sphere->body;
+	newCollision.friction = 0.9f;
+
+	collisionList->push_back(newCollision);
+}
+
 bool CollisionDetection::boxAndHalfSpaceIntersect
 (
 	const RectangleObject *box,

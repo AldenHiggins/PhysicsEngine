@@ -41,6 +41,14 @@ namespace PhysicsEngine
 			SphereObject *other,
 			std::vector<Collision> *collisionList
 		);
+
+		// Determine if a sphere has collided with a cube
+		static unsigned sphereCubeCollisionDetect
+		(
+			SphereObject *sphere,
+			RectangleObject *cube,
+			std::vector<Collision> *collisionList
+		);
 		
 	private:
 		// Perform an interesection test between the given box and plane
