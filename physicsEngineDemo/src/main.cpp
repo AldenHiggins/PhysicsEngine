@@ -21,7 +21,11 @@ using namespace PhysicsEngine;
 // Draw the background of the scene
 void drawBackground();
 // Integrate all of the rigid bodies
-void integrateRigidBodies(float duration);
+void integrateRigidBodies(real duration);
+// Detect collisions
+void detectCollisions(std::vector<Collision> *collisionList);
+// Resolve the found collisions
+void resolveCollisions(std::vector<Collision> *collisionList, real duration);
 
 // Contains all of the particles in the scene
 std::vector<Particle *> particles;
@@ -61,7 +65,6 @@ void update()
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	// Light up the scene
 	GLfloat light_position[] = { -4.0, 50.0, -10.0, 0.0 };
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
@@ -80,74 +83,14 @@ void display()
 	if (duration <= 0.0f) return;
 	else if (duration > 0.05f) duration = 0.05f;
 
-	//// Integrate all of the particles ////
-	for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
-	{
-		particles[particleIndex]->integrate(duration);
-	}
+	// Integrate all of the rigid bodies
+	integrateRigidBodies(duration);
 
-	//// Integrate all of the rigid bodies ////
-	if (rigidBodies.size() > 0)
-	{
-		// Build up a list of bounding spheres for broad phase collision detection
-		//BVHNode<BoundingSphere> *parent = NULL;
-		//BoundingSphere sphere(rigidBodies[0]->getPosition(), 1.0f);
-		//BVHNode<BoundingSphere> newNode(parent, sphere);
-		//newNode.body = rigidBodies[0];
-		
-		// Integrate all of the rigid bodies and add them to the bounding sphere heirarchy
-		for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
-		{
-			RigidBody *body = rigidBodies[rigidBodyIndex]->body;
-			body->integrate(duration);
-			//BoundingSphere boundSphere(body->getPosition(), 1.0f);
-			//if (rigidBodyIndex != 0)
-			//{
-			//	newNode.insert(body, boundSphere);
-			//}
-		}
-
-		//if (rigidBodies.size() > 1)
-		//{
-			// Draw all of the bounding volumes
-			//std::cout << "Drawing bounding volumes!!" << std::endl;
-			//drawBoundingVolumes(&newNode);
-			// Once all of the rigid bodies have been included check for collisions
-			//PotentialContact contacts[MAX_CONTACTS_PER_FRAME];
-			//int contactsFound = (*(newNode.children[0])).getPotentialContacts(contacts, MAX_CONTACTS_PER_FRAME);
-
-			//PotentialContact contactsTwo[MAX_CONTACTS_PER_FRAME];
-			//int secondContactsFound = (*(newNode.children[1])).getPotentialContacts(contactsTwo, MAX_CONTACTS_PER_FRAME);
-		//}
-	}
-
-	//// Check for collisions ////
+	// Check for and resolve collisions
 	std::vector<Collision> collisionList;
-	for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
-	{
-		// Check for collisions against the ground
-		CollisionDetection::boxAndHalfSpaceCollisionDetect(rigidBodies[rigidBodyIndex], Vector3(0, 1, 0), 0, &collisionList);
-		// Check for collisions against the walls
-		CollisionDetection::boxAndHalfSpaceCollisionDetect(rigidBodies[rigidBodyIndex], Vector3(-1, 0, 0), -20, &collisionList);
-		CollisionDetection::boxAndHalfSpaceCollisionDetect(rigidBodies[rigidBodyIndex], Vector3(1, 0, 0), -20, &collisionList);
-		CollisionDetection::boxAndHalfSpaceCollisionDetect(rigidBodies[rigidBodyIndex], Vector3(0, 0, -1), -20, &collisionList);
-		CollisionDetection::boxAndHalfSpaceCollisionDetect(rigidBodies[rigidBodyIndex], Vector3(0, 0, 1), -20, &collisionList);
-
-		// Search for box/box collisions
-		for (int otherRigidBodyIndex = rigidBodyIndex + 1; otherRigidBodyIndex < rigidBodies.size(); otherRigidBodyIndex++)
-		{
-			CollisionDetection::cubeCubeCollisionDetect(&collisionList, rigidBodies[rigidBodyIndex], rigidBodies[otherRigidBodyIndex]);
-		}
-	}
-
-	//// Resolve the found collisions ////
-	if (collisionList.size() > 0)
-	{
-		CollisionResolver resolver(collisionList.size() * 4, collisionList.size() * 4);
-		resolver.resolveContacts(&collisionList, duration);
-	}
+	detectCollisions(&collisionList);
+	resolveCollisions(&collisionList, duration);
 	
-	//// Render the scene ////
 	// Draw all of the particles
 	for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
 	{
@@ -164,10 +107,80 @@ void display()
 	glutSwapBuffers();
 }
 
-// Integrate all of the rigid bodies in the scene
-void integrateRigidBodies(float duration)
+// Resolve the found collisions
+void resolveCollisions(std::vector<Collision> *collisionList, real duration)
 {
-	
+	if (collisionList->size() > 0)
+	{
+		CollisionResolver resolver(collisionList->size() * 4, collisionList->size() * 4);
+		resolver.resolveContacts(collisionList, duration);
+	}
+}
+
+// Detect collisions
+void detectCollisions(std::vector<Collision> *collisionList)
+{
+	for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
+	{
+		// Check for collisions against the ground
+		CollisionDetection::boxAndHalfSpaceCollisionDetect(rigidBodies[rigidBodyIndex], Vector3(0, 1, 0), 0, collisionList);
+		// Check for collisions against the walls
+		CollisionDetection::boxAndHalfSpaceCollisionDetect(rigidBodies[rigidBodyIndex], Vector3(-1, 0, 0), -20, collisionList);
+		CollisionDetection::boxAndHalfSpaceCollisionDetect(rigidBodies[rigidBodyIndex], Vector3(1, 0, 0), -20, collisionList);
+		CollisionDetection::boxAndHalfSpaceCollisionDetect(rigidBodies[rigidBodyIndex], Vector3(0, 0, -1), -20, collisionList);
+		CollisionDetection::boxAndHalfSpaceCollisionDetect(rigidBodies[rigidBodyIndex], Vector3(0, 0, 1), -20, collisionList);
+
+		// Search for box/box collisions
+		for (int otherRigidBodyIndex = rigidBodyIndex + 1; otherRigidBodyIndex < rigidBodies.size(); otherRigidBodyIndex++)
+		{
+			CollisionDetection::cubeCubeCollisionDetect(collisionList, rigidBodies[rigidBodyIndex], rigidBodies[otherRigidBodyIndex]);
+		}
+	}
+}
+
+// Integrate all of the rigid bodies in the scene
+void integrateRigidBodies(real duration)
+{
+	//// Integrate all of the particles ////
+	for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
+	{
+		particles[particleIndex]->integrate(duration);
+	}
+
+	//// Integrate all of the rigid bodies ////
+	if (rigidBodies.size() > 0)
+	{
+		// Build up a list of bounding spheres for broad phase collision detection
+		//BVHNode<BoundingSphere> *parent = NULL;
+		//BoundingSphere sphere(rigidBodies[0]->getPosition(), 1.0f);
+		//BVHNode<BoundingSphere> newNode(parent, sphere);
+		//newNode.body = rigidBodies[0];
+
+		// Integrate all of the rigid bodies and add them to the bounding sphere heirarchy
+		for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
+		{
+			RigidBody *body = rigidBodies[rigidBodyIndex]->body;
+			body->integrate(duration);
+			//BoundingSphere boundSphere(body->getPosition(), 1.0f);
+			//if (rigidBodyIndex != 0)
+			//{
+			//	newNode.insert(body, boundSphere);
+			//}
+		}
+
+		//if (rigidBodies.size() > 1)
+		//{
+		// Draw all of the bounding volumes
+		//std::cout << "Drawing bounding volumes!!" << std::endl;
+		//drawBoundingVolumes(&newNode);
+		// Once all of the rigid bodies have been included check for collisions
+		//PotentialContact contacts[MAX_CONTACTS_PER_FRAME];
+		//int contactsFound = (*(newNode.children[0])).getPotentialContacts(contacts, MAX_CONTACTS_PER_FRAME);
+
+		//PotentialContact contactsTwo[MAX_CONTACTS_PER_FRAME];
+		//int secondContactsFound = (*(newNode.children[1])).getPotentialContacts(contactsTwo, MAX_CONTACTS_PER_FRAME);
+		//}
+	}
 }
 
 // Draw the background of the scene
