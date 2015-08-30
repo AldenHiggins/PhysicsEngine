@@ -6,22 +6,23 @@
 
 using namespace PhysicsEngine;
 
-// Add force to the first cube
-void addForceToCube(std::vector<RectangleObject *> *rigidBodies);
-// Add a cube rigid body to the scene
-void addRigidCubeWhereYouLook(std::vector<RectangleObject *> *rigidBodies, float theta, float phi);
-// Add a rigid cube with the inputted parameters
-void addRigidCube(std::vector<RectangleObject *> *rigidBodies, Vector3 position, Vector3 velocity, real mass, Vector3 halfSize);
-void rigidBodyKeyCheck(unsigned char key, std::vector<RectangleObject *> *rigidBodies, float theta, float phi);
-void particleKeyCheck(unsigned char key, std::vector<Particle *> *particles);
 
-void PhysicsEngine::keyCheck(unsigned char key, std::vector<Particle *> *particles, std::vector<RectangleObject *> *rigidBodies, float theta, float phi)
+void Controls::keyCheck
+(
+	unsigned char key,
+	std::vector<Particle *> *particles,
+	std::vector<RectangleObject *> *rectangularBodies,
+	std::vector<SphereObject *> *spheres,
+	float theta,
+	float phi
+)
 {
-	particleKeyCheck(key, particles);
-	rigidBodyKeyCheck(key, rigidBodies, theta, phi);
+	//particleKeyCheck(key, particles);
+	sphereKeyCheck(key, spheres, theta, phi);
+	rectangleKeyCheck(key, rectangularBodies, theta, phi);
 }
 
-void particleKeyCheck(unsigned char key, std::vector<Particle *> *particles)
+void Controls::particleKeyCheck(unsigned char key, std::vector<Particle *> *particles)
 {
 	if (particles->size() >= MAX_PARTICLE_COUNT)
 	{
@@ -54,39 +55,105 @@ void particleKeyCheck(unsigned char key, std::vector<Particle *> *particles)
 	}
 }
 
-void rigidBodyKeyCheck(unsigned char key, std::vector<RectangleObject *> *rigidBodies, float theta, float phi)
+void Controls::rectangleKeyCheck
+(
+	unsigned char key,
+	std::vector<RectangleObject *> *rectangularBodies,
+	float theta,
+	float phi
+)
 {
 	switch (key)
 	{
 	case '6':
-		addRigidCubeWhereYouLook(rigidBodies, theta, phi);
+		addRigidCubeWhereYouLook(rectangularBodies, theta, phi);
 		break;
 	case '7':
-		addRigidCube(rigidBodies, Vector3(0.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, Vector3(1.0f, .5f, .5f));
+		addRigidCube(rectangularBodies, Vector3(0.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, Vector3(1.0f, .5f, .5f));
 		break;
 	case '8':
-		addRigidCube(rigidBodies, Vector3(0.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, Vector3(0.5f, 1.0f, .5f));
+		addRigidCube(rectangularBodies, Vector3(0.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, Vector3(0.5f, 1.0f, .5f));
 		break;
 	case '9':
-		addRigidCube(rigidBodies, Vector3(0.0f, 10.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, Vector3(1.5f, .2f, 0.5f));
+		addRigidCube(rectangularBodies, Vector3(0.0f, 10.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, Vector3(1.5f, .2f, 0.5f));
 		break;
 	case '0':
-		for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies->size(); rigidBodyIndex++)
+		for (int rigidBodyIndex = 0; rigidBodyIndex < rectangularBodies->size(); rigidBodyIndex++)
 		{
-			(*rigidBodies)[rigidBodyIndex]->body->setIsAwake(false);
+			(*rectangularBodies)[rigidBodyIndex]->body->setIsAwake(false);
 		}
 		break;
 	}
 }
 
+void Controls::sphereKeyCheck
+(
+	unsigned char key,
+	std::vector<SphereObject *> *sphereBodies,
+	float theta,
+	float phi
+)
+{
+	// Note we omit passing on the x and y: they are rarely needed.
+	switch (key)
+	{
+	// Create a sphere where you look
+	case '1':
+		addSphereWhereYouLook(sphereBodies, theta, phi, 1.0f);
+		break;
+	// Create a basic sphere
+	case '2':
+		addSphere(sphereBodies,Vector3(0.0f, 4.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 1.0f, 1.0f);
+		break;
+	// Create a big particle
+	case '3':
+		break;
+	// Create a sphere particle
+	case '4':
+		break;
+	// Create a sphere particle
+	case '5':
+		break;
+	}
+}
+
+// Add a sphere to the scene where you look
+void Controls::addSphereWhereYouLook
+(
+	std::vector<SphereObject *> *sphereBodies,
+	float theta,
+	float phi,
+	float radius
+)
+{
+	Vector3 sphereCreationPosition = rotatePositionAlongYAxis(6.0f, 4.0f, theta);
+
+	addSphere(sphereBodies, sphereCreationPosition, Vector3(0.0f, 0.0f, 0.0f), 1.0f, radius);
+}
+
+// Add a sphere to the scene with the given properties
+void Controls::addSphere
+(
+	std::vector<SphereObject *> *sphereBodies,
+	Vector3 position,
+	Vector3 velocity,
+	real mass,
+	real radius
+)
+{
+	SphereObject *newSphere = new SphereObject();
+	newSphere->setState(position, velocity, Vector3::GRAVITY, mass, radius);
+	sphereBodies->push_back(newSphere);
+}
+
 // Add force to the first cube
-void addForceToCube(std::vector<RectangleObject *> *rigidBodies)
+void Controls::addForceToCube(std::vector<RectangleObject *> *rigidBodies)
 {
 	(*rigidBodies)[0]->body->addForceAtBodyPoint(Vector3(10.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f));
 }
 
 // Add a rigid cube with the inputted parameters
-void addRigidCube(std::vector<RectangleObject *> *rigidBodies, Vector3 position, Vector3 velocity, real mass, Vector3 halfSize)
+void Controls::addRigidCube(std::vector<RectangleObject *> *rigidBodies, Vector3 position, Vector3 velocity, real mass, Vector3 halfSize)
 {
 	RectangleObject *newSquare = new RectangleObject();
 	newSquare->setState(position, velocity, Vector3::GRAVITY, mass, halfSize);
@@ -94,14 +161,20 @@ void addRigidCube(std::vector<RectangleObject *> *rigidBodies, Vector3 position,
 }
 
 // Add a cube rigid body to the scene
-void addRigidCubeWhereYouLook(std::vector<RectangleObject *> *rigidBodies, float theta, float phi)
+void Controls::addRigidCubeWhereYouLook(std::vector<RectangleObject *> *rigidBodies, float theta, float phi)
 {
-	Vector3 oldSquareCreationPosition(0.0f, 4.0f, 6.0f);
+	Vector3 squareCreationPosition = rotatePositionAlongYAxis(6.0f, 4.0f, theta);
+
+	addRigidCube(rigidBodies, squareCreationPosition, Vector3(0.0f, 0.0f, 0.0f), 1.0f, Vector3(.5f, .5f, .5f));
+}
+
+Vector3 Controls::rotatePositionAlongYAxis(real depth, real height, real theta)
+{
+	Vector3 objectInitialPosition(0.0f, height, depth);
 	float thetaRads = theta * PI / 180.0;
 	Quaternion cameraRotation(cos(thetaRads / 2), 0.0f, 1.0f * sin(thetaRads / 2), 0.0f);
 	Matrix3 rotMatrix;
 	rotMatrix.setOrientation(cameraRotation);
-	Vector3 squareCreationPosition = rotMatrix.transform(oldSquareCreationPosition);
 
-	addRigidCube(rigidBodies, squareCreationPosition, Vector3(0.0f, 0.0f, 0.0f), 1.0f, Vector3(.5f, .5f, .5f));
+	return rotMatrix.transform(objectInitialPosition);
 }

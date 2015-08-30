@@ -29,8 +29,11 @@ void resolveCollisions(std::vector<Collision> *collisionList, real duration);
 
 // Contains all of the particles in the scene
 std::vector<Particle *> particles;
-// Contains all the rigid bodies in the scene
-std::vector<RectangleObject *> rigidBodies;
+// Contains all the rectangular objects in the scene
+std::vector<RectangleObject *> rectangleObjects;
+// Contains all of the spherical objects in the scene
+std::vector<SphereObject *> sphereObjects;
+
 // Camera control variables
 float theta;
 float phi;
@@ -97,10 +100,16 @@ void display()
 		particles[particleIndex]->display();
 	}
 	
-	// Draw all rigid bodies
-	for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
+	// Draw all cubes
+	for (int rigidBodyIndex = 0; rigidBodyIndex < rectangleObjects.size(); rigidBodyIndex++)
 	{
-		rigidBodies[rigidBodyIndex]->display();
+		rectangleObjects[rigidBodyIndex]->display();
+	}
+
+	// Draw all spheres
+	for (int rigidBodyIndex = 0; rigidBodyIndex < sphereObjects.size(); rigidBodyIndex++)
+	{
+		sphereObjects[rigidBodyIndex]->display();
 	}
 
 	glFlush();
@@ -120,20 +129,20 @@ void resolveCollisions(std::vector<Collision> *collisionList, real duration)
 // Detect collisions
 void detectCollisions(std::vector<Collision> *collisionList)
 {
-	for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
+	for (int rigidBodyIndex = 0; rigidBodyIndex < rectangleObjects.size(); rigidBodyIndex++)
 	{
 		// Check for collisions against the ground
-		CollisionDetection::boxAndHalfSpaceCollisionDetect(rigidBodies[rigidBodyIndex], Vector3(0, 1, 0), 0, collisionList);
+		CollisionDetection::boxAndHalfSpaceCollisionDetect(rectangleObjects[rigidBodyIndex], Vector3(0, 1, 0), 0, collisionList);
 		// Check for collisions against the walls
-		CollisionDetection::boxAndHalfSpaceCollisionDetect(rigidBodies[rigidBodyIndex], Vector3(-1, 0, 0), -20, collisionList);
-		CollisionDetection::boxAndHalfSpaceCollisionDetect(rigidBodies[rigidBodyIndex], Vector3(1, 0, 0), -20, collisionList);
-		CollisionDetection::boxAndHalfSpaceCollisionDetect(rigidBodies[rigidBodyIndex], Vector3(0, 0, -1), -20, collisionList);
-		CollisionDetection::boxAndHalfSpaceCollisionDetect(rigidBodies[rigidBodyIndex], Vector3(0, 0, 1), -20, collisionList);
+		CollisionDetection::boxAndHalfSpaceCollisionDetect(rectangleObjects[rigidBodyIndex], Vector3(-1, 0, 0), -20, collisionList);
+		CollisionDetection::boxAndHalfSpaceCollisionDetect(rectangleObjects[rigidBodyIndex], Vector3(1, 0, 0), -20, collisionList);
+		CollisionDetection::boxAndHalfSpaceCollisionDetect(rectangleObjects[rigidBodyIndex], Vector3(0, 0, -1), -20, collisionList);
+		CollisionDetection::boxAndHalfSpaceCollisionDetect(rectangleObjects[rigidBodyIndex], Vector3(0, 0, 1), -20, collisionList);
 
 		// Search for box/box collisions
-		for (int otherRigidBodyIndex = rigidBodyIndex + 1; otherRigidBodyIndex < rigidBodies.size(); otherRigidBodyIndex++)
+		for (int otherRigidBodyIndex = rigidBodyIndex + 1; otherRigidBodyIndex < rectangleObjects.size(); otherRigidBodyIndex++)
 		{
-			CollisionDetection::cubeCubeCollisionDetect(collisionList, rigidBodies[rigidBodyIndex], rigidBodies[otherRigidBodyIndex]);
+			CollisionDetection::cubeCubeCollisionDetect(collisionList, rectangleObjects[rigidBodyIndex], rectangleObjects[otherRigidBodyIndex]);
 		}
 	}
 }
@@ -141,14 +150,14 @@ void detectCollisions(std::vector<Collision> *collisionList)
 // Integrate all of the rigid bodies in the scene
 void integrateRigidBodies(real duration)
 {
-	//// Integrate all of the particles ////
+	// Integrate all of the particles
 	for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
 	{
 		particles[particleIndex]->integrate(duration);
 	}
 
-	//// Integrate all of the rigid bodies ////
-	if (rigidBodies.size() > 0)
+	// Integrate all of the cubes
+	if (rectangleObjects.size() > 0)
 	{
 		// Build up a list of bounding spheres for broad phase collision detection
 		//BVHNode<BoundingSphere> *parent = NULL;
@@ -157,9 +166,9 @@ void integrateRigidBodies(real duration)
 		//newNode.body = rigidBodies[0];
 
 		// Integrate all of the rigid bodies and add them to the bounding sphere heirarchy
-		for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
+		for (int rigidBodyIndex = 0; rigidBodyIndex < rectangleObjects.size(); rigidBodyIndex++)
 		{
-			RigidBody *body = rigidBodies[rigidBodyIndex]->body;
+			RigidBody *body = rectangleObjects[rigidBodyIndex]->body;
 			body->integrate(duration);
 			//BoundingSphere boundSphere(body->getPosition(), 1.0f);
 			//if (rigidBodyIndex != 0)
@@ -180,6 +189,15 @@ void integrateRigidBodies(real duration)
 		//PotentialContact contactsTwo[MAX_CONTACTS_PER_FRAME];
 		//int secondContactsFound = (*(newNode.children[1])).getPotentialContacts(contactsTwo, MAX_CONTACTS_PER_FRAME);
 		//}
+	}
+
+	// Integrate all of the spheres
+	if (sphereObjects.size() > 0)
+	{
+		for (int rigidBodyIndex = 0; rigidBodyIndex < sphereObjects.size(); rigidBodyIndex++)
+		{
+			sphereObjects[rigidBodyIndex]->body->integrate(duration);
+		}
 	}
 }
 
@@ -260,7 +278,7 @@ void reshape(int width, int height)
 */
 void keyboard(unsigned char key, int x, int y)
 {
-	keyCheck(key, &particles, &rigidBodies, theta, phi);
+	Controls::keyCheck(key, &particles, &rectangleObjects, &sphereObjects, theta, phi);
 }
 
 
