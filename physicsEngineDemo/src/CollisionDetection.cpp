@@ -228,6 +228,36 @@ unsigned CollisionDetection::sphereAndHalfSpaceCollisionDetect
 	return 1;
 }
 
+// Determine if two spheres have collided
+unsigned CollisionDetection::sphereSphereCollisionDetect
+(
+	SphereObject *first,
+	SphereObject *other,
+	std::vector<Collision> *collisionList
+)
+{
+	Vector3 toCenter = first->body->getPosition() - other->body->getPosition();
+	// If the distance between the two spheres is greater than their radii there isn't a collision
+	real centerMagnitude = toCenter.magnitude();
+	real penetration = (first->radius + other->radius) - centerMagnitude;
+	if (penetration < 0)
+	{
+		return 0;
+	}
+
+	Collision newCollision;
+	newCollision.contactPoint = other->body->getPosition() + toCenter * .5f;
+	Vector3 contactNormal = toCenter;
+	contactNormal.normalise();
+	newCollision.contactNormal = contactNormal;
+	newCollision.penetration = penetration;
+	newCollision.firstObject = first->body;
+	newCollision.secondObject = other->body;
+	newCollision.friction = 0.9f;
+
+	collisionList->push_back(newCollision);
+}
+
 bool CollisionDetection::boxAndHalfSpaceIntersect
 (
 	const RectangleObject *box,
