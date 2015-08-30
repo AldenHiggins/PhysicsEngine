@@ -150,7 +150,13 @@ void detectCollisions(std::vector<Collision> *collisionList)
 	// Detect sphere collisions
 	for (int sphereIndex = 0; sphereIndex < sphereObjects.size(); sphereIndex++)
 	{
+		// Check for collisions against ground
 		CollisionDetection::sphereAndHalfSpaceCollisionDetect(sphereObjects[sphereIndex], Vector3(0, 1, 0), 0, collisionList);
+		// Check for collisions against the walls
+		CollisionDetection::sphereAndHalfSpaceCollisionDetect(sphereObjects[sphereIndex], Vector3(-1, 0, 0), -20, collisionList);
+		CollisionDetection::sphereAndHalfSpaceCollisionDetect(sphereObjects[sphereIndex], Vector3(1, 0, 0), -20, collisionList);
+		CollisionDetection::sphereAndHalfSpaceCollisionDetect(sphereObjects[sphereIndex], Vector3(0, 0, -1), -20, collisionList);
+		CollisionDetection::sphereAndHalfSpaceCollisionDetect(sphereObjects[sphereIndex], Vector3(0, 0, 1), -20, collisionList);
 	}
 }
 
