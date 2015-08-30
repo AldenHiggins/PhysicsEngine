@@ -129,6 +129,7 @@ void resolveCollisions(std::vector<Collision> *collisionList, real duration)
 // Detect collisions
 void detectCollisions(std::vector<Collision> *collisionList)
 {
+	// Detect cube collisions
 	for (int rigidBodyIndex = 0; rigidBodyIndex < rectangleObjects.size(); rigidBodyIndex++)
 	{
 		// Check for collisions against the ground
@@ -144,6 +145,12 @@ void detectCollisions(std::vector<Collision> *collisionList)
 		{
 			CollisionDetection::cubeCubeCollisionDetect(collisionList, rectangleObjects[rigidBodyIndex], rectangleObjects[otherRigidBodyIndex]);
 		}
+	}
+
+	// Detect sphere collisions
+	for (int sphereIndex = 0; sphereIndex < sphereObjects.size(); sphereIndex++)
+	{
+		CollisionDetection::sphereAndHalfSpaceCollisionDetect(sphereObjects[sphereIndex], Vector3(0, 1, 0), 0, collisionList);
 	}
 }
 

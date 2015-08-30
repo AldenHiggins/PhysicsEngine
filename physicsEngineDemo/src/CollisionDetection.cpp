@@ -200,6 +200,34 @@ unsigned CollisionDetection::boxAndHalfSpaceCollisionDetect
 	return contactsUsed;
 }
 
+// Determine if there is a collision between two spheres
+unsigned CollisionDetection::sphereAndHalfSpaceCollisionDetect
+(
+	SphereObject *sphere,
+	const Vector3 planeDirection,
+	real planeOffset,
+	std::vector<Collision> *collisionList
+)
+{
+	real sphereDistance = sphere->body->getPosition() * planeDirection - sphere->radius - planeOffset;
+	// If the distance is greater than zero we don't have a collision
+	if (sphereDistance >= 0)
+	{
+		return 0;
+	}
+
+	Collision newCollision;
+	newCollision.contactPoint = sphere->body->getPosition() - planeDirection * (sphereDistance + sphere->radius);
+	newCollision.contactNormal = planeDirection;
+	newCollision.penetration = -sphereDistance;
+	newCollision.firstObject = sphere->body;
+	newCollision.secondObject = NULL;
+	newCollision.friction = 0.9f;
+
+	collisionList->push_back(newCollision);
+	return 1;
+}
+
 bool CollisionDetection::boxAndHalfSpaceIntersect
 (
 	const RectangleObject *box,

@@ -25,10 +25,13 @@ namespace PhysicsEngine
 			std::vector<Collision> *collisionList
 		);
 
-		// Determine if there is a collision between two spheres
-		static unsigned sphereSphereCollisionDetect
+		// Determine if there is a collision between a sphere and a plane
+		static unsigned sphereAndHalfSpaceCollisionDetect
 		(
-			
+			SphereObject *sphere,
+			const Vector3 planeDirection,
+			real planeOffset,
+			std::vector<Collision> *collisionList
 		);
 		
 	private:

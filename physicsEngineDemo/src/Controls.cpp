@@ -126,9 +126,9 @@ void Controls::addSphereWhereYouLook
 	float radius
 )
 {
-	Vector3 sphereCreationPosition = rotatePositionAlongYAxis(6.0f, 4.0f, theta);
+	Vector3 sphereCreationPosition = rotatePositionAlongYAxis(6.0f, 9.0f, theta);
 
-	addSphere(sphereBodies, sphereCreationPosition, Vector3(0.0f, 0.0f, 0.0f), 1.0f, radius);
+	addSphere(sphereBodies, sphereCreationPosition, Vector3(0.0f, -15.0f, 0.0f), 1.0f, radius);
 }
 
 // Add a sphere to the scene with the given properties
