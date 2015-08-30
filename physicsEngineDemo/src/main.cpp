@@ -20,6 +20,8 @@ using namespace PhysicsEngine;
 
 // Draw the background of the scene
 void drawBackground();
+// Integrate all of the rigid bodies
+void integrateRigidBodies(float duration);
 
 // Contains all of the particles in the scene
 std::vector<Particle *> particles;
@@ -124,12 +126,12 @@ void display()
 	for (int rigidBodyIndex = 0; rigidBodyIndex < rigidBodies.size(); rigidBodyIndex++)
 	{
 		// Check for collisions against the ground
-		CollisionDetection::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(0, 1, 0), 0, &collisionList);
+		CollisionDetection::boxAndHalfSpaceCollisionDetect(rigidBodies[rigidBodyIndex], Vector3(0, 1, 0), 0, &collisionList);
 		// Check for collisions against the walls
-		CollisionDetection::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(-1, 0, 0), -20, &collisionList);
-		CollisionDetection::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(1, 0, 0), -20, &collisionList);
-		CollisionDetection::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(0, 0, -1), -20, &collisionList);
-		CollisionDetection::boxAndHalfSpace(rigidBodies[rigidBodyIndex], Vector3(0, 0, 1), -20, &collisionList);
+		CollisionDetection::boxAndHalfSpaceCollisionDetect(rigidBodies[rigidBodyIndex], Vector3(-1, 0, 0), -20, &collisionList);
+		CollisionDetection::boxAndHalfSpaceCollisionDetect(rigidBodies[rigidBodyIndex], Vector3(1, 0, 0), -20, &collisionList);
+		CollisionDetection::boxAndHalfSpaceCollisionDetect(rigidBodies[rigidBodyIndex], Vector3(0, 0, -1), -20, &collisionList);
+		CollisionDetection::boxAndHalfSpaceCollisionDetect(rigidBodies[rigidBodyIndex], Vector3(0, 0, 1), -20, &collisionList);
 
 		// Search for box/box collisions
 		for (int otherRigidBodyIndex = rigidBodyIndex + 1; otherRigidBodyIndex < rigidBodies.size(); otherRigidBodyIndex++)
@@ -160,6 +162,12 @@ void display()
 
 	glFlush();
 	glutSwapBuffers();
+}
+
+// Integrate all of the rigid bodies in the scene
+void integrateRigidBodies(float duration)
+{
+	
 }
 
 // Draw the background of the scene

@@ -7,7 +7,12 @@
 using namespace PhysicsEngine;
 
 // Determine if there is a collision between two cubic rigid bodies
-unsigned int CollisionDetection::cubeCubeCollisionDetect(std::vector<Collision> *collisionList, RectangleObject *firstRect, RectangleObject *otherRect)
+unsigned int CollisionDetection::cubeCubeCollisionDetect
+(
+	std::vector<Collision> *collisionList,
+	RectangleObject *firstRect,
+	RectangleObject *otherRect
+)
 {
 	//if (!IntersectionTests::boxAndBox(one, two)) return 0;
 
@@ -134,7 +139,7 @@ unsigned int CollisionDetection::cubeCubeCollisionDetect(std::vector<Collision> 
 }
 
 // Find collisions between a cube and a plane
-unsigned CollisionDetection::boxAndHalfSpace
+unsigned CollisionDetection::boxAndHalfSpaceCollisionDetect
 (
 	RectangleObject *box,
 	const Vector3 planeDirection,
@@ -226,7 +231,6 @@ inline real CollisionDetection::transformToAxis
 		box->halfSize[1] * real_abs(axis * box->body->getTransformMatrix().getAxisVector(1)) +
 		box->halfSize[2] * real_abs(axis * box->body->getTransformMatrix().getAxisVector(2));
 }
-
 
 inline bool CollisionDetection::tryAxis
 (

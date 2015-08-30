@@ -17,13 +17,20 @@ namespace PhysicsEngine
 			RectangleObject *other
 		);
 		// Find collisions between a cube and a plane
-		static unsigned boxAndHalfSpace
+		static unsigned boxAndHalfSpaceCollisionDetect
 		(
 			RectangleObject *box,
 			const Vector3 planeDirection,
 			real planeOffset,
 			std::vector<Collision> *collisionList
 		);
+
+		// Determine if there is a collision between two spheres
+		static unsigned sphereSphereCollisionDetect
+		(
+			
+		);
+		
 	private:
 		// Perform an interesection test between the given box and plane
 		static bool boxAndHalfSpaceIntersect
