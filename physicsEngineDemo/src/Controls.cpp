@@ -99,7 +99,10 @@ void Controls::sphereKeyCheck
 	{
 	// Create a sphere where you look
 	case '1':
-		addSphereWhereYouLook(sphereBodies, theta, phi, 1.0f);
+		for (int i = 0; i < 30; i++)
+		{
+			addSphereWhereYouLook(sphereBodies, theta + i, phi, 0.1f);
+		}
 		break;
 	// Create a basic sphere
 	case '2':
