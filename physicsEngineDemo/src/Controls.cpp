@@ -6,6 +6,7 @@
 
 using namespace PhysicsEngine;
 
+void addRigidCubeNoGravity(std::vector<RectangleObject *> *rigidBodies, Vector3 position, Vector3 velocity, real mass, Vector3 halfSize);
 
 void Controls::keyCheck
 (
@@ -72,10 +73,12 @@ void Controls::rectangleKeyCheck
 		addRigidCube(rectangularBodies, Vector3(0.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, Vector3(1.0f, .5f, .5f));
 		break;
 	case '8':
-		addRigidCube(rectangularBodies, Vector3(0.0f, 3.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, Vector3(0.5f, 1.0f, .5f));
+		// Create a cool scene to demonstrate cubic collisions
+		addRigidCubeNoGravity(rectangularBodies, Vector3(0.0f, 6.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 1.0f, Vector3(0.5f, 0.5f, 0.5f));
+		addRigidCubeNoGravity(rectangularBodies, Vector3(3.0f, 6.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 1.0f, Vector3(0.5f, 0.5f, 0.5f));
 		break;
 	case '9':
-		addRigidCube(rectangularBodies, Vector3(0.0f, 10.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, Vector3(1.5f, .2f, 0.5f));
+		addRigidCubeNoGravity(rectangularBodies, Vector3(-5.0f, 5.0f, 6.0f), Vector3(15.0f, 0.0f, 0.0f), 10.0f, Vector3(1.5f, 1.2f, 0.5f));
 		break;
 	case '0':
 		for (int rigidBodyIndex = 0; rigidBodyIndex < rectangularBodies->size(); rigidBodyIndex++)
@@ -104,9 +107,25 @@ void Controls::sphereKeyCheck
 			addSphereWhereYouLook(sphereBodies, theta + i, phi, 0.1f);
 		}
 		break;
-	// Create a basic sphere
+	// Create a cool collision scene with lots of spheres
 	case '2':
-		addSphere(sphereBodies,Vector3(0.0f, 4.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 1.0f, 1.0f);
+		// Top
+		addSphere(sphereBodies,Vector3(0.0f, 6.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 1.0f, 0.3f);
+		addSphere(sphereBodies, Vector3(1.0f, 6.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 1.0f, 0.3f);
+		addSphere(sphereBodies, Vector3(-1.0f, 6.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 1.0f, 0.3f);
+
+		// Come up from below
+		addSphere(sphereBodies, Vector3(0.0f, 3.0f, 6.1f), Vector3(0.0f, 10.0f, 0.0f), 1.0f, 0.3f);
+		addSphere(sphereBodies, Vector3(1.1f, 3.0f, 6.3f), Vector3(0.0f, 10.0f, 0.0f), 1.0f, 0.3f);
+		addSphere(sphereBodies, Vector3(-1.1f, 3.0f, 5.9f), Vector3(0.0f, 10.0f, 0.0f), 1.0f, 0.3f);
+
+		// Come up and in from outside
+		addSphere(sphereBodies, Vector3(0.0f, 3.0f, 8.1f), Vector3(0.0f, 10.0f, -7.0f), 1.0f, 0.3f);
+		addSphere(sphereBodies, Vector3(1.1f, 3.0f, 8.3f), Vector3(0.0f, 10.0f, -7.0f), 1.0f, 0.3f);
+		addSphere(sphereBodies, Vector3(-1.1f, 3.0f, 8.9f), Vector3(0.0f, 10.0f, -7.0f), 1.0f, 0.3f);
+
+		// Fast sphere coming in from the right
+		addSphere(sphereBodies, Vector3(5.1f, 4.0f, 6.0f), Vector3(-15.0f, 6.0f, 0.0f), 1.0f, 0.3f);
 		break;
 	// Create a big particle
 	case '3':
@@ -153,6 +172,14 @@ void Controls::addSphere
 void Controls::addForceToCube(std::vector<RectangleObject *> *rigidBodies)
 {
 	(*rigidBodies)[0]->body->addForceAtBodyPoint(Vector3(10.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f));
+}
+
+// Add a rigid cube with the inputted parameters
+void addRigidCubeNoGravity(std::vector<RectangleObject *> *rigidBodies, Vector3 position, Vector3 velocity, real mass, Vector3 halfSize)
+{
+	RectangleObject *newSquare = new RectangleObject();
+	newSquare->setState(position, velocity, Vector3(0.0f, 0.0f, 0.0f), mass, halfSize);
+	rigidBodies->push_back(newSquare);
 }
 
 // Add a rigid cube with the inputted parameters

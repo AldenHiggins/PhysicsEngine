@@ -3,8 +3,8 @@
 
 // Define globally used general-purpose variables
 
-#define SCREEN_WIDTH 1000
-#define SCREEN_HEIGHT 500
+#define SCREEN_WIDTH 1500
+#define SCREEN_HEIGHT 800
 #define MAX_PARTICLE_COUNT 100
 #define MAX_RIGIDBODY_COUNT 10
 #define MAX_CONTACTS_PER_FRAME 10
