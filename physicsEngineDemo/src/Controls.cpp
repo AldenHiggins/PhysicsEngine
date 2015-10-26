@@ -18,9 +18,9 @@ void Controls::keyCheck
 	float phi
 )
 {
-	//particleKeyCheck(key, particles);
-	sphereKeyCheck(key, spheres, theta, phi);
-	rectangleKeyCheck(key, rectangularBodies, theta, phi);
+	particleKeyCheck(key, particles);
+	//sphereKeyCheck(key, spheres, theta, phi);
+	//rectangleKeyCheck(key, rectangularBodies, theta, phi);
 }
 
 void Controls::particleKeyCheck(unsigned char key, std::vector<Particle *> *particles)
@@ -51,7 +51,7 @@ void Controls::particleKeyCheck(unsigned char key, std::vector<Particle *> *part
 		break;
 		// Create a sphere particle
 	case '5':
-		particles->push_back(CreateParticle::createFireWorkParticle(.3f, 0.1f, Vector3(0.0f, 4.0f, 6.0f), Vector3(.75f, 0.23f, 0.68f)));
+		particles->push_back(CreateParticle::createFireWorkParticle(.6f, 0.1f, Vector3(0.0f, 4.0f, 6.0f), Vector3(.75f, 0.23f, 0.68f), true, 3));
 		break;
 	}
 }

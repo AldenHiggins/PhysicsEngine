@@ -62,7 +62,14 @@ namespace PhysicsEngine
 	{
 	private:
 		Particle *deathParticles[5];
+		int lives;
 	public:
+		// Create a new firework
+		FireworkParticle(int livesInput)
+		{
+			lives = livesInput;
+		}
+
 		// Display this particle
 		virtual void display();
 		// Call this when the particle dies
@@ -74,7 +81,7 @@ namespace PhysicsEngine
 	struct CreateParticle
 	{
 		// Generate a new firework
-		static Particle *createFireWorkParticle(real speed, real size, Vector3 position, Vector3 color);
+		static Particle *createFireWorkParticle(real speed, real size, Vector3 position, Vector3 color, bool originalFirework, int lives);
 		// Generate a new particle
 		static Particle* CreateParticle::createParticle(real speed, real size, Vector3 color);
 		// Generate a new circular particle

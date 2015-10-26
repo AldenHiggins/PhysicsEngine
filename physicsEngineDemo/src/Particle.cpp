@@ -133,6 +133,11 @@ void FireworkParticle::integrate(real timeStep)
 {
 	if (isDead)
 	{
+		if (lives <= 0)
+		{
+			return;
+		}
+
 		for (int particleIndex = 0; particleIndex < 5; particleIndex++)
 		{
 			deathParticles[particleIndex]->integrate(timeStep);
@@ -147,9 +152,14 @@ void FireworkParticle::integrate(real timeStep)
 // Show the firework
 void FireworkParticle::display()
 {
-	// If the firework is dead display it's child particles
+	// If the firework is dead display it's child particles if it has them
 	if (isDead)
 	{
+		// Check to see if this firework has any more lives
+		if (lives <= 0)
+		{
+			return;
+		}
 		for (int particleIndex = 0; particleIndex < 5; particleIndex++)
 		{
 			deathParticles[particleIndex]->display();
@@ -164,29 +174,45 @@ void FireworkParticle::display()
 // Generate child particles of this firework
 void FireworkParticle::onDeath()
 {
+	// Don't generate any more particles if this firework is out of lives
+	if (lives <= 0)
+	{
+		return;
+	}
+	// Create child particles for this firework when it "detonates"
 	for (int particleIndex = 0; particleIndex < 5; particleIndex++)
 	{
-		deathParticles[particleIndex] = CreateParticle::createFireWorkParticle(1.0f, .1f, position, color);
+		deathParticles[particleIndex] = CreateParticle::createFireWorkParticle(0.4f, .1f, position, color, false, lives - 1);
 	}
 }
 
 // Generate a new circular particle
-Particle* CreateParticle::createFireWorkParticle(real speed, real size, Vector3 position, Vector3 color)
+Particle* CreateParticle::createFireWorkParticle(real speed, real size, Vector3 position, Vector3 color, bool originalFirework, int lives)
 {
-	FireworkParticle *newParticle = new FireworkParticle();
-	real xVelocity = ((real)((rand() % 200) - 100)) / 100;
-	real yVelocity = 8.0f;
-	real zVelocity = ((real)((rand() % 200) - 100)) / 100;
+	FireworkParticle *newParticle = new FireworkParticle(lives);
+	real xVelocity = ((real)((rand() % 800) - 400)) / 100;
+	real yVelocity = ((real)((rand() % 800) - 0)) / 100;
+	real zVelocity = ((real)((rand() % 800) - 400)) / 100;
+
 	xVelocity *= speed;
-	//yVelocity *= speed;
+	yVelocity *= speed * 2;
 	zVelocity *= speed;
+
+	// Make the original firework follow a predictable path
+	if (originalFirework)
+	{
+		xVelocity = 0;
+		yVelocity = 8.0f * speed;
+		zVelocity = 0;
+	}
+
 	newParticle->setVelocity(Vector3(xVelocity, yVelocity, zVelocity));
 	// Add gravity onto this circular particle
-	newParticle->setAcceleration(Vector3(0.0f, -9.81f, 0.0f));
+	newParticle->setAcceleration(Vector3(0.0f, -3.81f, 0.0f));
 	newParticle->setPosition(position);
 	newParticle->setColor(color);
 	newParticle->setSize(size);
-	newParticle->setLifeTime(2.0f);
+	newParticle->setLifeTime(1.0f);
 	return newParticle;
 }
 
