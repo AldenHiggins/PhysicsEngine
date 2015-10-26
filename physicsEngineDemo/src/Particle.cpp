@@ -9,7 +9,14 @@ using namespace PhysicsEngine;
 void Particle::integrate(real timeStep)
 {
 	timeAliveSoFar += timeStep;
-	// Don't display a dead particle
+
+	// Don't integrate the particle before's it's done getting ready
+	if (timeAliveSoFar < startupTime)
+	{
+		return;
+	}
+
+	// Don't update a dead particle
 	if (timeAliveSoFar > lifeTime && !isDead)
 	{
 		isDead = true;
@@ -101,20 +108,30 @@ real Particle::getLifeTime()
 	return lifeTime;
 }
 
+void Particle::setStartupTime(real startupTimeInput)
+{
+	startupTime = startupTimeInput;
+}
+
 void Particle::setLifeTime(real newLifetime)
 {
-	lifeTime = newLifetime;
+	lifeTime = newLifetime + startupTime;
 }
 
 bool Particle::getIsDead()
 {
-
 	return isDead;
 }
 
 // Display this circular particle
 void CircleParticle::display()
 {
+	// Don't display the particle before's it's done getting ready
+	if (timeAliveSoFar < startupTime)
+	{
+		return;
+	}
+
 	// Don't display a dead particle
 	if (timeAliveSoFar > lifeTime)
 	{
@@ -204,6 +221,8 @@ Particle* CreateParticle::createFireWorkParticle(real speed, real size, Vector3 
 		xVelocity = 0;
 		yVelocity = 8.0f * speed;
 		zVelocity = 0;
+		// Give the particle a startup time for GIF recording purposes
+		newParticle->setStartupTime(5.0f);
 	}
 
 	newParticle->setVelocity(Vector3(xVelocity, yVelocity, zVelocity));

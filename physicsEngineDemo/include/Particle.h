@@ -20,6 +20,8 @@ namespace PhysicsEngine
 		real size;
 		Vector3 color;
 		real lifeTime;
+		// The amount of time the particle waits to be displayed
+		real startupTime;
 		bool isDead = false;
 		real timeAliveSoFar;
 	public:
@@ -47,6 +49,7 @@ namespace PhysicsEngine
 		real getLifeTime();
 		void setLifeTime(real newLifeTime);
 		bool getIsDead();
+		void setStartupTime(real startupTime);
 
 		
 	};
