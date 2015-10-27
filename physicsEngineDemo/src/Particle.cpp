@@ -38,6 +38,7 @@ void Particle::display()
 	{
 		return;
 	}
+
 	glBegin(GL_QUADS);
 	// Set the color for the particle
 	glColor3f(color[0], color[1], color[2]);
@@ -47,6 +48,8 @@ void Particle::display()
 	glVertex3f(position[0] + size, position[1] + size, position[2]);
 	glVertex3f(position[0] - size, position[1] + size, position[2]);
 	glEnd();
+
+	glColor4f(1, 1, 1, 1);
 }
 
 // Empty on death function
@@ -138,7 +141,6 @@ void CircleParticle::display()
 		return;
 	}
 	glColor3f(color[0], color[1], color[2]);
-	//glTranslatef(position[0], position[1], position[2]);
 	glPushMatrix();
 	glTranslatef(position[0], position[1], position[2]);
 	glutSolidSphere(size, 20.0, 20.0);
@@ -267,6 +269,8 @@ Particle* CreateParticle::createParticle(real speed, real size, Vector3 color)
 	zVelocity *= speed;
 	newParticle->setVelocity(Vector3(xVelocity, yVelocity, zVelocity));
 	newParticle->setPosition(Vector3(0.0f, 4.0f, 6.0f));
+	// Give the particle a ramp up time to make a GIF
+	newParticle->setStartupTime(5.0f);
 	newParticle->setColor(color);
 	newParticle->setSize(size);
 	newParticle->setLifeTime(3.0f);

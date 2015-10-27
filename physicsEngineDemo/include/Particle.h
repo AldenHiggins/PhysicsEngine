@@ -50,8 +50,6 @@ namespace PhysicsEngine
 		void setLifeTime(real newLifeTime);
 		bool getIsDead();
 		void setStartupTime(real startupTime);
-
-		
 	};
 
 	class CircleParticle : public Particle
