@@ -71,7 +71,7 @@ namespace PhysicsEngine
 	};
 
 
-	class CapsuleObject : public CollisionSphere
+	class CapsuleObject : public CollisionCapsule
 	{
 	public:
 		CapsuleObject();

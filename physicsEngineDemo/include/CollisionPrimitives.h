@@ -24,6 +24,12 @@ namespace PhysicsEngine
 	public:
 		real radius;
 	};
+
+	class CollisionCapsule : public CollisionPrimitive
+	{
+	public:
+		real radius;
+	};
 }
 
 #endif // COLLISION_PRIMITIVES_H
