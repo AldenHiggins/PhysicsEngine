@@ -31,3 +31,28 @@ void SphereObject::display()
 	glutSolidSphere(radius, SPHERE_SLICES, SPHERE_STACKS);
 	glPopMatrix();
 }
+
+// Generate a new capsule object
+CapsuleObject::CapsuleObject()
+{
+	// Generate the rigid body
+	body = new RigidBody();
+
+	quadricObject = gluNewQuadric();
+	gluQuadricNormals(quadricObject, GLU_SMOOTH);
+}
+
+// Display the capsule
+void CapsuleObject::display()
+{
+	// Get the OpenGL transformation
+	GLfloat mat[16];
+	this->body->getGLTransform(mat);
+	glColor3f(.5f, .1f, .9f);
+
+	glPushMatrix();
+	glMultMatrixf(mat);
+	//glScalef(halfSize[0] * 2, halfSize[1] * 2, halfSize[2] * 2);
+	gluCylinder(quadricObject, 1.0, 1.0, 3.0, 1, 16);
+	glPopMatrix();
+}

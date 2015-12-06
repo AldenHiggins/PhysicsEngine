@@ -69,6 +69,41 @@ namespace PhysicsEngine
 		// Display this sphere object
 		void display();
 	};
+
+
+	class CapsuleObject : public CollisionSphere
+	{
+	public:
+		CapsuleObject();
+
+		~CapsuleObject()
+		{
+			gluDeleteQuadric(quadricObject);
+			delete body;
+		}
+
+		// Set all of the parameters for this rigid body/Collision Box
+		void setState(Vector3 position, Vector3 velocity, Vector3 acceleration, real mass, real radiusInput)
+		{
+			radius = radiusInput;
+			body->setPosition(position);
+			body->setVelocity(velocity);
+			body->setAcceleration(acceleration);
+			body->setMass(mass);
+			body->setDamping(SQUARE_LINEAR_DAMPING, SQUARE_ANGULAR_DAMPING);
+			// Set the inertia tensor for the sphere
+			Matrix3 tensor;
+			real coeff = 0.4f*mass*radius*radius;
+			tensor.setInertiaTensorCoeffs(coeff, coeff, coeff);
+			body->setInertiaTensor(tensor);
+		}
+
+		// Display this sphere object
+		void display();
+
+	private:
+		GLUquadric *quadricObject;
+	};
 }
 
 
