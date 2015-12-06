@@ -1,5 +1,4 @@
 #include "RenderableObjects.h"
-#include <gl/glut.h>
 
 using namespace PhysicsEngine;
 
@@ -40,6 +39,12 @@ CapsuleObject::CapsuleObject()
 
 	quadricObject = gluNewQuadric();
 	gluQuadricNormals(quadricObject, GLU_SMOOTH);
+}
+
+CapsuleObject::~CapsuleObject()
+{
+	gluDeleteQuadric(quadricObject);
+	delete body;
 }
 
 // Display the capsule

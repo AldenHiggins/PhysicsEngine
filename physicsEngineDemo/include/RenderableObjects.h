@@ -3,6 +3,7 @@
 
 #include "CollisionPrimitives.h"
 #include "ApplicationSettings.h"
+#include <gl/glut.h>
 
 namespace PhysicsEngine
 {
@@ -76,11 +77,7 @@ namespace PhysicsEngine
 	public:
 		CapsuleObject();
 
-		~CapsuleObject()
-		{
-			gluDeleteQuadric(quadricObject);
-			delete body;
-		}
+		~CapsuleObject();
 
 		// Set all of the parameters for this rigid body/Collision Box
 		void setState(Vector3 position, Vector3 velocity, Vector3 acceleration, real mass, real radiusInput)

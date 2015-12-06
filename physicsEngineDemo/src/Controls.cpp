@@ -14,13 +14,27 @@ void Controls::keyCheck
 	std::vector<Particle *> *particles,
 	std::vector<RectangleObject *> *rectangularBodies,
 	std::vector<SphereObject *> *spheres,
+	std::vector<CapsuleObject *> *capsules,
 	float theta,
 	float phi
 )
 {
-	particleKeyCheck(key, particles);
+	//particleKeyCheck(key, particles);
 	//sphereKeyCheck(key, spheres, theta, phi);
 	//rectangleKeyCheck(key, rectangularBodies, theta, phi);
+	capsuleKeyCheck(key, capsules, theta, phi);
+}
+
+void Controls::capsuleKeyCheck(unsigned char key, std::vector<CapsuleObject *> *capsuleBodies, float theta, float phi)
+{
+	// Note we omit passing on the x and y: they are rarely needed.
+	switch (key)
+	{
+	// Create a slow particle
+	case '1':
+		addRigidCapsule(capsuleBodies, Vector3(0.0f, 3.0f, 6.0f), Vector3(0.0f, 1.0f, 0.0f), 1.0f, 1.0f, 3.0f);
+		break;
+	}
 }
 
 void Controls::particleKeyCheck(unsigned char key, std::vector<Particle *> *particles)
@@ -207,4 +221,12 @@ Vector3 Controls::rotatePositionAlongYAxis(real depth, real height, real theta)
 	rotMatrix.setOrientation(cameraRotation);
 
 	return rotMatrix.transform(objectInitialPosition);
+}
+
+// Add a capsule with the inputted parameters
+void Controls::addRigidCapsule(std::vector<CapsuleObject *> *capsuleBodies, Vector3 position, Vector3 velocity, real mass, real radius, real height)
+{
+	CapsuleObject *newCapsule = new CapsuleObject();
+	newCapsule->setState(position, velocity, Vector3::GRAVITY, mass, radius);
+	capsuleBodies->push_back(newCapsule);
 }

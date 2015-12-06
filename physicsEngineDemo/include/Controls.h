@@ -18,6 +18,7 @@ namespace PhysicsEngine
 			std::vector<Particle *> *particles,
 			std::vector<RectangleObject *> *rigidBodies,
 			std::vector<SphereObject *> *spheres,
+			std::vector<CapsuleObject *> *capsules,
 			float theta,
 			float phi
 		);
@@ -52,6 +53,16 @@ namespace PhysicsEngine
 			real mass,
 			Vector3 halfSize
 		);
+		// Add a capsule with the inputted parameters
+		static void addRigidCapsule
+		(
+			std::vector<CapsuleObject *> *capsuleBodies,
+			Vector3 position,
+			Vector3 velocity,
+			real mass,
+			real radius,
+			real height
+		);
 		static void rectangleKeyCheck
 		(
 			unsigned char key,
@@ -63,6 +74,14 @@ namespace PhysicsEngine
 		(
 			unsigned char key,
 			std::vector<SphereObject *> *sphereBodies,
+			float theta,
+			float phi
+		);
+
+		static void capsuleKeyCheck
+		(
+			unsigned char key,
+			std::vector<CapsuleObject *> *capsuleBodies,
 			float theta,
 			float phi
 		);
