@@ -59,12 +59,12 @@ void CapsuleObject::display()
 	glPushMatrix();
 	glMultMatrixf(mat);
 	
-	glutSolidSphere(0.99, 90, 90);
-	glTranslatef(0.0f, -1.0f, 0.0f);
-	glutSolidSphere(0.99, 90, 90);
-	glTranslatef(0.0f, 1.0f, 0.0f);
+	glutSolidSphere(radius, 50, 50);
+	glTranslatef(0.0f, -1.0f * height, 0.0f);
+	glutSolidSphere(radius, 50, 50);
+	glTranslatef(0.0f, height, 0.0f);
 	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-	gluCylinder(quadricObject, 1.0, 1.0, 1.0, 30, 30);
+	gluCylinder(quadricObject, radius, radius, height, 100, 100);
 	
 	glPopMatrix();
 }

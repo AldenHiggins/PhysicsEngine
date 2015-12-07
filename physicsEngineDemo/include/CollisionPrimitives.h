@@ -29,6 +29,7 @@ namespace PhysicsEngine
 	{
 	public:
 		real radius;
+		real height;
 	};
 }
 
