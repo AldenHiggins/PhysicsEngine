@@ -33,6 +33,8 @@ std::vector<Particle *> particles;
 std::vector<RectangleObject *> rectangleObjects;
 // Contains all of the spherical objects in the scene
 std::vector<SphereObject *> sphereObjects;
+// Contains all of the capsules in the scene
+std::vector<CapsuleObject *> capsuleObjects;
 
 // Camera control variables
 float theta;
@@ -95,21 +97,27 @@ void display()
 	resolveCollisions(&collisionList, duration);
 	
 	// Draw all of the particles
-	for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
+	for (unsigned int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
 	{
 		particles[particleIndex]->display();
 	}
 	
 	// Draw all cubes
-	for (int rigidBodyIndex = 0; rigidBodyIndex < rectangleObjects.size(); rigidBodyIndex++)
+	for (unsigned int rigidBodyIndex = 0; rigidBodyIndex < rectangleObjects.size(); rigidBodyIndex++)
 	{
 		rectangleObjects[rigidBodyIndex]->display();
 	}
 
 	// Draw all spheres
-	for (int rigidBodyIndex = 0; rigidBodyIndex < sphereObjects.size(); rigidBodyIndex++)
+	for (unsigned int rigidBodyIndex = 0; rigidBodyIndex < sphereObjects.size(); rigidBodyIndex++)
 	{
 		sphereObjects[rigidBodyIndex]->display();
+	}
+
+	// Draw all the capsules
+	for (unsigned int rigidBodyIndex = 0; rigidBodyIndex < capsuleObjects.size(); rigidBodyIndex++)
+	{
+		capsuleObjects[rigidBodyIndex]->display();
 	}
 
 	glFlush();
@@ -130,7 +138,7 @@ void resolveCollisions(std::vector<Collision> *collisionList, real duration)
 void detectCollisions(std::vector<Collision> *collisionList)
 {
 	// Detect cube collisions
-	for (int rigidBodyIndex = 0; rigidBodyIndex < rectangleObjects.size(); rigidBodyIndex++)
+	for (unsigned int rigidBodyIndex = 0; rigidBodyIndex < rectangleObjects.size(); rigidBodyIndex++)
 	{
 		// Check for collisions against the ground
 		CollisionDetection::boxAndHalfSpaceCollisionDetect(rectangleObjects[rigidBodyIndex], Vector3(0, 1, 0), 0, collisionList);
@@ -224,6 +232,12 @@ void integrateRigidBodies(real duration)
 			sphereObjects[rigidBodyIndex]->body->integrate(duration);
 		}
 	}
+
+	// Integrate all the cylinders
+	for (unsigned int rigidBodyIndex = 0; rigidBodyIndex < capsuleObjects.size(); rigidBodyIndex++)
+	{
+		capsuleObjects[rigidBodyIndex]->body->integrate(duration);
+	}
 }
 
 // Draw the background of the scene
@@ -269,15 +283,15 @@ void drawBackground()
 	// Draw the lines of the axes
 	glColor3f(0.0f, 0.0f, 0.0f);
 	// x axis
-	glVertex3f(20, .01, AXES_WIDTH/2);
-	glVertex3f(20, .01, -1 * AXES_WIDTH/2);
-	glVertex3f(-20, .01, -1 * AXES_WIDTH/2);
-	glVertex3f(-20, .01, AXES_WIDTH/2);
+	glVertex3f(20, .01f, AXES_WIDTH/2);
+	glVertex3f(20, .01f, -1 * AXES_WIDTH/2);
+	glVertex3f(-20, .01f, -1 * AXES_WIDTH/2);
+	glVertex3f(-20, .01f, AXES_WIDTH/2);
 	// z axis
-	glVertex3f(AXES_WIDTH/2, .01, 20);
-	glVertex3f(-1 * AXES_WIDTH/2, .01, 20);
-	glVertex3f(-1 * AXES_WIDTH/2, .01, -20);
-	glVertex3f(AXES_WIDTH/2, .01, -20);
+	glVertex3f(AXES_WIDTH/2, .01f, 20);
+	glVertex3f(-1 * AXES_WIDTH/2, .01f, 20);
+	glVertex3f(-1 * AXES_WIDTH/2, .01f, -20);
+	glVertex3f(AXES_WIDTH/2, .01f, -20);
 	glEnd();
 }
 
@@ -303,7 +317,7 @@ void reshape(int width, int height)
 */
 void keyboard(unsigned char key, int x, int y)
 {
-	Controls::keyCheck(key, &particles, &rectangleObjects, &sphereObjects, theta, phi);
+	Controls::keyCheck(key, &particles, &rectangleObjects, &sphereObjects, &capsuleObjects, theta, phi);
 }
 
 

@@ -27,12 +27,14 @@ void Controls::keyCheck
 
 void Controls::capsuleKeyCheck(unsigned char key, std::vector<CapsuleObject *> *capsuleBodies, float theta, float phi)
 {
+
+	std::cout << "This is happening!!!" << std::endl;
 	// Note we omit passing on the x and y: they are rarely needed.
 	switch (key)
 	{
 	// Create a slow particle
 	case '1':
-		addRigidCapsule(capsuleBodies, Vector3(0.0f, 3.0f, 6.0f), Vector3(0.0f, 1.0f, 0.0f), 1.0f, 1.0f, 3.0f);
+		addRigidCapsule(capsuleBodies, Vector3(0.0f, 3.0f, 6.0f), Vector3(0.0f, 0.1f, 0.0f), 1.0f, 1.0f, 3.0f);
 		break;
 	}
 }
@@ -227,6 +229,6 @@ Vector3 Controls::rotatePositionAlongYAxis(real depth, real height, real theta)
 void Controls::addRigidCapsule(std::vector<CapsuleObject *> *capsuleBodies, Vector3 position, Vector3 velocity, real mass, real radius, real height)
 {
 	CapsuleObject *newCapsule = new CapsuleObject();
-	newCapsule->setState(position, velocity, Vector3::GRAVITY, mass, radius);
+	newCapsule->setState(position, velocity, Vector3(0.0f, 0.0f, 0.0f), mass, radius);
 	capsuleBodies->push_back(newCapsule);
 }

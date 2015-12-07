@@ -39,6 +39,7 @@ CapsuleObject::CapsuleObject()
 
 	quadricObject = gluNewQuadric();
 	gluQuadricNormals(quadricObject, GLU_SMOOTH);
+	gluQuadricDrawStyle(quadricObject, GLU_FILL);
 }
 
 CapsuleObject::~CapsuleObject()
@@ -57,7 +58,7 @@ void CapsuleObject::display()
 
 	glPushMatrix();
 	glMultMatrixf(mat);
-	//glScalef(halfSize[0] * 2, halfSize[1] * 2, halfSize[2] * 2);
-	gluCylinder(quadricObject, 1.0, 1.0, 3.0, 1, 16);
+	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+	gluCylinder(quadricObject, 1.0, 1.0, 1.0, 10, 16);
 	glPopMatrix();
 }
