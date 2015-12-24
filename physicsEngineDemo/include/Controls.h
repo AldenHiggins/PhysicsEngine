@@ -23,6 +23,8 @@ namespace PhysicsEngine
 			float phi
 		);
 	private:
+		// Add force to the first cylinder
+		static void addForceToCapsule(std::vector<CapsuleObject *> *capsuleBodies);
 		// Add force to the first cube
 		static void addForceToCube(std::vector<RectangleObject *> *rectangularBodies);
 		// Add a cube rigid body to the scene

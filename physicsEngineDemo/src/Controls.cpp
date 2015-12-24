@@ -21,7 +21,7 @@ void Controls::keyCheck
 {
 	//particleKeyCheck(key, particles);
 	//sphereKeyCheck(key, spheres, theta, phi);
-	//rectangleKeyCheck(key, rectangularBodies, theta, phi);
+	rectangleKeyCheck(key, rectangularBodies, theta, phi);
 	capsuleKeyCheck(key, capsules, theta, phi);
 }
 
@@ -34,17 +34,19 @@ void Controls::capsuleKeyCheck(unsigned char key, std::vector<CapsuleObject *> *
 	{
 	// Create a capsule
 	case '1':
-		addRigidCapsule(capsuleBodies, Vector3(0.0f, 3.0f, 12.0f), Vector3(0.0f, 0.1f, 0.0f), 1.0f, 1.0f, 3.0f);
+		addRigidCapsule(capsuleBodies, Vector3(0.0f, 5.0f, 12.0f), Vector3(0.0f, 0.1f, 0.0f), 1.0f, 1.0f, 1.0f);
 		break;
 
 	// Create a different capsule
 	case '2':
-		addRigidCapsule(capsuleBodies, Vector3(0.0f, 3.0f, 12.0f), Vector3(0.0f, 0.1f, 0.0f), 1.0f, 3.0f, 1.0f);
+		addForceToCapsule(capsuleBodies);
+		//addRigidCapsule(capsuleBodies, Vector3(0.0f, 3.0f, 12.0f), Vector3(0.0f, 0.1f, 0.0f), 1.0f, 3.0f, 1.0f);
 		break;
 
 	// Create a different capsule
 	case '3':
-		addRigidCapsule(capsuleBodies, Vector3(0.0f, 3.0f, 12.0f), Vector3(0.0f, 0.1f, 0.0f), 4.0f, 4.0f, 1.0f);
+		(*capsuleBodies)[0]->body->addForceAtBodyPoint(Vector3(-100.0f, 0.0f, 0.0f), Vector3(0.5f, 1.5f, 1.0f));
+		//addRigidCapsule(capsuleBodies, Vector3(0.0f, 3.0f, 12.0f), Vector3(0.0f, 0.1f, 0.0f), 4.0f, 4.0f, 1.0f);
 		break;
 
 	// Create a different capsule
@@ -106,7 +108,8 @@ void Controls::rectangleKeyCheck
 	case '8':
 		// Create a cool scene to demonstrate cubic collisions
 		addRigidCubeNoGravity(rectangularBodies, Vector3(0.0f, 6.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 1.0f, Vector3(0.5f, 0.5f, 0.5f));
-		addRigidCubeNoGravity(rectangularBodies, Vector3(3.0f, 6.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 1.0f, Vector3(0.5f, 0.5f, 0.5f));
+		addForceToCube(rectangularBodies);
+		//addRigidCubeNoGravity(rectangularBodies, Vector3(3.0f, 6.0f, 6.0f), Vector3(0.0f, 0.0f, 0.0f), 1.0f, Vector3(0.5f, 0.5f, 0.5f));
 		break;
 	case '9':
 		addRigidCubeNoGravity(rectangularBodies, Vector3(-5.0f, 5.0f, 6.0f), Vector3(15.0f, 0.0f, 0.0f), 10.0f, Vector3(1.5f, 1.2f, 0.5f));
@@ -202,8 +205,15 @@ void Controls::addSphere
 // Add force to the first cube
 void Controls::addForceToCube(std::vector<RectangleObject *> *rigidBodies)
 {
-	(*rigidBodies)[0]->body->addForceAtBodyPoint(Vector3(10.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f));
+	(*rigidBodies)[0]->body->addForceAtBodyPoint(Vector3(80.0f, 0.0f, 0.0f), Vector3(0.5f, 0.5f, 1.0f));
 }
+
+// Add force to the first capsule
+void Controls::addForceToCapsule(std::vector<CapsuleObject *> *capsuleBodies)
+{
+	(*capsuleBodies)[0]->body->addForceAtBodyPoint(Vector3(100.0f, 0.0f, 0.0f), Vector3(0.5f, 1.5f, 1.0f));
+}
+
 
 // Add a rigid cube with the inputted parameters
 void addRigidCubeNoGravity(std::vector<RectangleObject *> *rigidBodies, Vector3 position, Vector3 velocity, real mass, Vector3 halfSize)

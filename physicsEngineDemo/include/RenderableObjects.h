@@ -80,21 +80,7 @@ namespace PhysicsEngine
 		~CapsuleObject();
 
 		// Set all of the parameters for this rigid body/Collision Box
-		void setState(Vector3 position, Vector3 velocity, Vector3 acceleration, real mass, real radiusInput, real heightInput)
-		{
-			radius = radiusInput;
-			height = heightInput;
-			body->setPosition(position);
-			body->setVelocity(velocity);
-			body->setAcceleration(acceleration);
-			body->setMass(mass);
-			body->setDamping(SQUARE_LINEAR_DAMPING, SQUARE_ANGULAR_DAMPING);
-			// Set the inertia tensor for the sphere
-			Matrix3 tensor;
-			real coeff = 0.4f*mass*radius*radius;
-			tensor.setInertiaTensorCoeffs(coeff, coeff, coeff);
-			body->setInertiaTensor(tensor);
-		}
+		void setState(Vector3 position, Vector3 velocity, Vector3 acceleration, real mass, real radiusInput, real heightInput);
 
 		// Display this sphere object
 		void display();
