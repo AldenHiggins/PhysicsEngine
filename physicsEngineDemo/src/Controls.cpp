@@ -34,22 +34,22 @@ void Controls::capsuleKeyCheck(unsigned char key, std::vector<CapsuleObject *> *
 	{
 	// Create a capsule
 	case '1':
-		addRigidCapsule(capsuleBodies, Vector3(0.0f, 3.0f, 6.0f), Vector3(0.0f, 0.1f, 0.0f), 1.0f, 1.0f, 3.0f);
+		addRigidCapsule(capsuleBodies, Vector3(0.0f, 3.0f, 12.0f), Vector3(0.0f, 0.1f, 0.0f), 1.0f, 1.0f, 3.0f);
 		break;
 
 	// Create a different capsule
 	case '2':
-		addRigidCapsule(capsuleBodies, Vector3(0.0f, 3.0f, 9.0f), Vector3(0.0f, 0.1f, 0.0f), 1.0f, 3.0f, 1.0f);
+		addRigidCapsule(capsuleBodies, Vector3(0.0f, 3.0f, 12.0f), Vector3(0.0f, 0.1f, 0.0f), 1.0f, 3.0f, 1.0f);
 		break;
 
 	// Create a different capsule
 	case '3':
-		addRigidCapsule(capsuleBodies, Vector3(0.0f, 3.0f, 9.0f), Vector3(0.0f, 0.1f, 0.0f), 4.0f, 4.0f, 1.0f);
+		addRigidCapsule(capsuleBodies, Vector3(0.0f, 3.0f, 12.0f), Vector3(0.0f, 0.1f, 0.0f), 4.0f, 4.0f, 1.0f);
 		break;
 
 	// Create a different capsule
 	case '4':
-		addRigidCapsule(capsuleBodies, Vector3(0.0f, 3.0f, 9.0f), Vector3(0.0f, 0.1f, 0.0f), 1.0f, 0.2f, 4.0f);
+		addRigidCapsule(capsuleBodies, Vector3(0.0f, 3.0f, 12.0f), Vector3(0.0f, 0.1f, 0.0f), 1.0f, 0.2f, 4.0f);
 		break;
 	}
 }
@@ -112,7 +112,7 @@ void Controls::rectangleKeyCheck
 		addRigidCubeNoGravity(rectangularBodies, Vector3(-5.0f, 5.0f, 6.0f), Vector3(15.0f, 0.0f, 0.0f), 10.0f, Vector3(1.5f, 1.2f, 0.5f));
 		break;
 	case '0':
-		for (int rigidBodyIndex = 0; rigidBodyIndex < rectangularBodies->size(); rigidBodyIndex++)
+		for (unsigned int rigidBodyIndex = 0; rigidBodyIndex < rectangularBodies->size(); rigidBodyIndex++)
 		{
 			(*rectangularBodies)[rigidBodyIndex]->body->setIsAwake(false);
 		}
