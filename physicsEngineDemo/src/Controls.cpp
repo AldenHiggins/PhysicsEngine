@@ -254,6 +254,6 @@ Vector3 Controls::rotatePositionAlongYAxis(real depth, real height, real theta)
 void Controls::addRigidCapsule(std::vector<CapsuleObject *> *capsuleBodies, Vector3 position, Vector3 velocity, real mass, real radius, real height)
 {
 	CapsuleObject *newCapsule = new CapsuleObject();
-	newCapsule->setState(position, velocity, Vector3(0.0f, 0.0f, 0.0f), mass, radius, height);
+	newCapsule->setState(position, velocity, Vector3::GRAVITY, mass, radius, height);
 	capsuleBodies->push_back(newCapsule);
 }

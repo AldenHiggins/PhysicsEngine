@@ -164,6 +164,12 @@ void detectCollisions(std::vector<Collision> *collisionList)
 			CollisionDetection::sphereCubeCollisionDetect(sphereObjects[sphereIndex], rectangleObjects[cubeIndex], collisionList);
 		}
 	}
+
+	// Detect capsule collisions
+	for (int capsuleIndex = 0; capsuleIndex < capsuleObjects.size(); capsuleIndex++)
+	{
+		CollisionDetection::capsuleHalfSpaceCollisionDetect(capsuleObjects[capsuleIndex], Vector3(0, 1, 0), 0, collisionList);
+	}
 }
 
 // Integrate all of the rigid bodies in the scene

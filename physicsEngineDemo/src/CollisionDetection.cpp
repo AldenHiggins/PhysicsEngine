@@ -228,6 +228,39 @@ unsigned CollisionDetection::sphereAndHalfSpaceCollisionDetect
 	return 1;
 }
 
+// Determine if there is a collision between two spheres
+unsigned CollisionDetection::capsuleHalfSpaceCollisionDetect
+(
+	CapsuleObject *capsule,
+	const Vector3 planeDirection,
+	real planeOffset,
+	std::vector<Collision> *collisionList
+	)
+{
+	// Consider the capsule as the two spheres at either end of the capsule
+	// Test the sphere at the top of the capsule first
+	real sphereDistance = capsule->body->getPosition() * planeDirection - capsule->radius - planeOffset;
+	// If the distance is greater than zero we don't have a collision
+	if (sphereDistance >= 0)
+	{
+		return 0;
+	}
+
+	Collision newCollision;
+	newCollision.contactPoint = capsule->body->getPosition() - planeDirection * (sphereDistance + capsule->radius);
+	newCollision.contactNormal = planeDirection;
+	newCollision.penetration = -sphereDistance;
+	newCollision.firstObject = capsule->body;
+	newCollision.secondObject = NULL;
+	newCollision.friction = 0.9f;
+
+	collisionList->push_back(newCollision);
+
+
+	// 
+	return 1;
+}
+
 // Determine if two spheres have collided
 unsigned CollisionDetection::sphereSphereCollisionDetect
 (

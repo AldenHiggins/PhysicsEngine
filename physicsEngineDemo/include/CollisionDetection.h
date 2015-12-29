@@ -49,6 +49,15 @@ namespace PhysicsEngine
 			RectangleObject *cube,
 			std::vector<Collision> *collisionList
 		);
+
+		// Determine if a capsule has collided with a plane
+		static unsigned int capsuleHalfSpaceCollisionDetect
+		(
+			CapsuleObject *capsule,
+			const Vector3 planeDirection,
+			real planeOffset,
+			std::vector<Collision> *collisionList
+		);
 		
 	private:
 		// Perform an interesection test between the given box and plane
