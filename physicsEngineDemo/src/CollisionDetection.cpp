@@ -239,24 +239,40 @@ unsigned CollisionDetection::capsuleHalfSpaceCollisionDetect
 {
 	// Consider the capsule as the two spheres at either end of the capsule
 	// Test the sphere at the top of the capsule first
-	real sphereDistance = capsule->body->getPosition() * planeDirection - capsule->radius - planeOffset;
+	Vector3 topSpherePosition = capsule->body->getPointInWorldSpace(Vector3(0, capsule->height, 0));
+	real sphereDistance = topSpherePosition * planeDirection - capsule->radius - planeOffset;
 	// If the distance is greater than zero we don't have a collision
-	if (sphereDistance >= 0)
+	if (sphereDistance < 0)
 	{
-		return 0;
+		Collision newCollision;
+		newCollision.contactPoint = topSpherePosition - planeDirection * (sphereDistance + capsule->radius);
+		newCollision.contactNormal = planeDirection;
+		newCollision.penetration = -sphereDistance;
+		newCollision.firstObject = capsule->body;
+		newCollision.secondObject = NULL;
+		newCollision.friction = 0.9f;
+
+		collisionList->push_back(newCollision);
 	}
 
-	Collision newCollision;
-	newCollision.contactPoint = capsule->body->getPosition() - planeDirection * (sphereDistance + capsule->radius);
-	newCollision.contactNormal = planeDirection;
-	newCollision.penetration = -sphereDistance;
-	newCollision.firstObject = capsule->body;
-	newCollision.secondObject = NULL;
-	newCollision.friction = 0.9f;
+	// Consider the capsule as the two spheres at either end of the capsule
+	// Test the sphere at the top of the capsule first
+	Vector3 bottomSpherePosition = capsule->body->getPointInWorldSpace(Vector3(0, -1 * capsule->height, 0));
+	sphereDistance = bottomSpherePosition * planeDirection - capsule->radius - planeOffset;
+	// If the distance is greater than zero we don't have a collision
+	if (sphereDistance < 0)
+	{
+		Collision newCollision;
+		newCollision.contactPoint = bottomSpherePosition - planeDirection * (sphereDistance + capsule->radius);
+		newCollision.contactNormal = planeDirection;
+		newCollision.penetration = -sphereDistance;
+		newCollision.firstObject = capsule->body;
+		newCollision.secondObject = NULL;
+		newCollision.friction = 0.9f;
 
-	collisionList->push_back(newCollision);
-
-
+		collisionList->push_back(newCollision);
+	}
+	
 	// 
 	return 1;
 }

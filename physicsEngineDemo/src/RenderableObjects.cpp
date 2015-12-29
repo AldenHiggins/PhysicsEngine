@@ -68,6 +68,7 @@ void CapsuleObject::display()
 	glPushMatrix();
 	glMultMatrixf(mat);
 	
+	glTranslatef(0.0f, .5f * height, 0.0f);
 	glutSolidSphere(radius, 50, 50);
 	glTranslatef(0.0f, -1.0f * height, 0.0f);
 	glutSolidSphere(radius, 50, 50);
