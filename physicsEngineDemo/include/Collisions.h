@@ -30,7 +30,6 @@ namespace PhysicsEngine
 		Matrix3 contactToWorld;
 		// Holds the closing velocity at the point of contact. This is set when the calculateInternals function is run.
 		Vector3 contactVelocity;
-
 		
 		// Calculate the internals of this collision
 		void calculateInternals(real duration);

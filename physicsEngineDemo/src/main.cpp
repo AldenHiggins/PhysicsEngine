@@ -26,6 +26,8 @@ void integrateRigidBodies(real duration);
 void detectCollisions(std::vector<Collision> *collisionList);
 // Resolve the found collisions
 void resolveCollisions(std::vector<Collision> *collisionList, real duration);
+// Draw all of the rigid bodies
+void drawBodies();
 
 // Contains all of the particles in the scene
 std::vector<Particle *> particles;
@@ -85,8 +87,14 @@ void display()
 	drawBackground();
 
 	float duration = (float)TimingData::get().lastFrameDuration * 0.001f;
-	if (duration <= 0.0f) return;
-	else if (duration > 0.05f) duration = 0.05f;
+	if (duration <= 0.0f)
+	{
+		return;
+	}
+	else if (duration > 0.05f)
+	{
+		duration = 0.05f;
+	}
 
 	// Integrate all of the rigid bodies
 	integrateRigidBodies(duration);
@@ -95,30 +103,8 @@ void display()
 	std::vector<Collision> collisionList;
 	detectCollisions(&collisionList);
 	resolveCollisions(&collisionList, duration);
-	
-	// Draw all of the particles
-	for (unsigned int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
-	{
-		particles[particleIndex]->display();
-	}
-	
-	// Draw all cubes
-	for (unsigned int rigidBodyIndex = 0; rigidBodyIndex < rectangleObjects.size(); rigidBodyIndex++)
-	{
-		rectangleObjects[rigidBodyIndex]->display();
-	}
-
-	// Draw all spheres
-	for (unsigned int rigidBodyIndex = 0; rigidBodyIndex < sphereObjects.size(); rigidBodyIndex++)
-	{
-		sphereObjects[rigidBodyIndex]->display();
-	}
-
-	// Draw all the capsules
-	for (unsigned int rigidBodyIndex = 0; rigidBodyIndex < capsuleObjects.size(); rigidBodyIndex++)
-	{
-		capsuleObjects[rigidBodyIndex]->display();
-	}
+	// Draw all of the rigid bodies
+	drawBodies();
 
 	glFlush();
 	glutSwapBuffers();
@@ -192,36 +178,12 @@ void integrateRigidBodies(real duration)
 	// Integrate all of the cubes
 	if (rectangleObjects.size() > 0)
 	{
-		// Build up a list of bounding spheres for broad phase collision detection
-		//BVHNode<BoundingSphere> *parent = NULL;
-		//BoundingSphere sphere(rigidBodies[0]->getPosition(), 1.0f);
-		//BVHNode<BoundingSphere> newNode(parent, sphere);
-		//newNode.body = rigidBodies[0];
-
 		// Integrate all of the rigid bodies and add them to the bounding sphere heirarchy
 		for (int rigidBodyIndex = 0; rigidBodyIndex < rectangleObjects.size(); rigidBodyIndex++)
 		{
 			RigidBody *body = rectangleObjects[rigidBodyIndex]->body;
 			body->integrate(duration);
-			//BoundingSphere boundSphere(body->getPosition(), 1.0f);
-			//if (rigidBodyIndex != 0)
-			//{
-			//	newNode.insert(body, boundSphere);
-			//}
 		}
-
-		//if (rigidBodies.size() > 1)
-		//{
-		// Draw all of the bounding volumes
-		//std::cout << "Drawing bounding volumes!!" << std::endl;
-		//drawBoundingVolumes(&newNode);
-		// Once all of the rigid bodies have been included check for collisions
-		//PotentialContact contacts[MAX_CONTACTS_PER_FRAME];
-		//int contactsFound = (*(newNode.children[0])).getPotentialContacts(contacts, MAX_CONTACTS_PER_FRAME);
-
-		//PotentialContact contactsTwo[MAX_CONTACTS_PER_FRAME];
-		//int secondContactsFound = (*(newNode.children[1])).getPotentialContacts(contactsTwo, MAX_CONTACTS_PER_FRAME);
-		//}
 	}
 
 	// Integrate all of the spheres
@@ -293,6 +255,34 @@ void drawBackground()
 	glVertex3f(-1 * AXES_WIDTH/2, .01f, -20);
 	glVertex3f(AXES_WIDTH/2, .01f, -20);
 	glEnd();
+}
+
+// Draw all of the rigid bodies
+void drawBodies()
+{
+	// Draw all of the particles
+	for (unsigned int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
+	{
+		particles[particleIndex]->display();
+	}
+
+	// Draw all cubes
+	for (unsigned int rigidBodyIndex = 0; rigidBodyIndex < rectangleObjects.size(); rigidBodyIndex++)
+	{
+		rectangleObjects[rigidBodyIndex]->display();
+	}
+
+	// Draw all spheres
+	for (unsigned int rigidBodyIndex = 0; rigidBodyIndex < sphereObjects.size(); rigidBodyIndex++)
+	{
+		sphereObjects[rigidBodyIndex]->display();
+	}
+
+	// Draw all the capsules
+	for (unsigned int rigidBodyIndex = 0; rigidBodyIndex < capsuleObjects.size(); rigidBodyIndex++)
+	{
+		capsuleObjects[rigidBodyIndex]->display();
+	}
 }
 
 /**

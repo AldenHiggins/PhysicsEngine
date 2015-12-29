@@ -211,9 +211,9 @@ void Controls::addForceToCube(std::vector<RectangleObject *> *rigidBodies)
 // Add force to the first capsule
 void Controls::addForceToCapsule(std::vector<CapsuleObject *> *capsuleBodies)
 {
-	(*capsuleBodies)[0]->body->addForceAtBodyPoint(Vector3(100.0f, 0.0f, 0.0f), Vector3(0.5f, 1.5f, 1.0f));
+	(*capsuleBodies)[0]->body->addForceAtBodyPoint(Vector3(400.0f, 0.0f, 0.0f), Vector3(0.5f, 1.5f, 1.0f));
+	(*capsuleBodies)[0]->body->addForceAtBodyPoint(Vector3(-400.0f, 0.0f, 0.0f), Vector3(0.5f, -1.5f, 1.0f));
 }
-
 
 // Add a rigid cube with the inputted parameters
 void addRigidCubeNoGravity(std::vector<RectangleObject *> *rigidBodies, Vector3 position, Vector3 velocity, real mass, Vector3 halfSize)
