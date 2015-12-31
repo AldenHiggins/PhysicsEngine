@@ -175,6 +175,13 @@ void detectCollisions(std::vector<Collision> *collisionList)
 		{
 			CollisionDetection::capsuleSphereCollisionDetect(capsuleObjects[capsuleIndex], sphereObjects[sphereIndex], collisionList);
 		}
+
+		// Check for collisions against other capsules
+		for (int otherCapsuleIndex = capsuleIndex + 1; otherCapsuleIndex < capsuleObjects.size(); otherCapsuleIndex++)
+		{
+			CollisionDetection::capsuleCapsuleCollisionDetect(capsuleObjects[capsuleIndex], capsuleObjects[otherCapsuleIndex], collisionList);
+
+		}
 	}
 }
 

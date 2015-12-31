@@ -25,11 +25,9 @@ void Controls::keyCheck
 	case '1':
 	{
 		addRigidCapsule(capsules, Vector3(0.0f, 5.0f, 12.0f), Vector3(), 1.0f, 1.0f, 1.0f);
+		
+		addRigidCapsule(capsules, Vector3(-2.0f, 5.0f, 12.0f), Vector3(), 1.0f, 1.0f, 1.0f);
 
-
-		SphereObject *newSphere = new SphereObject();
-		newSphere->setState(Vector3(-4.0f, 5.0f, 12.0f), Vector3(5.0f, 0, 0), Vector3(), 1.0f, 1.0f);
-		spheres->push_back(newSphere);
 		break;
 	}
 	// Create a different capsule

@@ -66,6 +66,14 @@ namespace PhysicsEngine
 			SphereObject *sphere,
 			std::vector<Collision> *collisionList
 		);
+
+		// Determine if a capsule has collided with another capsule
+		static unsigned int capsuleCapsuleCollisionDetect
+		(
+			CapsuleObject *first,
+			CapsuleObject *second,
+			std::vector<Collision> *collisionList
+		);
 		
 	private:
 		// Perform an interesection test between the given box and plane

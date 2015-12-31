@@ -331,6 +331,17 @@ unsigned int CollisionDetection::capsuleSphereCollisionDetect
 	return 1;
 }
 
+// Determine if a capsule has collided with another capsule
+unsigned int CollisionDetection::capsuleCapsuleCollisionDetect
+(
+	CapsuleObject *first,
+	CapsuleObject *second,
+	std::vector<Collision> *collisionList
+)
+{
+	return 1;
+}
+
 // Determine if two spheres have collided
 unsigned CollisionDetection::sphereSphereCollisionDetect
 (
