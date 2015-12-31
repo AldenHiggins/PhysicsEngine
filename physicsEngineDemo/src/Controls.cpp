@@ -26,7 +26,7 @@ void Controls::keyCheck
 	{
 		addRigidCapsule(capsules, Vector3(0.0f, 5.0f, 12.0f), Quaternion(), Vector3(), 1.0f, 1.0f, 1.0f);
 		
-		addRigidCapsule(capsules, Vector3(-2.0f, 4.0f, 12.0f), Quaternion(.7071f, 0, 0, .7071f), Vector3(), 1.0f, 1.0f, 1.0f);
+		addRigidCapsule(capsules, Vector3(-2.0f, 4.0f, 12.0f), Quaternion::fromEuler(90, 0, 0), Vector3(), 1.0f, 1.0f, 1.0f);
 
 		break;
 	}

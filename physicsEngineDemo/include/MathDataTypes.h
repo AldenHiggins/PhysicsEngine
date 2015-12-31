@@ -23,6 +23,8 @@
 
 #include "precision.h"
 
+#define PI 3.14159265
+
 namespace PhysicsEngine {
 
 	/**
@@ -525,6 +527,25 @@ namespace PhysicsEngine {
 		{
 			Quaternion q(0, vector.x, vector.y, vector.z);
 			(*this) *= q;
+		}
+
+		static Quaternion fromEuler(float x, float y, float z)
+		{
+			// Get the total value of the angles in order to normalize them
+			float totalAngle = x + y + z;
+			// Normalize all of the angles
+			x /= totalAngle;
+			y /= totalAngle;
+			z /= totalAngle;
+
+			totalAngle = (totalAngle * PI) / 180;
+
+			float r = cos(totalAngle / 2.0f);
+			float i = x * sin(totalAngle / 2.0f);
+			float j = y * sin(totalAngle / 2.0f);
+			float k = z * sin(totalAngle / 2.0f);
+
+			return Quaternion(r, i, j, k);
 		}
 	};
 
