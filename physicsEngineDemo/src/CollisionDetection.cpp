@@ -372,8 +372,6 @@ unsigned int CollisionDetection::capsuleCapsuleCollisionDetect
 		minimumTValue = (a * e - b * d) / denominator;
 	}
 
-
-
 	return 1;
 }
 

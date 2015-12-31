@@ -24,9 +24,9 @@ void Controls::keyCheck
 		// Create a capsule
 	case '1':
 	{
-		addRigidCapsule(capsules, Vector3(0.0f, 5.0f, 12.0f), Vector3(), 1.0f, 1.0f, 1.0f);
+		addRigidCapsule(capsules, Vector3(0.0f, 5.0f, 12.0f), Quaternion(), Vector3(), 1.0f, 1.0f, 1.0f);
 		
-		addRigidCapsule(capsules, Vector3(-2.0f, 4.0f, 12.0f), Vector3(), 1.0f, 1.0f, 1.0f);
+		addRigidCapsule(capsules, Vector3(-2.0f, 4.0f, 12.0f), Quaternion(.7071f, 0, 0, .7071f), Vector3(), 1.0f, 1.0f, 1.0f);
 
 		break;
 	}
@@ -44,7 +44,7 @@ void Controls::keyCheck
 
 		// Create a different capsule
 	case '4':
-		addRigidCapsule(capsules, Vector3(0.0f, 3.0f, 12.0f), Vector3(0.0f, 0.1f, 0.0f), 1.0f, 0.2f, 4.0f);
+		//addRigidCapsule(capsules, Vector3(0.0f, 3.0f, 12.0f), Vector3(0.0f, 0.1f, 0.0f), 1.0f, 0.2f, 4.0f);
 		break;
 	}
 
@@ -63,7 +63,7 @@ void Controls::capsuleKeyCheck(unsigned char key, std::vector<CapsuleObject *> *
 	{
 	// Create a capsule
 	case '1':
-		addRigidCapsule(capsuleBodies, Vector3(0.0f, 5.0f, 12.0f), Vector3(0.0f, 0.1f, 0.0f), 1.0f, 1.0f, 1.0f);
+		//addRigidCapsule(capsuleBodies, Vector3(0.0f, 5.0f, 12.0f), Vector3(0.0f, 0.1f, 0.0f), 1.0f, 1.0f, 1.0f);
 		break;
 
 	// Create a different capsule
@@ -80,7 +80,6 @@ void Controls::capsuleKeyCheck(unsigned char key, std::vector<CapsuleObject *> *
 
 	// Create a different capsule
 	case '4':
-		addRigidCapsule(capsuleBodies, Vector3(0.0f, 3.0f, 12.0f), Vector3(0.0f, 0.1f, 0.0f), 1.0f, 0.2f, 4.0f);
 		break;
 	}
 }
@@ -280,9 +279,9 @@ Vector3 Controls::rotatePositionAlongYAxis(real depth, real height, real theta)
 }
 
 // Add a capsule with the inputted parameters
-void Controls::addRigidCapsule(std::vector<CapsuleObject *> *capsuleBodies, Vector3 position, Vector3 velocity, real mass, real radius, real height)
+void Controls::addRigidCapsule(std::vector<CapsuleObject *> *capsuleBodies, Vector3 position, Quaternion rotation, Vector3 velocity, real mass, real radius, real height)
 {
 	CapsuleObject *newCapsule = new CapsuleObject();
-	newCapsule->setState(position, velocity, Vector3(), mass, radius, height);
+	newCapsule->setState(position, rotation, velocity, Vector3(), mass, radius, height);
 	capsuleBodies->push_back(newCapsule);
 }

@@ -60,6 +60,7 @@ namespace PhysicsEngine
 		(
 			std::vector<CapsuleObject *> *capsuleBodies,
 			Vector3 position,
+			Quaternion rotation,
 			Vector3 velocity,
 			real mass,
 			real radius,

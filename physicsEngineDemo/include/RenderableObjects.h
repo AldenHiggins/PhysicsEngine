@@ -80,7 +80,7 @@ namespace PhysicsEngine
 		~CapsuleObject();
 
 		// Set all of the parameters for this rigid body/Collision Box
-		void setState(Vector3 position, Vector3 velocity, Vector3 acceleration, real mass, real radiusInput, real heightInput);
+		void setState(Vector3 position, Quaternion rotation, Vector3 velocity, Vector3 acceleration, real mass, real radiusInput, real heightInput);
 
 		// Display this sphere object
 		void display();
