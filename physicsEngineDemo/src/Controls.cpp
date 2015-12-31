@@ -26,7 +26,7 @@ void Controls::keyCheck
 	{
 		addRigidCapsule(capsules, Vector3(0.0f, 5.0f, 12.0f), Vector3(), 1.0f, 1.0f, 1.0f);
 		
-		addRigidCapsule(capsules, Vector3(-2.0f, 5.0f, 12.0f), Vector3(), 1.0f, 1.0f, 1.0f);
+		addRigidCapsule(capsules, Vector3(-2.0f, 4.0f, 12.0f), Vector3(), 1.0f, 1.0f, 1.0f);
 
 		break;
 	}

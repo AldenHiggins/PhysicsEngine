@@ -339,6 +339,41 @@ unsigned int CollisionDetection::capsuleCapsuleCollisionDetect
 	std::vector<Collision> *collisionList
 )
 {
+	Vector3 firstPoint1 = first->body->getPointInWorldSpace(Vector3(0, (first->height / 2), 0));
+	Vector3 firstPoint2 = first->body->getPointInWorldSpace(Vector3(0, (-1 * first->height / 2), 0));
+
+	Vector3 u = firstPoint2 - firstPoint1;
+	u.normalise();
+
+	Vector3 secondPoint1 = second->body->getPointInWorldSpace(Vector3(0, (second->height / 2), 0));
+	Vector3 secondPoint2 = second->body->getPointInWorldSpace(Vector3(0, (-1 * second->height / 2), 0));
+
+	Vector3 v = secondPoint2 - secondPoint1;
+	v.normalise();
+
+	float a = u * u;
+	float b = u * v;
+	float c = v * v;
+	float d = u * (firstPoint1 - secondPoint1);
+	float e = v * (firstPoint1 - secondPoint1);
+
+	float denominator = a * c - b * b;
+	float minimumSValue = 0;
+	float minimumTValue = 0;
+	// Check if the lines are parallel beforehand
+	if (denominator == 0)
+	{
+		minimumSValue = .5f;
+		minimumTValue = .5f;
+	}
+	else
+	{
+		minimumSValue = (b * e - c * d) / denominator;
+		minimumTValue = (a * e - b * d) / denominator;
+	}
+
+
+
 	return 1;
 }
 
