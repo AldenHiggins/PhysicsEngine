@@ -112,6 +112,4 @@ void CapsuleObject::setState(Vector3 position, Vector3 velocity, Vector3 acceler
 	tensor.data[1] = tensor.data[2] = tensor.data[3] = tensor.data[5] = tensor.data[6] = tensor.data[7] = 0.0f;
 
 	body->setInertiaTensor(tensor);
-	
-	body->addForceAtBodyPoint(Vector3(200.0f, 0.0f, 0.0f), Vector3(0.0f, 3.0f, 0.0f));
 }

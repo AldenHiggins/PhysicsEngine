@@ -273,7 +273,61 @@ unsigned CollisionDetection::capsuleHalfSpaceCollisionDetect
 		collisionList->push_back(newCollision);
 	}
 	
-	// 
+	return 1;
+}
+
+// Determine if a capsule has collided with a sphere
+unsigned int CollisionDetection::capsuleSphereCollisionDetect
+(
+	CapsuleObject *capsule,
+	SphereObject *sphere,
+	std::vector<Collision> *collisionList
+)
+{
+	// Transform the sphere's center into the capsule's coordinate system
+	Vector3 capsuleCoordSphereCenter = sphere->body->getPosition();
+	capsuleCoordSphereCenter = capsule->body->getTransformMatrix().transformInverse(capsuleCoordSphereCenter);
+
+	// First check if the sphere is within the capsule's y coordinates, if not discard
+	float newCapsuleHeight = capsule->height * .5f + sphere->radius;
+	if (capsuleCoordSphereCenter.y > newCapsuleHeight || capsuleCoordSphereCenter.y < -1 * newCapsuleHeight)
+	{
+		return 0;
+	}
+
+	Vector3 capsuleCoordSphereCenterNoHeight = capsuleCoordSphereCenter;
+	// Remove the y component of the vector
+	capsuleCoordSphereCenterNoHeight.y = 0;
+
+	// Check if the sphere is close enough to the capsule to collide
+	float penetration = capsuleCoordSphereCenterNoHeight.magnitude() - sphere->radius - capsule->radius;
+	if (penetration >= 0)
+	{
+		return 0;
+	}
+
+	Collision newCollision;
+	// Really problematic and error prone solution, pretty much scale the vector from teh capsule to the sphere such that the sphere's radius is no longer a factor
+	// This neither gets the correct contact point nor will it prevent errors from occuring
+	Vector3 contactPoint = capsuleCoordSphereCenter;
+	contactPoint = contactPoint * ((capsuleCoordSphereCenter.magnitude() - sphere->radius) / capsuleCoordSphereCenter.magnitude());
+	newCollision.contactPoint = capsule->body->getPointInWorldSpace(contactPoint);
+
+	// Contact normal is the vector from the capsule center to the contact point (bad implementation)
+	Vector3 contactNormal = capsule->body->getPointInWorldSpace(capsuleCoordSphereCenter);
+	contactNormal = contactNormal - capsule->body->getPosition();
+	contactNormal.normalise();
+	// Reverse the contact normal
+	contactNormal[0] *= -1;
+	contactNormal[1] *= -1;
+	contactNormal[2] *= -1;
+	newCollision.contactNormal = contactNormal;
+	newCollision.penetration = -penetration;
+	newCollision.firstObject = capsule->body;
+	newCollision.secondObject = sphere->body;
+	newCollision.friction = 0.9f;
+
+	collisionList->push_back(newCollision);
 	return 1;
 }
 
@@ -305,6 +359,7 @@ unsigned CollisionDetection::sphereSphereCollisionDetect
 	newCollision.friction = 0.9f;
 
 	collisionList->push_back(newCollision);
+	return 1;
 }
 
 // Determine if a sphere has collided with a cube
@@ -363,6 +418,7 @@ unsigned CollisionDetection::sphereCubeCollisionDetect
 	newCollision.friction = 0.9f;
 
 	collisionList->push_back(newCollision);
+	return 1;
 }
 
 bool CollisionDetection::boxAndHalfSpaceIntersect

@@ -58,6 +58,14 @@ namespace PhysicsEngine
 			real planeOffset,
 			std::vector<Collision> *collisionList
 		);
+
+		// Determine if a capsule has collided with a sphere
+		static unsigned int capsuleSphereCollisionDetect
+		(
+			CapsuleObject *capsule,
+			SphereObject *sphere,
+			std::vector<Collision> *collisionList
+		);
 		
 	private:
 		// Perform an interesection test between the given box and plane

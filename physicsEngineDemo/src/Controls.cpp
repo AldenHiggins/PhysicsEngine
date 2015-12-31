@@ -19,10 +19,41 @@ void Controls::keyCheck
 	float phi
 )
 {
+	switch (key)
+	{
+		// Create a capsule
+	case '1':
+	{
+		addRigidCapsule(capsules, Vector3(0.0f, 5.0f, 12.0f), Vector3(), 1.0f, 1.0f, 1.0f);
+
+
+		SphereObject *newSphere = new SphereObject();
+		newSphere->setState(Vector3(-4.0f, 5.0f, 12.0f), Vector3(5.0f, 0, 0), Vector3(), 1.0f, 1.0f);
+		spheres->push_back(newSphere);
+		break;
+	}
+	// Create a different capsule
+	case '2':
+		addForceToCapsule(capsules);
+		//addRigidCapsule(capsuleBodies, Vector3(0.0f, 3.0f, 12.0f), Vector3(0.0f, 0.1f, 0.0f), 1.0f, 3.0f, 1.0f);
+		break;
+
+		// Create a different capsule
+	case '3':
+		(*capsules)[0]->body->addForceAtBodyPoint(Vector3(-100.0f, 0.0f, 0.0f), Vector3(0.5f, 1.5f, 1.0f));
+		//addRigidCapsule(capsuleBodies, Vector3(0.0f, 3.0f, 12.0f), Vector3(0.0f, 0.1f, 0.0f), 4.0f, 4.0f, 1.0f);
+		break;
+
+		// Create a different capsule
+	case '4':
+		addRigidCapsule(capsules, Vector3(0.0f, 3.0f, 12.0f), Vector3(0.0f, 0.1f, 0.0f), 1.0f, 0.2f, 4.0f);
+		break;
+	}
+
 	//particleKeyCheck(key, particles);
 	//sphereKeyCheck(key, spheres, theta, phi);
-	rectangleKeyCheck(key, rectangularBodies, theta, phi);
-	capsuleKeyCheck(key, capsules, theta, phi);
+	//rectangleKeyCheck(key, rectangularBodies, theta, phi);
+	//capsuleKeyCheck(key, capsules, theta, phi);
 }
 
 void Controls::capsuleKeyCheck(unsigned char key, std::vector<CapsuleObject *> *capsuleBodies, float theta, float phi)
@@ -254,6 +285,6 @@ Vector3 Controls::rotatePositionAlongYAxis(real depth, real height, real theta)
 void Controls::addRigidCapsule(std::vector<CapsuleObject *> *capsuleBodies, Vector3 position, Vector3 velocity, real mass, real radius, real height)
 {
 	CapsuleObject *newCapsule = new CapsuleObject();
-	newCapsule->setState(position, velocity, Vector3::GRAVITY, mass, radius, height);
+	newCapsule->setState(position, velocity, Vector3(), mass, radius, height);
 	capsuleBodies->push_back(newCapsule);
 }
