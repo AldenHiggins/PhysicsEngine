@@ -426,6 +426,18 @@ unsigned int CollisionDetection::capsuleCapsuleCollisionDetect
 	return 1;
 }
 
+// Determine if a capsule has collided with a square
+unsigned int CollisionDetection::capsuleSquareCollisionDetect
+(
+	CapsuleObject *first,
+	RectangleObject *second,
+	std::vector<Collision> *collisionList
+)
+{
+	return 1;
+}
+
+
 // Determine if two spheres have collided
 unsigned CollisionDetection::sphereSphereCollisionDetect
 (
