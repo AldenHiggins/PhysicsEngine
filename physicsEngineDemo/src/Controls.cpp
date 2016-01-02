@@ -19,31 +19,24 @@ void Controls::keyCheck
 {
 	switch (key)
 	{
-		// Create a capsule
 		case '1':
 		{		
 			addRigidCapsule(capsules, Vector3(-3.0f, 5.0f, 12.0f), Quaternion::fromEuler(90, 0, 0), Vector3(0.0f, 0, 0), 1.0f, 1.0f, 1.0f);
 			addRigidCubeNoGravity(rectangularBodies, Vector3(0.0f, 5.0f, 12.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, Vector3(1.0f, .5f, .5f));
 			break;
 		}
-		// Create a different capsule
 		case '2':
 		{
 			addForceToCapsule(capsules);
-			//addRigidCapsule(capsuleBodies, Vector3(0.0f, 3.0f, 12.0f), Vector3(0.0f, 0.1f, 0.0f), 1.0f, 3.0f, 1.0f);
 			break;
 		}
-		// Create a different capsule
 		case '3':
 		{
 			(*capsules)[0]->body->addForceAtBodyPoint(Vector3(-100.0f, 0.0f, 0.0f), Vector3(0.5f, 1.5f, 1.0f));
-			//addRigidCapsule(capsuleBodies, Vector3(0.0f, 3.0f, 12.0f), Vector3(0.0f, 0.1f, 0.0f), 4.0f, 4.0f, 1.0f);
 			break;
 		}
-		// Create a different capsule
 		case '4':
 		{
-			//addRigidCapsule(capsules, Vector3(0.0f, 3.0f, 12.0f), Vector3(0.0f, 0.1f, 0.0f), 1.0f, 0.2f, 4.0f);
 			break;
 		}
 	}
