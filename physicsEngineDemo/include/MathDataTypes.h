@@ -538,7 +538,7 @@ namespace PhysicsEngine {
 			y /= totalAngle;
 			z /= totalAngle;
 
-			totalAngle = (totalAngle * PI) / 180;
+			totalAngle = (totalAngle * PI) / 180.0f;
 
 			float r = cos(totalAngle / 2.0f);
 			float i = x * sin(totalAngle / 2.0f);

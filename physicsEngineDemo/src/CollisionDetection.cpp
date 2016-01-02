@@ -372,6 +372,57 @@ unsigned int CollisionDetection::capsuleCapsuleCollisionDetect
 		minimumTValue = (a * e - b * d) / denominator;
 	}
 
+	// Prevent the S and T values from being less than zero
+	if (minimumSValue < 0)
+	{
+		minimumSValue = 0;
+	}
+
+	if (minimumTValue < 0)
+	{
+		minimumTValue = 0;
+	}
+
+	// Prevent the S and T values from being greater than 1
+	if (minimumSValue > 1)
+	{
+		minimumSValue = 1;
+	}
+
+	if (minimumTValue > 1)
+	{
+		minimumTValue = 1;
+	}
+
+
+	Vector3 firstCapsulePosition = ((firstPoint2 - firstPoint1) * minimumSValue) + firstPoint1;
+	Vector3 secondCapsulePosition = ((secondPoint2 - secondPoint1) * minimumTValue) + secondPoint1;
+
+	Vector3 vectorFromFirstToSecond = secondCapsulePosition - firstCapsulePosition;
+	float capsuleDistance = vectorFromFirstToSecond.magnitude();
+	capsuleDistance = capsuleDistance - first->radius - second->radius;
+
+	// Check if the distance between the capsules is less than the sum of their radii
+	if (capsuleDistance > 0)
+	{
+		return 0;
+	}
+
+	// Flip the contact normal
+	vectorFromFirstToSecond.normalise();
+	vectorFromFirstToSecond[0] *= -1.0f;
+	vectorFromFirstToSecond[1] *= -1.0f;
+	vectorFromFirstToSecond[2] *= -1.0f;
+
+	Collision newCollision;
+	newCollision.contactPoint = firstCapsulePosition + (vectorFromFirstToSecond * .5);
+	newCollision.contactNormal = vectorFromFirstToSecond;
+	newCollision.penetration = -1 * capsuleDistance;
+	newCollision.firstObject = first->body;
+	newCollision.secondObject = second->body;
+	newCollision.friction = 0.9f;
+
+	collisionList->push_back(newCollision);
 	return 1;
 }
 
