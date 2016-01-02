@@ -169,6 +169,11 @@ void detectCollisions(std::vector<Collision> *collisionList)
 	for (int capsuleIndex = 0; capsuleIndex < capsuleObjects.size(); capsuleIndex++)
 	{
 		CollisionDetection::capsuleHalfSpaceCollisionDetect(capsuleObjects[capsuleIndex], Vector3(0, 1, 0), 0, collisionList);
+		// Check for collisions against the walls
+		CollisionDetection::capsuleHalfSpaceCollisionDetect(capsuleObjects[capsuleIndex], Vector3(-1, 0, 0), -20, collisionList);
+		CollisionDetection::capsuleHalfSpaceCollisionDetect(capsuleObjects[capsuleIndex], Vector3(1, 0, 0), -20, collisionList);
+		CollisionDetection::capsuleHalfSpaceCollisionDetect(capsuleObjects[capsuleIndex], Vector3(0, 0, -1), -20, collisionList);
+		CollisionDetection::capsuleHalfSpaceCollisionDetect(capsuleObjects[capsuleIndex], Vector3(0, 0, 1), -20, collisionList);
 
 		// Check for collisions against spheres
 		for (int sphereIndex = 0; sphereIndex< sphereObjects.size(); sphereIndex++)
