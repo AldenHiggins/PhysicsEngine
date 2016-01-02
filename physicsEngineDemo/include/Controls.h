@@ -29,6 +29,8 @@ namespace PhysicsEngine
 		static void addForceToCube(std::vector<RectangleObject *> *rectangularBodies);
 		// Add a cube rigid body to the scene
 		static void addRigidCubeWhereYouLook(std::vector<RectangleObject *> *rectangularBodies, float theta, float phi);
+		// Add a rigid cube with no gravity
+		static void addRigidCubeNoGravity(std::vector<RectangleObject *> *rigidBodies, Vector3 position, Vector3 velocity, real mass, Vector3 halfSize);
 		// Add a sphere to the scene where you look
 		static void addSphereWhereYouLook
 		(
@@ -66,29 +68,6 @@ namespace PhysicsEngine
 			real radius,
 			real height
 		);
-		static void rectangleKeyCheck
-		(
-			unsigned char key,
-			std::vector<RectangleObject *> *rectangularBodies,
-			float theta,
-			float phi
-		);
-		static void sphereKeyCheck
-		(
-			unsigned char key,
-			std::vector<SphereObject *> *sphereBodies,
-			float theta,
-			float phi
-		);
-
-		static void capsuleKeyCheck
-		(
-			unsigned char key,
-			std::vector<CapsuleObject *> *capsuleBodies,
-			float theta,
-			float phi
-		);
-		static void particleKeyCheck(unsigned char key, std::vector<Particle *> *particles);
 
 		static Vector3 rotatePositionAlongYAxis(real depth, real height, real theta);
 	};
