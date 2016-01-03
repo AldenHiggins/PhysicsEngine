@@ -434,6 +434,41 @@ unsigned int CollisionDetection::capsuleSquareCollisionDetect
 	std::vector<Collision> *collisionList
 )
 {
+	// Start out by testing the line segment representing the capsule against the center point of the
+	// cube, finding the closest point along that line segment to the cube's center
+
+	// Get the three points involved
+	Vector3 point1 = first->body->getPointInWorldSpace(Vector3(0.0, first->height / 2.0f, 0.0));
+	Vector3 point2 = first->body->getPointInWorldSpace(Vector3(0.0, -1 * first->height / 2.0f, 0.0f));
+	Vector3 point3 = second->body->getPosition();
+
+	// Save the three constants that will be used several times during the closest point calculation for brevity's sake
+	float a = point2.x - point1.x;
+	float b = point2.y - point1.y;
+	float c = point2.z - point1.z;
+
+	// Calculate the numerator of the division to calculate the t value (the percentage between point 1 and point 2 of the capsule
+	// on which the closest point to the center of the cube lies
+	float num1 = -a * point3.x + a * point1.x;
+	float num2 = -b * point3.y + b * point1.y;
+	float num3 = -c * point3.z + c * point1.z;
+	float numerator = num1 + num2 + num3;
+	float denominator = -a * point2.x + a * point1.x - b * point2.y + b * point1.y - c * point2.z + c * point1.z;
+	float t = numerator / denominator;
+
+	// Cap the t between 0 and 1
+	if (t < 0)
+	{
+		t = 0;
+	}
+
+	if (t > 1)
+	{
+		t = 1;
+	}
+
+
+
 	return 1;
 }
 
