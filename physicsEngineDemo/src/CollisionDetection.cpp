@@ -467,7 +467,67 @@ unsigned int CollisionDetection::capsuleSquareCollisionDetect
 		t = 1;
 	}
 
+	Vector3 capsuleVector = point2 - point1;
+	Vector3 closestPointOnCapsule = point1 + capsuleVector * t;
 
+	Vector3 pointInCubeSpace = second->body->getTransformMatrix().transformInverse(closestPointOnCapsule);
+
+	// Test all of the axis to make sure they are all within the cube
+	if ((abs(pointInCubeSpace[0]) - first->radius) > second->halfSize[0])
+	{
+		return 0;
+	}
+	if ((abs(pointInCubeSpace[1]) - first->radius) > second->halfSize[1])
+	{
+		return 0;
+	}
+	if ((abs(pointInCubeSpace[2]) - first->radius) > second->halfSize[2])
+	{
+		return 0;
+	}
+
+	// Cap the point in cube space to the halfsize
+	if (pointInCubeSpace[0] > second->halfSize[0])
+	{
+		pointInCubeSpace[0] = second->halfSize[0];
+	}
+	else if (pointInCubeSpace[0] < -1 * second->halfSize[0])
+	{
+		pointInCubeSpace[0] = -1 * second->halfSize[0];
+	}
+	if (pointInCubeSpace[1] > second->halfSize[1])
+	{
+		pointInCubeSpace[1] = second->halfSize[1];
+	}
+	else if (pointInCubeSpace[1] < -1 * second->halfSize[1])
+	{
+		pointInCubeSpace[1] = -1 * second->halfSize[1];
+	}
+	if (pointInCubeSpace[2] > second->halfSize[2])
+	{
+		pointInCubeSpace[2] = second->halfSize[2];
+	}
+	else if (pointInCubeSpace[2] < -1 * second->halfSize[2])
+	{
+		pointInCubeSpace[2] = -1 * second->halfSize[2];
+	}
+
+	// Convert the point back into world space
+	Vector3 collisionPoint = second->body->getPointInWorldSpace(pointInCubeSpace);
+	Collision newCollision;
+	newCollision.contactPoint = collisionPoint;
+	collisionPoint = collisionPoint - second->body->getPosition();
+	collisionPoint.normalise();
+	newCollision.contactNormal = collisionPoint;
+	// Calculate the penetration
+	float distanceToClosestPoint = (second->body->getPointInWorldSpace(pointInCubeSpace) - second->body->getPosition()).magnitude();
+	float penetration = first->radius - (second->body->getTransformMatrix().transformInverse(closestPointOnCapsule).magnitude() - distanceToClosestPoint);
+	newCollision.penetration = penetration;
+	newCollision.firstObject = first->body;
+	newCollision.secondObject = second->body;
+	newCollision.friction = 0.9f;
+
+	collisionList->push_back(newCollision);
 
 	return 1;
 }
