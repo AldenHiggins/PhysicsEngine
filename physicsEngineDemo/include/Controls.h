@@ -14,6 +14,7 @@ namespace PhysicsEngine
 		static void keyCheck
 		(
 			unsigned char key,
+			Physics *physicsEngine,
 			std::vector<Particle *> *particles,
 			std::vector<Box *> *boxes,
 			std::vector<Sphere *> *spheres,
@@ -59,6 +60,7 @@ namespace PhysicsEngine
 		// Add a capsule with the inputted parameters
 		static void addRigidCapsule
 		(
+			PhysicsEngine::Physics *physicsEngine,
 			std::vector<Capsule *> *capsuleBodies,
 			Vector3 position,
 			Quaternion rotation,

@@ -33,31 +33,10 @@
     <ClInclude Include="include\Timing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\RigidBody.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\BoundingVolumes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Controls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Debug.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Collisions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CollisionResolver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CollisionPrimitives.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\RenderableObjects.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CollisionDetection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -74,28 +53,10 @@
     <ClCompile Include="src\Timing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\RigidBody.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\BoundingVolumes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Controls.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Debug.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Collisions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CollisionResolver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\RenderableObjects.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CollisionDetection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

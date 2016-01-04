@@ -1,6 +1,12 @@
 #ifndef COLLISION_PRIMITIVES_H
 #define COLLISION_PRIMITIVES_H
 
+#ifdef COLLISION_PRIMITIVES_H_EXPORTS
+#define COLLISION_PRIMITIVES_H_API __declspec(dllexport) 
+#else
+#define COLLISION_PRIMITIVES_H_API __declspec(dllimport) 
+#endif
+
 #include "MathDataTypes.h"
 #include "RigidBody.h"
 
@@ -18,7 +24,7 @@ namespace PhysicsEngine
 	public:
 		Vector3 halfSize;
 		// Set all of the parameters for this collision box
-		void setState(Vector3 position, Vector3 velocity, Vector3 acceleration, real mass, Vector3 halfSizeInput);
+		COLLISION_PRIMITIVES_H_API void setState(Vector3 position, Vector3 velocity, Vector3 acceleration, real mass, Vector3 halfSizeInput);
 	};
 
 	class CollisionSphere : public CollisionPrimitive
@@ -26,7 +32,7 @@ namespace PhysicsEngine
 	public:
 		real radius;
 		// Set all of the parameters for this collision sphere
-		void setState(Vector3 position, Vector3 velocity, Vector3 acceleration, real mass, real radiusInput);
+		COLLISION_PRIMITIVES_H_API void setState(Vector3 position, Vector3 velocity, Vector3 acceleration, real mass, real radiusInput);
 	};
 
 	class CollisionCapsule : public CollisionPrimitive
@@ -36,7 +42,7 @@ namespace PhysicsEngine
 		real height;
 
 		// Set all of the parameters for this rigid body/Collision Box
-		void setState(Vector3 position, Quaternion rotation, Vector3 velocity, Vector3 acceleration, real mass, real radiusInput, real heightInput);
+		COLLISION_PRIMITIVES_H_API void setState(Vector3 position, Quaternion rotation, Vector3 velocity, Vector3 acceleration, real mass, real radiusInput, real heightInput);
 	};
 }
 

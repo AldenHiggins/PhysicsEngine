@@ -17,6 +17,9 @@ void drawBackground();
 // Draw all of the rigid bodies
 void drawBodies();
 
+// The instance of the physics engine that this game will make use of
+Physics physicsEngine;
+
 // Contains all of the particles in the scene
 std::vector<Particle *> particles;
 // Contains all the rectangular objects in the scene
@@ -84,139 +87,14 @@ void display()
 		duration = 0.05f;
 	}
 
-	// Integrate all of the rigid bodies
-	integrateRigidBodies(duration);
+	// Update the world physics based on the timestep of the frame
+	physicsEngine.updatePhysics(duration);
 
-	// Check for and resolve collisions
-	std::vector<Collision> collisionList;
-	detectCollisions(&collisionList);
-	resolveCollisions(&collisionList, duration);
 	// Draw all of the rigid bodies
 	drawBodies();
 
 	glFlush();
 	glutSwapBuffers();
-}
-
-// Resolve the found collisions
-void resolveCollisions(std::vector<Collision> *collisionList, real duration)
-{
-	if (collisionList->size() > 0)
-	{
-		CollisionResolver resolver(collisionList->size() * 4, collisionList->size() * 4);
-		resolver.resolveContacts(collisionList, duration);
-	}
-}
-
-// Detect collisions
-void detectCollisions(std::vector<Collision> *collisionList)
-{
-	// Detect cube collisions
-	for (unsigned int rigidBodyIndex = 0; rigidBodyIndex < rectangleObjects.size(); rigidBodyIndex++)
-	{
-		// Check for collisions against the ground
-		CollisionDetection::boxAndHalfSpaceCollisionDetect(rectangleObjects[rigidBodyIndex], Vector3(0, 1, 0), 0, collisionList);
-		// Check for collisions against the walls
-		CollisionDetection::boxAndHalfSpaceCollisionDetect(rectangleObjects[rigidBodyIndex], Vector3(-1, 0, 0), -20, collisionList);
-		CollisionDetection::boxAndHalfSpaceCollisionDetect(rectangleObjects[rigidBodyIndex], Vector3(1, 0, 0), -20, collisionList);
-		CollisionDetection::boxAndHalfSpaceCollisionDetect(rectangleObjects[rigidBodyIndex], Vector3(0, 0, -1), -20, collisionList);
-		CollisionDetection::boxAndHalfSpaceCollisionDetect(rectangleObjects[rigidBodyIndex], Vector3(0, 0, 1), -20, collisionList);
-
-		// Search for box/box collisions
-		for (int otherRigidBodyIndex = rigidBodyIndex + 1; otherRigidBodyIndex < rectangleObjects.size(); otherRigidBodyIndex++)
-		{
-			CollisionDetection::cubeCubeCollisionDetect(collisionList, rectangleObjects[rigidBodyIndex], rectangleObjects[otherRigidBodyIndex]);
-		}
-	}
-
-	// Detect sphere collisions
-	for (int sphereIndex = 0; sphereIndex < sphereObjects.size(); sphereIndex++)
-	{
-		// Check for collisions against ground
-		CollisionDetection::sphereAndHalfSpaceCollisionDetect(sphereObjects[sphereIndex], Vector3(0, 1, 0), 0, collisionList);
-		// Check for collisions against the walls
-		CollisionDetection::sphereAndHalfSpaceCollisionDetect(sphereObjects[sphereIndex], Vector3(-1, 0, 0), -20, collisionList);
-		CollisionDetection::sphereAndHalfSpaceCollisionDetect(sphereObjects[sphereIndex], Vector3(1, 0, 0), -20, collisionList);
-		CollisionDetection::sphereAndHalfSpaceCollisionDetect(sphereObjects[sphereIndex], Vector3(0, 0, -1), -20, collisionList);
-		CollisionDetection::sphereAndHalfSpaceCollisionDetect(sphereObjects[sphereIndex], Vector3(0, 0, 1), -20, collisionList);
-
-		// Check for collisions against other spheres
-		for (int otherSphereIndex = sphereIndex + 1; otherSphereIndex < sphereObjects.size(); otherSphereIndex++)
-		{
-			CollisionDetection::sphereSphereCollisionDetect(sphereObjects[sphereIndex], sphereObjects[otherSphereIndex], collisionList);
-		}
-
-		// Check for collisions against cubes
-		for (int cubeIndex = 0; cubeIndex < rectangleObjects.size(); cubeIndex++)
-		{
-			CollisionDetection::sphereCubeCollisionDetect(sphereObjects[sphereIndex], rectangleObjects[cubeIndex], collisionList);
-		}
-	}
-
-	// Detect capsule collisions
-	for (int capsuleIndex = 0; capsuleIndex < capsuleObjects.size(); capsuleIndex++)
-	{
-		CollisionDetection::capsuleHalfSpaceCollisionDetect(capsuleObjects[capsuleIndex], Vector3(0, 1, 0), 0, collisionList);
-		// Check for collisions against the walls
-		CollisionDetection::capsuleHalfSpaceCollisionDetect(capsuleObjects[capsuleIndex], Vector3(-1, 0, 0), -20, collisionList);
-		CollisionDetection::capsuleHalfSpaceCollisionDetect(capsuleObjects[capsuleIndex], Vector3(1, 0, 0), -20, collisionList);
-		CollisionDetection::capsuleHalfSpaceCollisionDetect(capsuleObjects[capsuleIndex], Vector3(0, 0, -1), -20, collisionList);
-		CollisionDetection::capsuleHalfSpaceCollisionDetect(capsuleObjects[capsuleIndex], Vector3(0, 0, 1), -20, collisionList);
-
-		// Check for collisions against spheres
-		for (int sphereIndex = 0; sphereIndex< sphereObjects.size(); sphereIndex++)
-		{
-			CollisionDetection::capsuleSphereCollisionDetect(capsuleObjects[capsuleIndex], sphereObjects[sphereIndex], collisionList);
-		}
-
-		// Check for collisions against cubes
-		for (int cubeIndex = 0; cubeIndex < rectangleObjects.size(); cubeIndex++)
-		{
-			CollisionDetection::capsuleSquareCollisionDetect(capsuleObjects[capsuleIndex], rectangleObjects[cubeIndex], collisionList);
-		}
-
-		// Check for collisions against other capsules
-		for (int otherCapsuleIndex = capsuleIndex + 1; otherCapsuleIndex < capsuleObjects.size(); otherCapsuleIndex++)
-		{
-			CollisionDetection::capsuleCapsuleCollisionDetect(capsuleObjects[capsuleIndex], capsuleObjects[otherCapsuleIndex], collisionList);
-		}
-	}
-}
-
-// Integrate all of the rigid bodies in the scene
-void integrateRigidBodies(real duration)
-{
-	// Integrate all of the particles
-	for (int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
-	{
-		particles[particleIndex]->integrate(duration);
-	}
-
-	// Integrate all of the cubes
-	if (rectangleObjects.size() > 0)
-	{
-		// Integrate all of the rigid bodies and add them to the bounding sphere heirarchy
-		for (int rigidBodyIndex = 0; rigidBodyIndex < rectangleObjects.size(); rigidBodyIndex++)
-		{
-			RigidBody *body = rectangleObjects[rigidBodyIndex]->body;
-			body->integrate(duration);
-		}
-	}
-
-	// Integrate all of the spheres
-	if (sphereObjects.size() > 0)
-	{
-		for (int rigidBodyIndex = 0; rigidBodyIndex < sphereObjects.size(); rigidBodyIndex++)
-		{
-			sphereObjects[rigidBodyIndex]->body->integrate(duration);
-		}
-	}
-
-	// Integrate all the cylinders
-	for (unsigned int rigidBodyIndex = 0; rigidBodyIndex < capsuleObjects.size(); rigidBodyIndex++)
-	{
-		capsuleObjects[rigidBodyIndex]->body->integrate(duration);
-	}
 }
 
 // Draw the background of the scene
@@ -324,7 +202,7 @@ void reshape(int width, int height)
 */
 void keyboard(unsigned char key, int x, int y)
 {
-	Controls::keyCheck(key, &particles, &rectangleObjects, &sphereObjects, &capsuleObjects, theta, phi);
+	Controls::keyCheck(key, &physicsEngine, &particles, &rectangleObjects, &sphereObjects, &capsuleObjects, theta, phi);
 }
 
 

@@ -9,6 +9,7 @@ using namespace PhysicsEngine;
 void Controls::keyCheck
 (
 	unsigned char key,
+	PhysicsEngine::Physics *physicsEngine,
 	std::vector<Particle *> *particles,
 	std::vector<Box *> *rectangularBodies,
 	std::vector<Sphere *> *spheres,
@@ -21,7 +22,7 @@ void Controls::keyCheck
 	{
 		case '1':
 		{		
-			addRigidCapsule(capsules, Vector3(-3.0f, 5.0f, 12.0f), Quaternion::fromEuler(1, 0, 0), Vector3(10.0f, 0, 0), 1.0f, 1.0f, 1.0f);
+			addRigidCapsule(physicsEngine, capsules, Vector3(-3.0f, 5.0f, 12.0f), Quaternion::fromEuler(1, 0, 0), Vector3(10.0f, 0, 0), 1.0f, 1.0f, 1.0f);
 			addRigidCubeNoGravity(rectangularBodies, Vector3(0.0f, 5.0f, 12.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, Vector3(1.0f, .5f, .5f));
 			break;
 		}
@@ -119,9 +120,10 @@ Vector3 Controls::rotatePositionAlongYAxis(real depth, real height, real theta)
 }
 
 // Add a capsule with the inputted parameters
-void Controls::addRigidCapsule(std::vector<Capsule *> *capsuleBodies, Vector3 position, Quaternion rotation, Vector3 velocity, real mass, real radius, real height)
+void Controls::addRigidCapsule(PhysicsEngine::Physics *physicsEngine, std::vector<Capsule *> *capsuleBodies, Vector3 position, Quaternion rotation, Vector3 velocity, real mass, real radius, real height)
 {
 	Capsule *newCapsule = new Capsule();
+	newCapsule->capsulePrimitive = physicsEngine->createCapsule();
 	newCapsule->capsulePrimitive->setState(position, rotation, velocity, Vector3(), mass, radius, height);
 	capsuleBodies->push_back(newCapsule);
 }
