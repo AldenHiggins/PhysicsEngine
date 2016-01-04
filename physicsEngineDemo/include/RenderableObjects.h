@@ -7,80 +7,55 @@
 
 namespace PhysicsEngine
 {
-	class RectangleObject : public CollisionBox
+	class Box
 	{
 	public:
-		RectangleObject()
+		CollisionBox *boxPrimitive;
+
+		Box()
 		{
-			body = new RigidBody();
 		}
 
-		~RectangleObject()
+		~Box()
 		{
-			delete body;
-		}
-
-		// Set all of the parameters for this rigid body/Collision Box
-		void setState(Vector3 position, Vector3 velocity, Vector3 acceleration, real mass, Vector3 halfSizeInput)
-		{
-			halfSize = halfSizeInput;
-			body->setPosition(position);
-			body->setVelocity(velocity);
-			body->setAcceleration(acceleration);
-			body->setMass(mass);
-			Matrix3 tensor;
-			tensor.setBlockInertiaTensor(halfSizeInput, mass);
-			body->setInertiaTensor(tensor);
-			body->setDamping(SQUARE_LINEAR_DAMPING, SQUARE_ANGULAR_DAMPING);
+			delete boxPrimitive;
 		}
 
 		// Display this rectangle
 		void display();
 	};
 
-	class SphereObject : public CollisionSphere
+	class Sphere
 	{
 	public:
-		SphereObject()
+		CollisionSphere *spherePrimitive;
+
+		Sphere()
 		{
-			body = new RigidBody();
 		}
 
-		~SphereObject()
+		~Sphere()
 		{
-			delete body;
+			delete spherePrimitive;
 		}
 
-		// Set all of the parameters for this rigid body/Collision Box
-		void setState(Vector3 position, Vector3 velocity, Vector3 acceleration, real mass, real radiusInput)
-		{
-			radius = radiusInput;
-			body->setPosition(position);
-			body->setVelocity(velocity);
-			body->setAcceleration(acceleration);
-			body->setMass(mass);
-			body->setDamping(SQUARE_LINEAR_DAMPING, SQUARE_ANGULAR_DAMPING);
-			// Set the inertia tensor for the sphere
-			Matrix3 tensor;
-			real coeff = 0.4f*mass*radius*radius;
-			tensor.setInertiaTensorCoeffs(coeff, coeff, coeff);
-			body->setInertiaTensor(tensor);
-		}
 
 		// Display this sphere object
 		void display();
 	};
 
 
-	class CapsuleObject : public CollisionCapsule
+	class Capsule
 	{
 	public:
-		CapsuleObject();
+		CollisionCapsule *capsulePrimitive;
 
-		~CapsuleObject();
+		Capsule();
 
-		// Set all of the parameters for this rigid body/Collision Box
-		void setState(Vector3 position, Quaternion rotation, Vector3 velocity, Vector3 acceleration, real mass, real radiusInput, real heightInput);
+		~Capsule()
+		{
+			delete capsulePrimitive;
+		}
 
 		// Display this sphere object
 		void display();

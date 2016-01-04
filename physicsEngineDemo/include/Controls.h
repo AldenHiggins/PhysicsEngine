@@ -2,7 +2,6 @@
 #define PHYSICS_ENGINE_CONTROLS_H
 
 #include "Particle.h"
-#include "RigidBody.h"
 #include "RenderableObjects.h"
 #include <vector>
 
@@ -16,25 +15,25 @@ namespace PhysicsEngine
 		(
 			unsigned char key,
 			std::vector<Particle *> *particles,
-			std::vector<RectangleObject *> *rigidBodies,
-			std::vector<SphereObject *> *spheres,
-			std::vector<CapsuleObject *> *capsules,
+			std::vector<Box *> *boxes,
+			std::vector<Sphere *> *spheres,
+			std::vector<Capsule *> *capsules,
 			float theta,
 			float phi
 		);
 	private:
 		// Add force to the first cylinder
-		static void addForceToCapsule(std::vector<CapsuleObject *> *capsuleBodies);
+		static void addForceToCapsule(std::vector<Capsule *> *capsuleBodies);
 		// Add force to the first cube
-		static void addForceToCube(std::vector<RectangleObject *> *rectangularBodies);
+		static void addForceToCube(std::vector<Box *> *rectangularBodies);
 		// Add a cube rigid body to the scene
-		static void addRigidCubeWhereYouLook(std::vector<RectangleObject *> *rectangularBodies, float theta, float phi);
+		static void addRigidCubeWhereYouLook(std::vector<Box *> *rectangularBodies, float theta, float phi);
 		// Add a rigid cube with no gravity
-		static void addRigidCubeNoGravity(std::vector<RectangleObject *> *rigidBodies, Vector3 position, Vector3 velocity, real mass, Vector3 halfSize);
+		static void addRigidCubeNoGravity(std::vector<Box *> *rigidBodies, Vector3 position, Vector3 velocity, real mass, Vector3 halfSize);
 		// Add a sphere to the scene where you look
 		static void addSphereWhereYouLook
 		(
-			std::vector<SphereObject *> *sphereBodies,
+			std::vector<Sphere *> *sphereBodies,
 			float theta,
 			float phi,
 			float radius
@@ -42,7 +41,7 @@ namespace PhysicsEngine
 		// Add a sphere to the scene with the given properties
 		static void addSphere
 		(
-			std::vector<SphereObject *> *sphereBodies,
+			std::vector<Sphere *> *sphereBodies,
 			Vector3 position,
 			Vector3 velocity,
 			real mass,
@@ -51,7 +50,7 @@ namespace PhysicsEngine
 		// Add a rigid cube with the inputted parameters
 		static void addRigidCube
 		(
-			std::vector<RectangleObject *> *rectangularBodies,
+			std::vector<Box *> *rectangularBodies,
 			Vector3 position,
 			Vector3 velocity,
 			real mass,
@@ -60,7 +59,7 @@ namespace PhysicsEngine
 		// Add a capsule with the inputted parameters
 		static void addRigidCapsule
 		(
-			std::vector<CapsuleObject *> *capsuleBodies,
+			std::vector<Capsule *> *capsuleBodies,
 			Vector3 position,
 			Quaternion rotation,
 			Vector3 velocity,

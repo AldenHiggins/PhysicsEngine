@@ -7,36 +7,24 @@
 #include "ApplicationSettings.h"
 #include "Particle.h"
 #include "Timing.h"
-#include "RigidBody.h"
 #include "Controls.h"
-#include "BoundingVolumes.h"
-#include "Debug.h"
-#include "Collisions.h"
-#include "CollisionResolver.h"
-#include "CollisionDetection.h"
 #include "RenderableObjects.h"
 
 using namespace PhysicsEngine;
 
 // Draw the background of the scene
 void drawBackground();
-// Integrate all of the rigid bodies
-void integrateRigidBodies(real duration);
-// Detect collisions
-void detectCollisions(std::vector<Collision> *collisionList);
-// Resolve the found collisions
-void resolveCollisions(std::vector<Collision> *collisionList, real duration);
 // Draw all of the rigid bodies
 void drawBodies();
 
 // Contains all of the particles in the scene
 std::vector<Particle *> particles;
 // Contains all the rectangular objects in the scene
-std::vector<RectangleObject *> rectangleObjects;
+std::vector<Box *> rectangleObjects;
 // Contains all of the spherical objects in the scene
-std::vector<SphereObject *> sphereObjects;
+std::vector<Sphere *> sphereObjects;
 // Contains all of the capsules in the scene
-std::vector<CapsuleObject *> capsuleObjects;
+std::vector<Capsule *> capsuleObjects;
 
 // Camera control variables
 float theta;
