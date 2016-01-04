@@ -15,6 +15,7 @@
 #include "CollisionResolver.h"
 #include "CollisionDetection.h"
 #include "RenderableObjects.h"
+#include "Test.h"
 
 using namespace PhysicsEngine;
 
@@ -397,6 +398,8 @@ void initializeScene()
 */
 int main(int argc, char** argv)
 {
+	int thisInt = Test::Testing::testFunction();
+
 	// Initialize everything needed for the current scene
 	initializeScene();
 	// Set up GLUT and the timers

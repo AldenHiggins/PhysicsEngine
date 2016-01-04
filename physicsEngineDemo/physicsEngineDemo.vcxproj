@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\Code\PhysicsEngine\physicsEngineDemo\lib\win32;D:\Code\PhysicsEngine\physicsEngineDemo\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Code\PhysicsEngine\physicsEngineDemo\lib\win32;D:\Code\PhysicsEngine\physicsEngineDemo\include;D:\Code\PhysicsEngine\PhysicsDLL\Include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -70,7 +70,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\Code\PhysicsEngine\physicsEngineDemo\lib\win32;D:\Code\PhysicsEngine\physicsEngineDemo\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Code\PhysicsEngine\physicsEngineDemo\lib\win32;D:\Code\PhysicsEngine\physicsEngineDemo\include;D:\Code\PhysicsEngine\PhysicsDLL\Include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -111,6 +111,11 @@
     <ClCompile Include="src\RenderableObjects.cpp" />
     <ClCompile Include="src\RigidBody.cpp" />
     <ClCompile Include="src\Timing.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PhysicsDLL\PhysicsDLL.vcxproj">
+      <Project>{c2aba685-6de3-44ba-b57a-c4adbf875bc8}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
