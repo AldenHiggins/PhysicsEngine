@@ -61,7 +61,7 @@ namespace PhysicsEngine
 		void addForceAtPoint(const Vector3 &force, const Vector3 &point);
 
 		// Add a force at a position on this object in object space
-		void addForceAtBodyPoint(const Vector3 &force, const Vector3 &point);
+		__declspec(dllexport) void addForceAtBodyPoint(const Vector3 &force, const Vector3 &point);
 
 		// Add the inputted velocity to this rigid body
 		void addVelocity(const Vector3 &deltaVelocity);
@@ -131,7 +131,7 @@ namespace PhysicsEngine
 		void setIsAwake(bool isAwakeInput);
 
 		// Get this body's transformation matrix in a form that opengl can use
-		void getGLTransform(float matrix[16]) const;
+		__declspec(dllexport) void getGLTransform(float matrix[16]) const;
 
 		// Transform a point from object space into world space
 		Vector3 getPointInWorldSpace(const Vector3 &point) const;

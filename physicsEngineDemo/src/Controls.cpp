@@ -4,7 +4,7 @@
 #include "MathDataTypes.h"
 #include <math.h>
 
-using namespace PhysicsEngine;
+using namespace PhysicsDemo;
 
 void Controls::keyCheck
 (
@@ -22,8 +22,8 @@ void Controls::keyCheck
 	{
 		case '1':
 		{		
-			addRigidCapsule(physicsEngine, capsules, Vector3(-3.0f, 5.0f, 12.0f), Quaternion::fromEuler(1, 0, 0), Vector3(10.0f, 0, 0), 1.0f, 1.0f, 1.0f);
-			addRigidCubeNoGravity(rectangularBodies, Vector3(0.0f, 5.0f, 12.0f), Vector3(0.0f, 0.0f, 0.0f), 10.0f, Vector3(1.0f, .5f, .5f));
+			addRigidCapsule(physicsEngine, capsules, PhysicsEngine::Vector3(-3.0f, 5.0f, 12.0f), PhysicsEngine::Quaternion::fromEuler(1, 0, 0), PhysicsEngine::Vector3(10.0f, 0, 0), 1.0f, 1.0f, 1.0f);
+			//addRigidCubeNoGravity(rectangularBodies, PhysicsEngine::Vector3(0.0f, 5.0f, 12.0f), PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f), 10.0f, PhysicsEngine::Vector3(1.0f, .5f, .5f));
 			break;
 		}
 		case '2':
@@ -33,7 +33,7 @@ void Controls::keyCheck
 		}
 		case '3':
 		{
-			(*capsules)[0]->capsulePrimitive->body->addForceAtBodyPoint(Vector3(-100.0f, 0.0f, 0.0f), Vector3(0.5f, 1.5f, 1.0f));
+			(*capsules)[0]->capsulePrimitive->body->addForceAtBodyPoint(PhysicsEngine::Vector3(-100.0f, 0.0f, 0.0f), PhysicsEngine::Vector3(0.5f, 1.5f, 1.0f));
 			break;
 		}
 		case '4':
@@ -52,78 +52,88 @@ void Controls::addSphereWhereYouLook
 	float radius
 )
 {
-	Vector3 sphereCreationPosition = rotatePositionAlongYAxis(6.0f, 9.0f, theta);
-	addSphere(sphereBodies, sphereCreationPosition, Vector3(0.0f, 0.0f, 0.0f), 1.0f, radius);
+	PhysicsEngine::Vector3 sphereCreationPosition = rotatePositionAlongYAxis(6.0f, 9.0f, theta);
+	addSphere(sphereBodies, sphereCreationPosition, PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f), 1.0f, radius);
 }
 
 // Add a sphere to the scene with the given properties
 void Controls::addSphere
 (
 	std::vector<Sphere *> *sphereBodies,
-	Vector3 position,
-	Vector3 velocity,
+	PhysicsEngine::Vector3 position,
+	PhysicsEngine::Vector3 velocity,
 	real mass,
 	real radius
 )
 {
 	Sphere *newSphere = new Sphere();
-	newSphere->spherePrimitive->setState(position, velocity, Vector3::GRAVITY, mass, radius);
+	newSphere->spherePrimitive->setState(position, velocity, PhysicsEngine::Vector3(0, -9.81, 0), mass, radius);
 	sphereBodies->push_back(newSphere);
 }
 
 // Add force to the first cube
 void Controls::addForceToCube(std::vector<Box *> *rigidBodies)
 {
-	(*rigidBodies)[0]->boxPrimitive->body->addForceAtBodyPoint(Vector3(80.0f, 0.0f, 0.0f), Vector3(0.5f, 0.5f, 1.0f));
+	(*rigidBodies)[0]->boxPrimitive->body->addForceAtBodyPoint(PhysicsEngine::Vector3(80.0f, 0.0f, 0.0f), PhysicsEngine::Vector3(0.5f, 0.5f, 1.0f));
 }
 
 // Add force to the first capsule
 void Controls::addForceToCapsule(std::vector<Capsule *> *capsuleBodies)
 {
-	(*capsuleBodies)[0]->capsulePrimitive->body->addForceAtBodyPoint(Vector3(400.0f, 0.0f, 0.0f), Vector3(0.5f, 1.5f, 1.0f));
-	(*capsuleBodies)[0]->capsulePrimitive->body->addForceAtBodyPoint(Vector3(-400.0f, 0.0f, 0.0f), Vector3(0.5f, -1.5f, 1.0f));
+	(*capsuleBodies)[0]->capsulePrimitive->body->addForceAtBodyPoint(PhysicsEngine::Vector3(400.0f, 0.0f, 0.0f), PhysicsEngine::Vector3(0.5f, 1.5f, 1.0f));
+	(*capsuleBodies)[0]->capsulePrimitive->body->addForceAtBodyPoint(PhysicsEngine::Vector3(-400.0f, 0.0f, 0.0f), PhysicsEngine::Vector3(0.5f, -1.5f, 1.0f));
 }
 
 // Add a rigid cube with the inputted parameters
-void Controls::addRigidCubeNoGravity(std::vector<Box *> *rigidBodies, Vector3 position, Vector3 velocity, real mass, Vector3 halfSize)
+void Controls::addRigidCubeNoGravity(std::vector<Box *> *rigidBodies, PhysicsEngine::Vector3 position, PhysicsEngine::Vector3 velocity, real mass, PhysicsEngine::Vector3 halfSize)
 {
 	Box *newSquare = new Box();
-	newSquare->boxPrimitive->setState(position, velocity, Vector3(0.0f, 0.0f, 0.0f), mass, halfSize);
+	newSquare->boxPrimitive->setState(position, velocity, PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f), mass, halfSize);
 	rigidBodies->push_back(newSquare);
 }
 
 // Add a rigid cube with the inputted parameters
-void Controls::addRigidCube(std::vector<Box *> *rigidBodies, Vector3 position, Vector3 velocity, real mass, Vector3 halfSize)
+void Controls::addRigidCube(std::vector<Box *> *rigidBodies, PhysicsEngine::Vector3 position, PhysicsEngine::Vector3 velocity, real mass, PhysicsEngine::Vector3 halfSize)
 {
 	Box *newSquare = new Box();
-	newSquare->boxPrimitive->setState(position, velocity, Vector3::GRAVITY, mass, halfSize);
+	newSquare->boxPrimitive->setState(position, velocity, PhysicsEngine::Vector3(0, -9.81, 0), mass, halfSize);
 	rigidBodies->push_back(newSquare);
 }
 
 // Add a cube rigid body to the scene
 void Controls::addRigidCubeWhereYouLook(std::vector<Box *> *rigidBodies, float theta, float phi)
 {
-	Vector3 squareCreationPosition = rotatePositionAlongYAxis(6.0f, 4.0f, theta);
+	PhysicsEngine::Vector3 squareCreationPosition = rotatePositionAlongYAxis(6.0f, 4.0f, theta);
 
-	addRigidCube(rigidBodies, squareCreationPosition, Vector3(0.0f, 0.0f, 0.0f), 1.0f, Vector3(.5f, .5f, .5f));
+	addRigidCube(rigidBodies, squareCreationPosition, PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f), 1.0f, PhysicsEngine::Vector3(.5f, .5f, .5f));
 }
 
-Vector3 Controls::rotatePositionAlongYAxis(real depth, real height, real theta)
+PhysicsEngine::Vector3 Controls::rotatePositionAlongYAxis(real depth, real height, real theta)
 {
-	Vector3 objectInitialPosition(0.0f, height, depth);
+	PhysicsEngine::Vector3 objectInitialPosition(0.0f, height, depth);
 	float thetaRads = theta * PI / 180.0;
-	Quaternion cameraRotation(cos(thetaRads / 2), 0.0f, 1.0f * sin(thetaRads / 2), 0.0f);
-	Matrix3 rotMatrix;
+	PhysicsEngine::Quaternion cameraRotation(cos(thetaRads / 2), 0.0f, 1.0f * sin(thetaRads / 2), 0.0f);
+	PhysicsEngine::Matrix3 rotMatrix;
 	rotMatrix.setOrientation(cameraRotation);
 
 	return rotMatrix.transform(objectInitialPosition);
 }
 
 // Add a capsule with the inputted parameters
-void Controls::addRigidCapsule(PhysicsEngine::Physics *physicsEngine, std::vector<Capsule *> *capsuleBodies, Vector3 position, Quaternion rotation, Vector3 velocity, real mass, real radius, real height)
+void Controls::addRigidCapsule
+(
+	PhysicsEngine::Physics *physicsEngine,
+	std::vector<Capsule *> *capsuleBodies,
+	PhysicsEngine::Vector3 position,
+	PhysicsEngine::Quaternion rotation,
+	PhysicsEngine::Vector3 velocity,
+	real mass,
+	real radius,
+	real height
+)
 {
 	Capsule *newCapsule = new Capsule();
 	newCapsule->capsulePrimitive = physicsEngine->createCapsule();
-	newCapsule->capsulePrimitive->setState(position, rotation, velocity, Vector3(), mass, radius, height);
+	newCapsule->capsulePrimitive->setState(position, rotation, velocity, PhysicsEngine::Vector3(), mass, radius, height);
 	capsuleBodies->push_back(newCapsule);
 }

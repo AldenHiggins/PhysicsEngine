@@ -24,6 +24,7 @@ Physics::Physics()
 CollisionCapsule* Physics::createCapsule()
 {
 	CollisionCapsule *capsule = new CollisionCapsule;
+	capsule->body = new RigidBody;
 	capsuleObjects.push_back(capsule);
 	return capsule;
 }

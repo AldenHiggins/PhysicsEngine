@@ -18,14 +18,14 @@
 * The core contains utility functions, helpers and a basic set of
 * mathematical types.
 */
-#ifndef MATH_DATA_TYPES_H
-#define MATH_DATA_TYPES_H
+#ifndef DEMO_MATH_TYPES_H
+#define DEMO_MATH_TYPES_H
 
-#include "precision.h"
+#include "DemoPrecision.h"
 
 #define PI 3.14159265
 
-namespace PhysicsEngine {
+namespace PhysicsDemo {
 
 	/**
 	* Holds the value for energy under which a body will be put to
@@ -1180,4 +1180,4 @@ namespace PhysicsEngine {
 
 }
 
-#endif // MATH_DATA_TYPES_H
+#endif // DEMO_MATH_TYPES_H

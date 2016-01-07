@@ -45,7 +45,7 @@ namespace PhysicsEngine
 		void resolveCollisions(std::vector<Collision> *collisionList, real duration);
 	public:
 		// Construct the physics engine
-		Physics();
+		PHYSICSDLL_API Physics();
 
 		// Update the physics engine based on the elapsed time
 		PHYSICSDLL_API void updatePhysics(float duration);

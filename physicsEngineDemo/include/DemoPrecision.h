@@ -22,12 +22,12 @@
 * @note All the contents of this file need to be changed to compile
 * Cyclone at a different precision.
 */
-#ifndef PHYSICS_ENGINE_PRECISION_H
-#define PHYSICS_ENGINE_PRECISION_H
+#ifndef PHYSICS_DEMO_PRECISION_H
+#define PHYSICS_DEMO_PRECISION_H
 
 #include <float.h>
 
-namespace PhysicsEngine {
+namespace PhysicsDemo {
 
 #if 0
 	/**
@@ -77,4 +77,4 @@ namespace PhysicsEngine {
 #endif
 }
 
-#endif // PHYSICS_ENGINE_PRECISION_H
+#endif // PHYSICS_DEMO_PRECISION_H

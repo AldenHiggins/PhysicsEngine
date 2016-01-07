@@ -1,11 +1,13 @@
 #ifndef PHYSICS_ENGINE_CONTROLS_H
 #define PHYSICS_ENGINE_CONTROLS_H
 
-#include "Particle.h"
+#include "RenderParticles.h"
 #include "RenderableObjects.h"
+#include "PhysicsEngine.h"
+#include "RigidBody.h"
 #include <vector>
 
-namespace PhysicsEngine
+namespace PhysicsDemo
 {
 	class Controls
 	{
@@ -14,7 +16,7 @@ namespace PhysicsEngine
 		static void keyCheck
 		(
 			unsigned char key,
-			Physics *physicsEngine,
+			PhysicsEngine::Physics *physicsEngine,
 			std::vector<Particle *> *particles,
 			std::vector<Box *> *boxes,
 			std::vector<Sphere *> *spheres,
@@ -30,7 +32,14 @@ namespace PhysicsEngine
 		// Add a cube rigid body to the scene
 		static void addRigidCubeWhereYouLook(std::vector<Box *> *rectangularBodies, float theta, float phi);
 		// Add a rigid cube with no gravity
-		static void addRigidCubeNoGravity(std::vector<Box *> *rigidBodies, Vector3 position, Vector3 velocity, real mass, Vector3 halfSize);
+		static void addRigidCubeNoGravity
+		(
+			std::vector<Box *> *rigidBodies,
+			PhysicsEngine::Vector3 position,
+			PhysicsEngine::Vector3 velocity,
+			real mass,
+			PhysicsEngine::Vector3 halfSize
+		);
 		// Add a sphere to the scene where you look
 		static void addSphereWhereYouLook
 		(
@@ -43,8 +52,8 @@ namespace PhysicsEngine
 		static void addSphere
 		(
 			std::vector<Sphere *> *sphereBodies,
-			Vector3 position,
-			Vector3 velocity,
+			PhysicsEngine::Vector3 position,
+			PhysicsEngine::Vector3 velocity,
 			real mass,
 			real radius
 		);
@@ -52,25 +61,25 @@ namespace PhysicsEngine
 		static void addRigidCube
 		(
 			std::vector<Box *> *rectangularBodies,
-			Vector3 position,
-			Vector3 velocity,
+			PhysicsEngine::Vector3 position,
+			PhysicsEngine::Vector3 velocity,
 			real mass,
-			Vector3 halfSize
+			PhysicsEngine::Vector3 halfSize
 		);
 		// Add a capsule with the inputted parameters
 		static void addRigidCapsule
 		(
 			PhysicsEngine::Physics *physicsEngine,
 			std::vector<Capsule *> *capsuleBodies,
-			Vector3 position,
-			Quaternion rotation,
-			Vector3 velocity,
+			PhysicsEngine::Vector3 position,
+			PhysicsEngine::Quaternion rotation,
+			PhysicsEngine::Vector3 velocity,
 			real mass,
 			real radius,
 			real height
 		);
 
-		static Vector3 rotatePositionAlongYAxis(real depth, real height, real theta);
+		static PhysicsEngine::Vector3 rotatePositionAlongYAxis(real depth, real height, real theta);
 	};
 	
 }

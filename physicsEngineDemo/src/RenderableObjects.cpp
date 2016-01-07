@@ -1,6 +1,6 @@
 #include "RenderableObjects.h"
 
-using namespace PhysicsEngine;
+using namespace PhysicsDemo;
 
 // Constants used for the inertia tensor calculation
 #define PI               3.141592654f

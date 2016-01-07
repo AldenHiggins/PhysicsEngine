@@ -1,9 +1,9 @@
 #include "MathDataTypes.h"
-#include "Particle.h"
+#include "RenderParticles.h"
 #include <GL/glut.h>
 #include <iostream>
 
-using namespace PhysicsEngine;
+using namespace PhysicsDemo;
 
 // Integrate the particle forward in time by the timestep
 void Particle::integrate(real timeStep)

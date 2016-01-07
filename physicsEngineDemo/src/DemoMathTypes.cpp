@@ -10,9 +10,9 @@
 * software licence.
 */
 
-#include <MathDataTypes.h>
+#include <DemoMathTypes.h>
 
-using namespace PhysicsEngine;
+using namespace PhysicsDemo;
 
 const Vector3 Vector3::GRAVITY = Vector3(0, -9.81, 0);
 const Vector3 Vector3::HIGH_GRAVITY = Vector3(0, -19.62, 0);
@@ -26,19 +26,19 @@ const Vector3 Vector3::Z = Vector3(0, 0, 1);
 /*
 * Definition of the sleep epsilon extern.
 */
-real PhysicsEngine::sleepEpsilon = ((real)0.3);
+real PhysicsDemo::sleepEpsilon = ((real)0.3);
 
 /*
 * Functions to change sleepEpsilon.
 */
-void PhysicsEngine::setSleepEpsilon(real value)
+void PhysicsDemo::setSleepEpsilon(real value)
 {
-	PhysicsEngine::sleepEpsilon = value;
+	PhysicsDemo::sleepEpsilon = value;
 }
 
-real PhysicsEngine::getSleepEpsilon()
+real PhysicsDemo::getSleepEpsilon()
 {
-	return PhysicsEngine::sleepEpsilon;
+	return PhysicsDemo::sleepEpsilon;
 }
 
 real Matrix4::getDeterminant() const

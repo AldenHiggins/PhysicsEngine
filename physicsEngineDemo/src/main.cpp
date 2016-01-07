@@ -3,14 +3,14 @@
 #include <stdio.h>
 #include <iostream>
 #include <vector>
-#include "MathDataTypes.h"
+#include "DemoMathTypes.h"
 #include "ApplicationSettings.h"
 #include "Particle.h"
 #include "Timing.h"
 #include "Controls.h"
 #include "RenderableObjects.h"
 
-using namespace PhysicsEngine;
+using namespace PhysicsDemo;
 
 // Draw the background of the scene
 void drawBackground();
@@ -18,7 +18,7 @@ void drawBackground();
 void drawBodies();
 
 // The instance of the physics engine that this game will make use of
-Physics physicsEngine;
+PhysicsEngine::Physics physicsEngine;
 
 // Contains all of the particles in the scene
 std::vector<Particle *> particles;

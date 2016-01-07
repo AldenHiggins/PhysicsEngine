@@ -5,12 +5,12 @@
 #include "ApplicationSettings.h"
 #include <gl/glut.h>
 
-namespace PhysicsEngine
+namespace PhysicsDemo
 {
 	class Box
 	{
 	public:
-		CollisionBox *boxPrimitive;
+		PhysicsEngine::CollisionBox *boxPrimitive;
 
 		Box()
 		{
@@ -28,7 +28,7 @@ namespace PhysicsEngine
 	class Sphere
 	{
 	public:
-		CollisionSphere *spherePrimitive;
+		PhysicsEngine::CollisionSphere *spherePrimitive;
 
 		Sphere()
 		{
@@ -48,14 +48,11 @@ namespace PhysicsEngine
 	class Capsule
 	{
 	public:
-		CollisionCapsule *capsulePrimitive;
+		PhysicsEngine::CollisionCapsule *capsulePrimitive;
 
 		Capsule();
 
-		~Capsule()
-		{
-			delete capsulePrimitive;
-		}
+		~Capsule();
 
 		// Display this sphere object
 		void display();

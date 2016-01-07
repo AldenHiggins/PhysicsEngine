@@ -1,7 +1,7 @@
-#ifndef PARTICLE_H
-#define PARTICLE_H
+#ifndef RENDER_PARTICLES_H
+#define RENDER_PARTICLES_H
 
-#include "MathDataTypes.h"
+#include "DemoMathTypes.h"
 
 // Position
 // Size
@@ -9,7 +9,7 @@
 // Color
 // Shape?
 
-namespace PhysicsEngine
+namespace PhysicsDemo
 {
 	class Particle
 	{
@@ -102,4 +102,4 @@ namespace PhysicsEngine
 }
 
 
-#endif //PARTICLE_H
+#endif //RENDER_PARTICLES_H
