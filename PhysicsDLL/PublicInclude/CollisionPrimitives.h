@@ -38,6 +38,8 @@ namespace PhysicsEngine
 	class CollisionCapsule : public CollisionPrimitive
 	{
 	public:
+		COLLISION_PRIMITIVES_H_API  CollisionCapsule();
+
 		real radius;
 		real height;
 

@@ -21,12 +21,9 @@ Physics::Physics()
 }
 
 // Create a new capsule and register it with the physics engine
-CollisionCapsule* Physics::createCapsule()
+void Physics::createCapsule(CollisionCapsule *createdCapsule)
 {
-	CollisionCapsule *capsule = new CollisionCapsule;
-	capsule->body = new RigidBody;
-	capsuleObjects.push_back(capsule);
-	return capsule;
+	capsuleObjects.push_back(createdCapsule);
 }
 
 /**

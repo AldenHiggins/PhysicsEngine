@@ -51,7 +51,7 @@ namespace PhysicsEngine
 		PHYSICSDLL_API void updatePhysics(float duration);
 
 		// Add objects to the physics engine
-		PHYSICSDLL_API CollisionCapsule *createCapsule();
+		PHYSICSDLL_API void createCapsule(CollisionCapsule *createdCapsule);
 	};
 
 }

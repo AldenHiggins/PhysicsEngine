@@ -75,3 +75,8 @@ void CollisionCapsule::setState(Vector3 position, Quaternion rotation, Vector3 v
 	body->setInertiaTensor(tensor);
 }
 
+CollisionCapsule::CollisionCapsule()
+{
+	body = new RigidBody;
+}
+

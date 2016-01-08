@@ -133,7 +133,8 @@ void Controls::addRigidCapsule
 )
 {
 	Capsule *newCapsule = new Capsule();
-	newCapsule->capsulePrimitive = physicsEngine->createCapsule();
+	newCapsule->capsulePrimitive = new PhysicsEngine::CollisionCapsule();
+	physicsEngine->createCapsule(newCapsule->capsulePrimitive);
 	newCapsule->capsulePrimitive->setState(position, rotation, velocity, PhysicsEngine::Vector3(), mass, radius, height);
 	capsuleBodies->push_back(newCapsule);
 }
