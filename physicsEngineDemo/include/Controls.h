@@ -7,6 +7,7 @@
 #include "RigidBody.h"
 #include <vector>
 
+
 namespace PhysicsDemo
 {
 	class Controls
@@ -38,7 +39,7 @@ namespace PhysicsDemo
 			std::vector<Box *> *rigidBodies,
 			PhysicsEngine::Vector3 position,
 			PhysicsEngine::Vector3 velocity,
-			real mass,
+			PhysicsEngine:: real mass,
 			PhysicsEngine::Vector3 halfSize
 		);
 		// Add a sphere to the scene where you look
@@ -57,8 +58,8 @@ namespace PhysicsDemo
 			PhysicsEngine::Vector3 position,
 			PhysicsEngine::Vector3 velocity,
 			PhysicsEngine::Vector3 acceleration,
-			real mass,
-			real radius
+			PhysicsEngine::real mass,
+			PhysicsEngine::real radius
 		);
 		// Add a rigid cube with the inputted parameters
 		static void addRigidCube
@@ -66,7 +67,7 @@ namespace PhysicsDemo
 			std::vector<Box *> *rectangularBodies,
 			PhysicsEngine::Vector3 position,
 			PhysicsEngine::Vector3 velocity,
-			real mass,
+			PhysicsEngine::real mass,
 			PhysicsEngine::Vector3 halfSize
 		);
 		// Add a capsule with the inputted parameters
@@ -77,12 +78,12 @@ namespace PhysicsDemo
 			PhysicsEngine::Vector3 position,
 			PhysicsEngine::Quaternion rotation,
 			PhysicsEngine::Vector3 velocity,
-			real mass,
-			real radius,
-			real height
+			PhysicsEngine::real mass,
+			PhysicsEngine::real radius,
+			PhysicsEngine::real height
 		);
 
-		static PhysicsEngine::Vector3 rotatePositionAlongYAxis(real depth, real height, real theta);
+		static PhysicsEngine::Vector3 rotatePositionAlongYAxis(PhysicsEngine::real depth, PhysicsEngine::real height, PhysicsEngine::real theta);
 	};
 	
 }

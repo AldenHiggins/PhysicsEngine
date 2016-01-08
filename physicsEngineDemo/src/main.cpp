@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <vector>
-#include "DemoMathTypes.h"
+#include "MathDataTypes.h"
 #include "ApplicationSettings.h"
 #include "Particle.h"
 #include "Timing.h"

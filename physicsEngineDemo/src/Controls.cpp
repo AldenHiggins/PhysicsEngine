@@ -65,8 +65,8 @@ void Controls::addSphere
 	PhysicsEngine::Vector3 position,
 	PhysicsEngine::Vector3 velocity,
 	PhysicsEngine::Vector3 acceleration,
-	real mass,
-	real radius
+	PhysicsEngine::real mass,
+	PhysicsEngine::real radius
 )
 {
 	Sphere *newSphere = new Sphere();
@@ -90,7 +90,7 @@ void Controls::addForceToCapsule(std::vector<Capsule *> *capsuleBodies)
 }
 
 // Add a rigid cube with the inputted parameters
-void Controls::addRigidCubeNoGravity(PhysicsEngine::Physics *physicsEngine, std::vector<Box *> *rigidBodies, PhysicsEngine::Vector3 position, PhysicsEngine::Vector3 velocity, real mass, PhysicsEngine::Vector3 halfSize)
+void Controls::addRigidCubeNoGravity(PhysicsEngine::Physics *physicsEngine, std::vector<Box *> *rigidBodies, PhysicsEngine::Vector3 position, PhysicsEngine::Vector3 velocity, PhysicsEngine::real mass, PhysicsEngine::Vector3 halfSize)
 {
 	Box *newSquare = new Box();
 	newSquare->boxPrimitive = new PhysicsEngine::CollisionBox();
@@ -100,7 +100,7 @@ void Controls::addRigidCubeNoGravity(PhysicsEngine::Physics *physicsEngine, std:
 }
 
 // Add a rigid cube with the inputted parameters
-void Controls::addRigidCube(std::vector<Box *> *rigidBodies, PhysicsEngine::Vector3 position, PhysicsEngine::Vector3 velocity, real mass, PhysicsEngine::Vector3 halfSize)
+void Controls::addRigidCube(std::vector<Box *> *rigidBodies, PhysicsEngine::Vector3 position, PhysicsEngine::Vector3 velocity, PhysicsEngine::real mass, PhysicsEngine::Vector3 halfSize)
 {
 	Box *newSquare = new Box();
 	newSquare->boxPrimitive->setState(position, velocity, PhysicsEngine::Vector3(0, -9.81, 0), mass, halfSize);
@@ -115,7 +115,7 @@ void Controls::addRigidCubeWhereYouLook(std::vector<Box *> *rigidBodies, float t
 	addRigidCube(rigidBodies, squareCreationPosition, PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f), 1.0f, PhysicsEngine::Vector3(.5f, .5f, .5f));
 }
 
-PhysicsEngine::Vector3 Controls::rotatePositionAlongYAxis(real depth, real height, real theta)
+PhysicsEngine::Vector3 Controls::rotatePositionAlongYAxis(PhysicsEngine::real depth, PhysicsEngine::real height, PhysicsEngine::real theta)
 {
 	PhysicsEngine::Vector3 objectInitialPosition(0.0f, height, depth);
 	float thetaRads = theta * PI / 180.0;
@@ -134,9 +134,9 @@ void Controls::addRigidCapsule
 	PhysicsEngine::Vector3 position,
 	PhysicsEngine::Quaternion rotation,
 	PhysicsEngine::Vector3 velocity,
-	real mass,
-	real radius,
-	real height
+	PhysicsEngine::real mass,
+	PhysicsEngine::real radius,
+	PhysicsEngine::real height
 )
 {
 	Capsule *newCapsule = new Capsule();

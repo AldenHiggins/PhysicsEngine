@@ -85,16 +85,13 @@
     <ClInclude Include="include\ApplicationSettings.h" />
     <ClInclude Include="include\Controls.h" />
     <ClInclude Include="include\gl\glut.h" />
-    <ClInclude Include="include\DemoMathTypes.h" />
     <ClInclude Include="include\RenderParticles.h" />
-    <ClInclude Include="include\DemoPrecision.h" />
     <ClInclude Include="include\RenderableObjects.h" />
     <ClInclude Include="include\Timing.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Controls.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\DemoMathTypes.cpp" />
     <ClCompile Include="src\RenderParticles.cpp" />
     <ClCompile Include="src\RenderableObjects.cpp" />
     <ClCompile Include="src\Timing.cpp" />

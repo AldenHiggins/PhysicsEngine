@@ -30,12 +30,6 @@
     <ClInclude Include="include\RenderableObjects.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\DemoMathTypes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\DemoPrecision.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\RenderParticles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -51,9 +45,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\RenderableObjects.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DemoMathTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\RenderParticles.cpp">

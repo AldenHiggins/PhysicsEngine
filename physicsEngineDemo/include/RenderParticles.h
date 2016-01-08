@@ -1,7 +1,7 @@
 #ifndef RENDER_PARTICLES_H
 #define RENDER_PARTICLES_H
 
-#include "DemoMathTypes.h"
+#include "MathDataTypes.h"
 
 // Position
 // Size
@@ -14,42 +14,42 @@ namespace PhysicsDemo
 	class Particle
 	{
 	protected:
-		Vector3 position;
-		Vector3 velocity;
-		Vector3 acceleration;
-		real size;
-		Vector3 color;
-		real lifeTime;
+		PhysicsEngine::Vector3 position;
+		PhysicsEngine::Vector3 velocity;
+		PhysicsEngine::Vector3 acceleration;
+		PhysicsEngine::real size;
+		PhysicsEngine::Vector3 color;
+		PhysicsEngine::real lifeTime;
 		// The amount of time the particle waits to be displayed
-		real startupTime;
+		PhysicsEngine::real startupTime;
 		bool isDead = false;
-		real timeAliveSoFar;
+		PhysicsEngine::real timeAliveSoFar;
 	public:
 		Particle()
 		{
 			timeAliveSoFar = 0;
 		}
 		// Integrate the particle forward in time by the timestep
-		virtual void integrate(real timeStep);
+		virtual void integrate(PhysicsEngine::real timeStep);
 		// Display this particle
 		virtual void display();
 		// Function called when this particle dies
 		virtual void onDeath();
 		// Getters and setters for particle data
-		Vector3 getPosition();
-		void setPosition(Vector3 newPosition);
-		Vector3 getVelocity();
-		void setVelocity(Vector3 newVelocity);
-		Vector3 getAcceleration();
-		void setAcceleration(Vector3 newAcceleration);
-		real getSize();
-		void setSize(real newSize);
-		Vector3 getColor();
-		void setColor(Vector3 newColor);
-		real getLifeTime();
-		void setLifeTime(real newLifeTime);
+		PhysicsEngine::Vector3 getPosition();
+		void setPosition(PhysicsEngine::Vector3 newPosition);
+		PhysicsEngine::Vector3 getVelocity();
+		void setVelocity(PhysicsEngine::Vector3 newVelocity);
+		PhysicsEngine::Vector3 getAcceleration();
+		void setAcceleration(PhysicsEngine::Vector3 newAcceleration);
+		PhysicsEngine::real getSize();
+		void setSize(PhysicsEngine::real newSize);
+		PhysicsEngine::Vector3 getColor();
+		void setColor(PhysicsEngine::Vector3 newColor);
+		PhysicsEngine::real getLifeTime();
+		void setLifeTime(PhysicsEngine::real newLifeTime);
 		bool getIsDead();
-		void setStartupTime(real startupTime);
+		void setStartupTime(PhysicsEngine::real startupTime);
 	};
 
 	class CircleParticle : public Particle
@@ -76,17 +76,17 @@ namespace PhysicsDemo
 		// Call this when the particle dies
 		virtual void onDeath();
 		// Firework integrate that integrates all of its children
-		virtual void integrate(real timeStep);
+		virtual void integrate(PhysicsEngine::real timeStep);
 	};
 
 	struct CreateParticle
 	{
 		// Generate a new firework
-		static Particle *createFireWorkParticle(real speed, real size, Vector3 position, Vector3 color, bool originalFirework, int lives);
+		static Particle *createFireWorkParticle(PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 position, PhysicsEngine::Vector3 color, bool originalFirework, int lives);
 		// Generate a new particle
-		static Particle* CreateParticle::createParticle(real speed, real size, Vector3 color);
+		static Particle* CreateParticle::createParticle(PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 color);
 		// Generate a new circular particle
-		static Particle* createCircularParticle(real speed, real size, Vector3 color);
+		static Particle* createCircularParticle(PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 color);
 	private:
 		// These are private to stop instances being created: use get().
 		CreateParticle() {}
