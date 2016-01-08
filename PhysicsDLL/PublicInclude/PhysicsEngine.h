@@ -52,6 +52,8 @@ namespace PhysicsEngine
 
 		// Add objects to the physics engine
 		PHYSICSDLL_API void createCapsule(CollisionCapsule *createdCapsule);
+		PHYSICSDLL_API void createSphere(CollisionSphere *createdCapsule);
+		PHYSICSDLL_API void createBox(CollisionBox *createdBox);
 	};
 
 }

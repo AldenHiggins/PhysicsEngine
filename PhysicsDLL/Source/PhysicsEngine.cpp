@@ -26,6 +26,16 @@ void Physics::createCapsule(CollisionCapsule *createdCapsule)
 	capsuleObjects.push_back(createdCapsule);
 }
 
+void Physics::createSphere(CollisionSphere *createdSphere)
+{
+	sphereObjects.push_back(createdSphere);
+}
+
+void Physics::createBox(CollisionBox *createdBox)
+{
+	rectangleObjects.push_back(createdBox);
+}
+
 /**
 * Update function that progresses the physics engine
 */

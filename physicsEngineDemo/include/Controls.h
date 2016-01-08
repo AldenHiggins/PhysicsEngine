@@ -34,6 +34,7 @@ namespace PhysicsDemo
 		// Add a rigid cube with no gravity
 		static void addRigidCubeNoGravity
 		(
+			PhysicsEngine::Physics *physicsEngine,
 			std::vector<Box *> *rigidBodies,
 			PhysicsEngine::Vector3 position,
 			PhysicsEngine::Vector3 velocity,
@@ -51,9 +52,11 @@ namespace PhysicsDemo
 		// Add a sphere to the scene with the given properties
 		static void addSphere
 		(
+			PhysicsEngine::Physics *physicsEngine,
 			std::vector<Sphere *> *sphereBodies,
 			PhysicsEngine::Vector3 position,
 			PhysicsEngine::Vector3 velocity,
+			PhysicsEngine::Vector3 acceleration,
 			real mass,
 			real radius
 		);

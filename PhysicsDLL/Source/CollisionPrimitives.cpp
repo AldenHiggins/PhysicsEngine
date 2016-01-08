@@ -80,3 +80,13 @@ CollisionCapsule::CollisionCapsule()
 	body = new RigidBody;
 }
 
+CollisionSphere::CollisionSphere()
+{
+	body = new RigidBody;
+}
+
+CollisionBox::CollisionBox()
+{
+	body = new RigidBody;
+}
+
