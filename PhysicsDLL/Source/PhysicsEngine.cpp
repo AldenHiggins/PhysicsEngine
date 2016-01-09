@@ -36,6 +36,11 @@ void Physics::createBox(CollisionBox *createdBox)
 	rectangleObjects.push_back(createdBox);
 }
 
+void Physics::createParticle(Particle *createdParticle)
+{
+	particles.push_back(createdParticle);
+}
+
 /**
 * Update function that progresses the physics engine
 */

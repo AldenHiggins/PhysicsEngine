@@ -147,7 +147,7 @@ RenderableParticle* CreateParticle::createCircularParticle(PhysicsEngine::real s
 }
 
 // Generate a new particle
-RenderableParticle* CreateParticle::createParticle(PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 color)
+RenderableParticle* CreateParticle::createParticle(PhysicsEngine::Vector3 position, PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 color)
 {
 	RenderableParticle *newParticle = new RenderableParticle();
 	PhysicsEngine::real xVelocity = ((PhysicsEngine::real)((rand() % 200) - 100)) / 100;
@@ -157,9 +157,9 @@ RenderableParticle* CreateParticle::createParticle(PhysicsEngine::real speed, Ph
 	yVelocity *= speed;
 	zVelocity *= speed;
 	newParticle->physicsParticle->setVelocity(PhysicsEngine::Vector3(xVelocity, yVelocity, zVelocity));
-	newParticle->physicsParticle->setPosition(PhysicsEngine::Vector3(0.0f, 4.0f, 6.0f));
+	newParticle->physicsParticle->setPosition(position);
 	// Give the particle a ramp up time to make a GIF
-	newParticle->physicsParticle->setStartupTime(5.0f);
+	newParticle->physicsParticle->setStartupTime(0.1f);
 	newParticle->setColor(color);
 	newParticle->setSize(size);
 	newParticle->physicsParticle->setLifeTime(3.0f);

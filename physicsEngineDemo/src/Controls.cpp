@@ -25,6 +25,7 @@ void Controls::keyCheck
 			addRigidCapsule(physicsEngine, capsules, PhysicsEngine::Vector3(-3.0f, 5.0f, 12.0f), PhysicsEngine::Quaternion::fromEuler(1, 0, 0), PhysicsEngine::Vector3(10.0f, 0, 0), 10.0f, 1.0f, 1.0f);
 			addRigidCubeNoGravity(physicsEngine, rectangularBodies, PhysicsEngine::Vector3(0.0f, 5.0f, 12.0f), PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f), 10.0f, PhysicsEngine::Vector3(1.0f, .5f, .5f));
 			addSphere(physicsEngine, spheres, PhysicsEngine::Vector3(3.0f, 5.0f, 12.0f), PhysicsEngine::Vector3(), PhysicsEngine::Vector3(), 1.0f, 3.0f);
+			addParticles(physicsEngine, particles, PhysicsEngine::Vector3(0.0f, 4.0f, 6.0f), 1.0f, 1.0f, 1.0f);
 			break;
 		}
 		case '2':
@@ -42,6 +43,22 @@ void Controls::keyCheck
 			break;
 		}
 	}
+}
+
+// Add a capsule with the inputted parameters
+void Controls::addParticles
+(
+	PhysicsEngine::Physics *physicsEngine,
+	std::vector<RenderableParticle *> *particles,
+	PhysicsEngine::Vector3 position,
+	PhysicsEngine::real mass,
+	PhysicsEngine::real radius,
+	PhysicsEngine::real height
+)
+{
+	RenderableParticle *particle = CreateParticle::createParticle(position, 5.0f, radius, PhysicsEngine::Vector3(.5f, .5f, .5f));
+	particles->push_back(particle);
+	physicsEngine->createParticle(particle->physicsParticle);
 }
 
 // Add a sphere to the scene where you look

@@ -1,18 +1,3 @@
-//#ifdef PHYSICSDLL_EXPORTS
-//#define PHYSICSDLL_API __declspec(dllexport) 
-//#else
-//#define PHYSICSDLL_API __declspec(dllimport) 
-//#endif
-//
-//namespace Test
-//{
-//	class Testing
-//	{
-//	public:
-//		static PHYSICSDLL_API int testFunction();
-//	};
-//}
-
 #ifdef PHYSICSDLL_EXPORTS
 #define PHYSICSDLL_API __declspec(dllexport) 
 #else
@@ -54,6 +39,7 @@ namespace PhysicsEngine
 		PHYSICSDLL_API void createCapsule(CollisionCapsule *createdCapsule);
 		PHYSICSDLL_API void createSphere(CollisionSphere *createdCapsule);
 		PHYSICSDLL_API void createBox(CollisionBox *createdBox);
+		PHYSICSDLL_API void createParticle(Particle *createdParticle);
 	};
 
 }

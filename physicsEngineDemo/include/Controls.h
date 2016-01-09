@@ -7,7 +7,6 @@
 #include "RigidBody.h"
 #include <vector>
 
-
 namespace PhysicsDemo
 {
 	class Controls
@@ -26,6 +25,17 @@ namespace PhysicsDemo
 			float phi
 		);
 	private:
+		// Add a capsule with the inputted parameters
+		static void addParticles
+		(
+			PhysicsEngine::Physics *physicsEngine,
+			std::vector<RenderableParticle *> *particles,
+			PhysicsEngine::Vector3 position,
+			PhysicsEngine::real mass,
+			PhysicsEngine::real radius,
+			PhysicsEngine::real height
+		);
+
 		// Add force to the first cylinder
 		static void addForceToCapsule(std::vector<Capsule *> *capsuleBodies);
 		// Add force to the first cube
