@@ -25,8 +25,10 @@ namespace PhysicsDemo
 			float phi
 		);
 	private:
-		// Add a capsule with the inputted parameters
-		static void addParticles
+		/////////////////////////////////////////////////////////////////////////
+		//////////////////////// ADD OBJECTS TO RENDER //////////////////////////
+		/////////////////////////////////////////////////////////////////////////
+		static void addParticle
 		(
 			PhysicsEngine::Physics *physicsEngine,
 			std::vector<RenderableParticle *> *particles,
@@ -34,31 +36,6 @@ namespace PhysicsDemo
 			PhysicsEngine::real mass,
 			PhysicsEngine::real radius,
 			PhysicsEngine::real height
-		);
-
-		// Add force to the first cylinder
-		static void addForceToCapsule(std::vector<Capsule *> *capsuleBodies);
-		// Add force to the first cube
-		static void addForceToCube(std::vector<Box *> *rectangularBodies);
-		// Add a cube rigid body to the scene
-		static void addRigidCubeWhereYouLook(std::vector<Box *> *rectangularBodies, float theta, float phi);
-		// Add a rigid cube with no gravity
-		static void addRigidCubeNoGravity
-		(
-			PhysicsEngine::Physics *physicsEngine,
-			std::vector<Box *> *rigidBodies,
-			PhysicsEngine::Vector3 position,
-			PhysicsEngine::Vector3 velocity,
-			PhysicsEngine:: real mass,
-			PhysicsEngine::Vector3 halfSize
-		);
-		// Add a sphere to the scene where you look
-		static void addSphereWhereYouLook
-		(
-			std::vector<Sphere *> *sphereBodies,
-			float theta,
-			float phi,
-			float radius
 		);
 		// Add a sphere to the scene with the given properties
 		static void addSphere
@@ -72,30 +49,44 @@ namespace PhysicsDemo
 			PhysicsEngine::real radius
 		);
 		// Add a rigid cube with the inputted parameters
-		static void addRigidCube
+		static void addCube
 		(
+			PhysicsEngine::Physics *physicsEngine,
 			std::vector<Box *> *rectangularBodies,
 			PhysicsEngine::Vector3 position,
 			PhysicsEngine::Vector3 velocity,
+			PhysicsEngine::Vector3 acceleration,
 			PhysicsEngine::real mass,
 			PhysicsEngine::Vector3 halfSize
 		);
 		// Add a capsule with the inputted parameters
-		static void addRigidCapsule
+		static void addCapsule
 		(
 			PhysicsEngine::Physics *physicsEngine,
 			std::vector<Capsule *> *capsuleBodies,
 			PhysicsEngine::Vector3 position,
 			PhysicsEngine::Quaternion rotation,
 			PhysicsEngine::Vector3 velocity,
+			PhysicsEngine::Vector3 acceleration,
 			PhysicsEngine::real mass,
 			PhysicsEngine::real radius,
 			PhysicsEngine::real height
 		);
 
+		/////////////////////////////////////////////////////////////////////////
+		////////////////////////  OBJECT INTERACTIONS  //////////////////////////
+		/////////////////////////////////////////////////////////////////////////
+		// Add force to the first cylinder
+		static void addForceToCapsule(std::vector<Capsule *> *capsuleBodies);
+		// Add force to the first cube
+		static void addForceToCube(std::vector<Box *> *rectangularBodies);
+
+
+		/////////////////////////////////////////////////////////////////////////
+		////////////////////////    HELPER FUNCTIONS   //////////////////////////
+		/////////////////////////////////////////////////////////////////////////
 		static PhysicsEngine::Vector3 rotatePositionAlongYAxis(PhysicsEngine::real depth, PhysicsEngine::real height, PhysicsEngine::real theta);
-	};
-	
+	};	
 }
 
 #endif // PHYSICS_ENGINE_CONTROLS_H
