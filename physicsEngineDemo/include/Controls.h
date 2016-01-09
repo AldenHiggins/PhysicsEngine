@@ -37,7 +37,6 @@ namespace PhysicsDemo
 			PhysicsEngine::real radius,
 			PhysicsEngine::real height
 		);
-		// Add a sphere to the scene with the given properties
 		static void addSphere
 		(
 			PhysicsEngine::Physics *physicsEngine,
@@ -48,7 +47,6 @@ namespace PhysicsDemo
 			PhysicsEngine::real mass,
 			PhysicsEngine::real radius
 		);
-		// Add a rigid cube with the inputted parameters
 		static void addCube
 		(
 			PhysicsEngine::Physics *physicsEngine,
@@ -59,7 +57,6 @@ namespace PhysicsDemo
 			PhysicsEngine::real mass,
 			PhysicsEngine::Vector3 halfSize
 		);
-		// Add a capsule with the inputted parameters
 		static void addCapsule
 		(
 			PhysicsEngine::Physics *physicsEngine,

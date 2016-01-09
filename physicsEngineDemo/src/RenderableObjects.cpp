@@ -2,15 +2,6 @@
 
 using namespace PhysicsDemo;
 
-// Constants used for the inertia tensor calculation
-#define PI               3.141592654f
-#define PI_TIMES2        6.283185307f
-
-const float oneDiv3 = (float)(1.0 / 3.0);
-const float oneDiv8 = (float)(1.0 / 8.0);
-const float oneDiv12 = (float)(1.0 / 12.0);
-const float density = 1.0f;
-
 // Display this rectangle
 void Box::display()
 {

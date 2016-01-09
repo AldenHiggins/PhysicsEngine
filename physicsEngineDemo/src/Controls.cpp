@@ -113,7 +113,7 @@ void Controls::addCapsule
 	PhysicsEngine::real mass,
 	PhysicsEngine::real radius,
 	PhysicsEngine::real height
-	)
+)
 {
 	Capsule *newCapsule = new Capsule();
 	physicsEngine->createCapsule(newCapsule->capsulePrimitive);

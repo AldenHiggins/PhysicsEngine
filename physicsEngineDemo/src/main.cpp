@@ -14,8 +14,8 @@ using namespace PhysicsDemo;
 
 // Draw the background of the scene
 void drawBackground();
-// Draw all of the rigid bodies
-void drawBodies();
+// Draw the scene
+void drawScene();
 
 // The instance of the physics engine that this game will make use of
 PhysicsEngine::Physics physicsEngine;
@@ -90,8 +90,8 @@ void display()
 	// Update the world physics based on the timestep of the frame
 	physicsEngine.updatePhysics(duration);
 
-	// Draw all of the rigid bodies
-	drawBodies();
+	// Draw the scene
+	drawScene();
 
 	glFlush();
 	glutSwapBuffers();
