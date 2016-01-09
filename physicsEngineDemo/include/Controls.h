@@ -18,7 +18,7 @@ namespace PhysicsDemo
 		(
 			unsigned char key,
 			PhysicsEngine::Physics *physicsEngine,
-			std::vector<Particle *> *particles,
+			std::vector<RenderableParticle *> *particles,
 			std::vector<Box *> *boxes,
 			std::vector<Sphere *> *spheres,
 			std::vector<Capsule *> *capsules,

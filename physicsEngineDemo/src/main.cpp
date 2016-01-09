@@ -21,7 +21,7 @@ void drawBodies();
 PhysicsEngine::Physics physicsEngine;
 
 // Contains all of the particles in the scene
-std::vector<Particle *> particles;
+std::vector<RenderableParticle *> particles;
 // Contains all the rectangular objects in the scene
 std::vector<Box *> rectangleObjects;
 // Contains all of the spherical objects in the scene

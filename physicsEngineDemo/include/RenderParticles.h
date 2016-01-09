@@ -2,6 +2,7 @@
 #define RENDER_PARTICLES_H
 
 #include "MathDataTypes.h"
+#include "Particle.h"
 
 // Position
 // Size
@@ -11,12 +12,9 @@
 
 namespace PhysicsDemo
 {
-	class Particle
+	class RenderableParticle
 	{
 	protected:
-		PhysicsEngine::Vector3 position;
-		PhysicsEngine::Vector3 velocity;
-		PhysicsEngine::Vector3 acceleration;
 		PhysicsEngine::real size;
 		PhysicsEngine::Vector3 color;
 		PhysicsEngine::real lifeTime;
@@ -25,34 +23,30 @@ namespace PhysicsDemo
 		bool isDead = false;
 		PhysicsEngine::real timeAliveSoFar;
 	public:
-		Particle()
+		RenderableParticle()
 		{
+			physicsParticle = new PhysicsEngine::Particle();
 			timeAliveSoFar = 0;
 		}
-		// Integrate the particle forward in time by the timestep
-		virtual void integrate(PhysicsEngine::real timeStep);
 		// Display this particle
 		virtual void display();
 		// Function called when this particle dies
 		virtual void onDeath();
-		// Getters and setters for particle data
-		PhysicsEngine::Vector3 getPosition();
-		void setPosition(PhysicsEngine::Vector3 newPosition);
-		PhysicsEngine::Vector3 getVelocity();
-		void setVelocity(PhysicsEngine::Vector3 newVelocity);
-		PhysicsEngine::Vector3 getAcceleration();
-		void setAcceleration(PhysicsEngine::Vector3 newAcceleration);
-		PhysicsEngine::real getSize();
-		void setSize(PhysicsEngine::real newSize);
-		PhysicsEngine::Vector3 getColor();
-		void setColor(PhysicsEngine::Vector3 newColor);
-		PhysicsEngine::real getLifeTime();
-		void setLifeTime(PhysicsEngine::real newLifeTime);
-		bool getIsDead();
-		void setStartupTime(PhysicsEngine::real startupTime);
+
+		void setColor(PhysicsEngine::Vector3 colorInput)
+		{
+			color = colorInput;
+		}
+
+		void setSize(PhysicsEngine::real sizeInput)
+		{
+			size = sizeInput;
+		}
+
+		PhysicsEngine::Particle *physicsParticle;
 	};
 
-	class CircleParticle : public Particle
+	class CircleParticle : public RenderableParticle
 	{
 	public:
 		// Display this particle
@@ -62,7 +56,7 @@ namespace PhysicsDemo
 	class FireworkParticle : public CircleParticle
 	{
 	private:
-		Particle *deathParticles[5];
+		RenderableParticle *deathParticles[5];
 		int lives;
 	public:
 		// Create a new firework
@@ -75,18 +69,16 @@ namespace PhysicsDemo
 		virtual void display();
 		// Call this when the particle dies
 		virtual void onDeath();
-		// Firework integrate that integrates all of its children
-		virtual void integrate(PhysicsEngine::real timeStep);
 	};
 
 	struct CreateParticle
 	{
 		// Generate a new firework
-		static Particle *createFireWorkParticle(PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 position, PhysicsEngine::Vector3 color, bool originalFirework, int lives);
+		static RenderableParticle *createFireWorkParticle(PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 position, PhysicsEngine::Vector3 color, bool originalFirework, int lives);
 		// Generate a new particle
-		static Particle* CreateParticle::createParticle(PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 color);
+		static RenderableParticle* CreateParticle::createParticle(PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 color);
 		// Generate a new circular particle
-		static Particle* createCircularParticle(PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 color);
+		static RenderableParticle* createCircularParticle(PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 color);
 	private:
 		// These are private to stop instances being created: use get().
 		CreateParticle() {}
