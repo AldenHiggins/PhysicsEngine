@@ -28,6 +28,8 @@ std::vector<Box *> rectangleObjects;
 std::vector<Sphere *> sphereObjects;
 // Contains all of the capsules in the scene
 std::vector<Capsule *> capsuleObjects;
+// Contains all of the planes in the scene
+std::vector<Plane *> planes;
 
 // Camera control variables
 float theta;
@@ -100,43 +102,7 @@ void display()
 // Draw the background of the scene
 void drawBackground()
 {
-	// Draw the ground
-	glBegin(GL_QUADS);
-	glColor3f(1.0f, 1.0f, 1.0f);
-	glNormal3f(0, 1, 0);
-	glVertex3f(20, 0, 20);
-	glVertex3f(20, 0, -20);
-	glVertex3f(-20, 0, -20);
-	glVertex3f(-20, 0, 20);
-	// Draw the walls
-	// Front wall
-	glColor3f(0.9f, 0.9f, 0.9f);
-	glNormal3f(0, 0, -1);
-	glVertex3f(20, 0, 20);
-	glVertex3f(20, 20, 20);
-	glVertex3f(-20, 20, 20);
-	glVertex3f(-20, 0, 20);
-	// Back Wall
-	glColor3f(0.8f, 0.8f, 0.8f);
-	glNormal3f(0, 0, 1);
-	glVertex3f(20, 0, -20);
-	glVertex3f(20, 20, -20);
-	glVertex3f(-20, 20, -20);
-	glVertex3f(-20, 0, -20);
-	// Left Wall
-	glColor3f(0.7f, 0.7f, 0.7f);
-	glNormal3f(-1, 0, 0);
-	glVertex3f(20, 0, -20);
-	glVertex3f(20, 20, -20);
-	glVertex3f(20, 20, 20);
-	glVertex3f(20, 0, 20);
-	// Right Wall
-	glColor3f(0.6f, 0.6f, 0.6f);
-	glNormal3f(1, 0, 0);
-	glVertex3f(-20, 0, 20);
-	glVertex3f(-20, 20, 20);
-	glVertex3f(-20, 20, -20);
-	glVertex3f(-20, 0, -20);
+	glBegin(GL_QUADS);	
 	// Draw the lines of the axes
 	glColor3f(0.0f, 0.0f, 0.0f);
 	// x axis
@@ -152,9 +118,15 @@ void drawBackground()
 	glEnd();
 }
 
-// Draw all of the rigid bodies
-void drawBodies()
+// Draw the scene
+void drawScene()
 {
+	// Draw all the planes
+	for (unsigned int planeIndex = 0; planeIndex < planes.size(); planeIndex++)
+	{
+		planes[planeIndex]->display();
+	}
+
 	// Draw all of the particles
 	for (unsigned int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
 	{
@@ -204,7 +176,6 @@ void keyboard(unsigned char key, int x, int y)
 {
 	Controls::keyCheck(key, &physicsEngine, &particles, &rectangleObjects, &sphereObjects, &capsuleObjects, theta, phi);
 }
-
 
 /**
 * Called when the mouse is dragged.
@@ -256,6 +227,62 @@ void initializeScene()
 {
 	// Initialize the timers
 	TimingData::init();
+	// Initialize the planes
+	planes.push_back
+	(
+		new Plane
+		(
+			PhysicsEngine::Vector3(),
+			PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f),
+			PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
+			PhysicsEngine::Vector3(0.8f, 0.3f, 0.7f),
+			20.0f
+		)
+	);
+	planes.push_back
+	(
+		new Plane
+		(
+			PhysicsEngine::Vector3(0.0f, 0.0f, 20.0f),
+			PhysicsEngine::Vector3(0.0f, 0.0f, -1.0f),
+			PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
+			PhysicsEngine::Vector3(0.9f, 0.9f, 0.9f),
+			20.0f
+		)
+	);
+	planes.push_back
+	(
+		new Plane
+		(
+			PhysicsEngine::Vector3(0.0f, 0.0f, -20.0f),
+			PhysicsEngine::Vector3(0.0f, 0.0f, 1.0f),
+			PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
+			PhysicsEngine::Vector3(0.0f, 0.8f, 0.0f),
+			20.0f
+		)
+	);
+	planes.push_back
+	(
+		new Plane
+		(
+			PhysicsEngine::Vector3(20.0f, 0.0f, 0.0f),
+			PhysicsEngine::Vector3(-1.0f, 0.0f, 0.0f),
+			PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f),
+			PhysicsEngine::Vector3(0.4f, 0.8f, 0.1f),
+			20.0f
+		)
+	);
+	planes.push_back
+	(
+		new Plane
+		(
+			PhysicsEngine::Vector3(-20.0f, 0.0f, 0.0f),
+			PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
+			PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f),
+			PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
+			20.0f
+		)
+	);
 }
 
 /**

@@ -7,6 +7,39 @@
 
 namespace PhysicsDemo
 {
+	class Plane
+	{
+	public:
+		PhysicsEngine::Vector3 position;
+		PhysicsEngine::Vector3 normal;
+		PhysicsEngine::Vector3 up;
+		PhysicsEngine::Vector3 color;
+		PhysicsEngine::real halfSize;
+
+		Plane
+		(
+			PhysicsEngine::Vector3 positionInput,
+			PhysicsEngine::Vector3 normalInput,
+			PhysicsEngine::Vector3 upInput,
+			PhysicsEngine::Vector3 colorInput,
+			PhysicsEngine::real halfSizeInput
+		)
+		{
+			position = positionInput;
+			normal = normalInput;
+			up = upInput;
+			color = colorInput;
+			halfSize = halfSizeInput;
+		}
+
+		~Plane()
+		{
+		}
+
+		// Display this plane
+		void display();
+	};
+
 	class Box
 	{
 	public:

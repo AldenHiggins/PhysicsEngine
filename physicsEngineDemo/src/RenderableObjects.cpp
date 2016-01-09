@@ -2,6 +2,26 @@
 
 using namespace PhysicsDemo;
 
+// Display this plane
+void Plane::display()
+{
+	glBegin(GL_QUADS);
+	glColor3f(color[0], color[1], color[2]);
+	glNormal3f(normal[0], normal[1], normal[2]);
+
+	PhysicsEngine::Vector3 right = up.vectorProduct(normal);
+	PhysicsEngine::Vector3 position1 = position + (up * halfSize) + (right * halfSize);
+	PhysicsEngine::Vector3 position2 = position + (up * halfSize) - (right * halfSize);
+	PhysicsEngine::Vector3 position3 = position - (up * halfSize) - (right * halfSize);
+	PhysicsEngine::Vector3 position4 = position - (up * halfSize) + (right * halfSize);
+
+	glVertex3f(position1[0], position1[1], position1[2]);
+	glVertex3f(position2[0], position2[1], position2[2]);
+	glVertex3f(position3[0], position3[1], position3[2]);
+	glVertex3f(position4[0], position4[1], position4[2]);
+	glEnd();
+}
+
 // Display this rectangle
 void Box::display()
 {
