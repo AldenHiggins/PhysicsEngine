@@ -14,6 +14,7 @@ namespace PhysicsDemo
 
 		Box()
 		{
+			boxPrimitive = new PhysicsEngine::CollisionBox();
 		}
 
 		~Box()
@@ -32,6 +33,7 @@ namespace PhysicsDemo
 
 		Sphere()
 		{
+			spherePrimitive = new PhysicsEngine::CollisionSphere();
 		}
 
 		~Sphere()

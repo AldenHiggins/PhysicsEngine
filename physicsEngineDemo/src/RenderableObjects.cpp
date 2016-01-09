@@ -44,6 +44,7 @@ void Sphere::display()
 Capsule::Capsule()
 {
 	// Generate the rigid body
+	capsulePrimitive = new PhysicsEngine::CollisionCapsule();
 	quadricObject = gluNewQuadric();
 	gluQuadricNormals(quadricObject, GLU_SMOOTH);
 	gluQuadricDrawStyle(quadricObject, GLU_FILL);
