@@ -14,8 +14,7 @@ void Controls::keyCheck
 	std::vector<Box *> *rectangularBodies,
 	std::vector<Sphere *> *spheres,
 	std::vector<Capsule *> *capsules,
-	float theta,
-	float phi
+	PlayerController *player
 )
 {
 	switch (key)
@@ -25,7 +24,7 @@ void Controls::keyCheck
 			addCapsule
 			(
 				physicsEngine, capsules,
-				rotatePositionAlongYAxis(13.0f, 5.7f, theta), PhysicsEngine::Quaternion::fromEuler(1, 0, 0), PhysicsEngine::Vector3(0.0f, 0, 0), PhysicsEngine::Vector3(),
+				rotatePositionAlongYAxis(13.0f, 5.7f, player->getYaw()), PhysicsEngine::Quaternion::fromEuler(1, 0, 0), PhysicsEngine::Vector3(0.0f, 0, 0), PhysicsEngine::Vector3(),
 				10.0f, 1.0f, 1.0f
 			);
 

@@ -2,10 +2,10 @@
 #ifndef PLAYER_CONTROLS_H
 #define PLAYER_CONTROLS_H
 
-class PhysicsEngine::Vector3;
-PhysicsEngine::real;
+#include "MathDataTypes.h"
 
 #define PLAYER_DEFAULT_SPEED 1.0f
+#define PLAYER_DEFAULT_POSITION PhysicsEngine::Vector3(0.0f, 4.0f, 0.0f)
 
 namespace PhysicsDemo
 {
@@ -18,11 +18,14 @@ namespace PhysicsDemo
 		PhysicsEngine::real speed;
 		
 	public:
-		PlayerController(PhysicsEngine::Vector3 initialPosition)
+		PlayerController()
 		{
-			position = initialPosition;
+			position = PLAYER_DEFAULT_POSITION;
 			speed = PLAYER_DEFAULT_SPEED;
 		}
+
+		// Controls
+		void keyCheck(unsigned char key);
 
 		// Getters and setters
 		PhysicsEngine::real getSpeed();
@@ -37,9 +40,6 @@ namespace PhysicsDemo
 		PhysicsEngine::real getPitch();
 		void setPitch(PhysicsEngine::real newPitch);
 	};
-
-
-
 }
 
 #endif //PLAYER_CONTROLS_H

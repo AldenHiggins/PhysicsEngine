@@ -9,6 +9,7 @@
 #include "Timing.h"
 #include "Controls.h"
 #include "RenderableObjects.h"
+#include "PlayerControls.h"
 
 using namespace PhysicsDemo;
 
@@ -16,6 +17,9 @@ using namespace PhysicsDemo;
 void drawBackground();
 // Draw the scene
 void drawScene();
+
+// The player controller
+PlayerController player;
 
 // The instance of the physics engine that this game will make use of
 PhysicsEngine::Physics physicsEngine;
@@ -32,8 +36,8 @@ std::vector<Capsule *> capsuleObjects;
 std::vector<Plane *> planes;
 
 // Camera control variables
-float theta;
-float phi;
+//float theta;
+//float phi;
 int lastX;
 int lastY;
 
@@ -71,11 +75,15 @@ void display()
 
 	glLoadIdentity();
 	// Look out towards the Z direction (eye, center, up)
-	gluLookAt(0.0, 4.0, 0.0, 0.0, 4.0, 6.0, 0.0, 1.0, 0.0);
-	// Rotate the camera based on mouse movements
-	glRotatef(-phi, 1, 0, 0);
-	glRotatef(theta, 0, 1, 0);
-
+	gluLookAt(0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0);
+	// Move the scene based on where the player is
+	PhysicsEngine::real pitch = player.getPitch();
+	PhysicsEngine::real yaw = player.getYaw();
+	PhysicsEngine::Vector3 position = player.getPosition();
+	glRotatef(-1 * pitch, 1, 0, 0);
+	glRotatef(yaw, 0, 1, 0);
+	glTranslatef(-1 * position[0], -1 * position[1], -1 * position[2]);
+	
 	// Draw the background
 	drawBackground();
 
@@ -174,7 +182,8 @@ void reshape(int width, int height)
 */
 void keyboard(unsigned char key, int x, int y)
 {
-	Controls::keyCheck(key, &physicsEngine, &particles, &rectangleObjects, &sphereObjects, &capsuleObjects, theta, phi);
+	Controls::keyCheck(key, &physicsEngine, &particles, &rectangleObjects, &sphereObjects, &capsuleObjects, &player);
+	player.keyCheck(key);
 }
 
 /**
@@ -183,12 +192,21 @@ void keyboard(unsigned char key, int x, int y)
 void motion(int x, int y)
 {
 	// Update the camera
-	theta += (x - lastX)*0.25f;
-	phi += (y - lastY)*0.25f;
+	PhysicsEngine::real yaw = player.getYaw();
+	PhysicsEngine::real pitch = player.getPitch();
 
-	// Keep it in bounds
-	if (phi < -20.0f) phi = -20.0f;
-	else if (phi > 80.0f) phi = 80.0f;
+	player.setYaw(yaw + (x - lastX) * .25f);
+	player.setPitch(pitch + (y - lastY) * .25f);
+
+	// Clamp the pitch to prevent gimbal lock and other bad things
+	if (pitch < -20.0f)
+	{
+		player.setPitch(-20.0f);
+	}
+	else if (pitch > 80.0f)
+	{
+		player.setPitch(80.0f);
+	}
 
 	// Remember the position
 	lastX = x;
@@ -232,7 +250,7 @@ void initializeScene()
 		PhysicsEngine::Vector3(),
 		PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f),
 		PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
-		PhysicsEngine::Vector3(0.8f, 0.3f, 0.7f),
+		PhysicsEngine::Vector3(0.3f, 0.3f, 0.7f),
 		20.0f,
 		0.0f
 	);

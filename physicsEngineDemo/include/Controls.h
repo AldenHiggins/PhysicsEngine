@@ -5,6 +5,7 @@
 #include "RenderableObjects.h"
 #include "PhysicsEngine.h"
 #include "RigidBody.h"
+#include "PlayerControls.h"
 #include <vector>
 
 namespace PhysicsDemo
@@ -21,8 +22,7 @@ namespace PhysicsDemo
 			std::vector<Box *> *boxes,
 			std::vector<Sphere *> *spheres,
 			std::vector<Capsule *> *capsules,
-			float theta,
-			float phi
+			PlayerController *player
 		);
 	private:
 		/////////////////////////////////////////////////////////////////////////
