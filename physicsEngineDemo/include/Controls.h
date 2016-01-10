@@ -74,9 +74,9 @@ namespace PhysicsDemo
 		////////////////////////  OBJECT INTERACTIONS  //////////////////////////
 		/////////////////////////////////////////////////////////////////////////
 		// Add force to the first cylinder
-		static void addForceToCapsule(std::vector<Capsule *> *capsuleBodies);
+		static void addForceToCapsule(std::vector<Capsule *> *capsuleBodies, int capsuleIndex, PhysicsEngine::Vector3 force, PhysicsEngine::Vector3 position);
 		// Add force to the first cube
-		static void addForceToCube(std::vector<Box *> *rectangularBodies);
+		static void addForceToCube(std::vector<Box *> *rectangularBodies, int capsuleIndex, PhysicsEngine::Vector3 force, PhysicsEngine::Vector3 position);
 
 
 		/////////////////////////////////////////////////////////////////////////

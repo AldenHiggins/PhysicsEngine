@@ -25,26 +25,41 @@ void Controls::keyCheck
 			addCapsule
 			(
 				physicsEngine, capsules,
-				PhysicsEngine::Vector3(-3.0f, 5.7f, 12.0f), PhysicsEngine::Quaternion::fromEuler(1, 0, 0), PhysicsEngine::Vector3(10.0f, 0, 0), PhysicsEngine::Vector3(),
+				rotatePositionAlongYAxis(13.0f, 5.7f, theta), PhysicsEngine::Quaternion::fromEuler(1, 0, 0), PhysicsEngine::Vector3(0.0f, 0, 0), PhysicsEngine::Vector3(),
 				10.0f, 1.0f, 1.0f
 			);
+
+			addForceToCapsule(capsules, (capsules->size() - 1), PhysicsEngine::Vector3(3000.0f, 450.0f, 0.0f), PhysicsEngine::Vector3());
+			break;
+		}
+		case '2':
+		{
 			addCube
 			(
 				physicsEngine, rectangularBodies,
 				PhysicsEngine::Vector3(0.0f, 5.0f, 12.0f), PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f), PhysicsEngine::Vector3(),
 				10.0f, PhysicsEngine::Vector3(1.0f, .5f, .5f)
 			);
-			addSphere
+			addCube
 			(
-				physicsEngine, spheres,
-				PhysicsEngine::Vector3(3.0f, 5.0f, 12.0f), PhysicsEngine::Vector3(), PhysicsEngine::Vector3(),
-				1.0f, 3.0f
+				physicsEngine, rectangularBodies,
+				PhysicsEngine::Vector3(3.0f, 7.0f, 12.0f), PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f), PhysicsEngine::Vector3(),
+				10.0f, PhysicsEngine::Vector3(1.0f, .5f, .5f)
 			);
-			break;
-		}
-		case '2':
-		{
-			addParticle(physicsEngine, particles, PhysicsEngine::Vector3(0.0f, 4.0f, 6.0f), 1.0f, 1.0f, 1.0f);
+			addCube
+			(
+				physicsEngine, rectangularBodies,
+				PhysicsEngine::Vector3(6.0f, 12.0f, 12.0f), PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f), PhysicsEngine::Vector3(),
+				10.0f, PhysicsEngine::Vector3(1.0f, .5f, .5f)
+			);
+			addCube
+			(
+				physicsEngine, rectangularBodies,
+				PhysicsEngine::Vector3(9.0f, 15.0f, 12.0f), PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f), PhysicsEngine::Vector3(),
+				10.0f, PhysicsEngine::Vector3(1.0f, .5f, .5f)
+			);
+
+			//addParticle(physicsEngine, particles, PhysicsEngine::Vector3(0.0f, 4.0f, 6.0f), 1.0f, 1.0f, 1.0f);
 			break;
 		}
 	}
@@ -129,16 +144,16 @@ void Controls::addCapsule
 ////////////////////////  OBJECT INTERACTIONS  //////////////////////////
 /////////////////////////////////////////////////////////////////////////
 // Add force to the first cube
-void Controls::addForceToCube(std::vector<Box *> *rigidBodies)
+void Controls::addForceToCube(std::vector<Box *> *rigidBodies, int cubeIndex, PhysicsEngine::Vector3 force, PhysicsEngine::Vector3 position)
 {
-	(*rigidBodies)[0]->boxPrimitive->body->addForceAtBodyPoint(PhysicsEngine::Vector3(80.0f, 0.0f, 0.0f), PhysicsEngine::Vector3(0.5f, 0.5f, 1.0f));
+	(*rigidBodies)[0]->boxPrimitive->body->addForceAtBodyPoint(force, position);
 }
 
 // Add force to the first capsule
-void Controls::addForceToCapsule(std::vector<Capsule *> *capsuleBodies)
+void Controls::addForceToCapsule(std::vector<Capsule *> *capsuleBodies, int capsuleIndex, PhysicsEngine::Vector3 force, PhysicsEngine::Vector3 position)
 {
-	(*capsuleBodies)[0]->capsulePrimitive->body->addForceAtBodyPoint(PhysicsEngine::Vector3(400.0f, 0.0f, 0.0f), PhysicsEngine::Vector3(0.5f, 1.5f, 1.0f));
-	(*capsuleBodies)[0]->capsulePrimitive->body->addForceAtBodyPoint(PhysicsEngine::Vector3(-400.0f, 0.0f, 0.0f), PhysicsEngine::Vector3(0.5f, -1.5f, 1.0f));
+	(*capsuleBodies)[capsuleIndex]->capsulePrimitive->body->addForceAtBodyPoint(force, position);
+	//(*capsuleBodies)[0]->capsulePrimitive->body->addForceAtBodyPoint(PhysicsEngine::Vector3(-400.0f, 0.0f, 0.0f), PhysicsEngine::Vector3(0.5f, -1.5f, 1.0f));
 }
 
 /////////////////////////////////////////////////////////////////////////
