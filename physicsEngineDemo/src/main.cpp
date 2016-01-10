@@ -227,62 +227,69 @@ void initializeScene()
 {
 	// Initialize the timers
 	TimingData::init();
+	Plane *plane1 = new Plane
+	(
+		PhysicsEngine::Vector3(),
+		PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f),
+		PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
+		PhysicsEngine::Vector3(0.8f, 0.3f, 0.7f),
+		20.0f,
+		0.0f
+	);
+
+	Plane *plane2 = new Plane
+	(
+		PhysicsEngine::Vector3(0.0f, 0.0f, 20.0f),
+		PhysicsEngine::Vector3(0.0f, 0.0f, -1.0f),
+		PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
+		PhysicsEngine::Vector3(0.9f, 0.9f, 0.9f),
+		20.0f,
+		-20.0f
+	);
+
+	Plane *plane3 = new Plane
+	(
+		PhysicsEngine::Vector3(0.0f, 0.0f, -20.0f),
+		PhysicsEngine::Vector3(0.0f, 0.0f, 1.0f),
+		PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
+		PhysicsEngine::Vector3(0.0f, 0.8f, 0.0f),
+		20.0f,
+		-20.0f
+	);
+
+	Plane *plane4 = new Plane
+	(
+		PhysicsEngine::Vector3(20.0f, 0.0f, 0.0f),
+		PhysicsEngine::Vector3(-1.0f, 0.0f, 0.0f),
+		PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f),
+		PhysicsEngine::Vector3(0.4f, 0.8f, 0.1f),
+		20.0f,
+		-20.0f
+	);
+
+	Plane *plane5 = new Plane
+	(
+		PhysicsEngine::Vector3(-20.0f, 0.0f, 0.0f),
+		PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
+		PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f),
+		PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
+		20.0f,
+		-20.0f
+	);
+
 	// Initialize the planes
-	planes.push_back
-	(
-		new Plane
-		(
-			PhysicsEngine::Vector3(),
-			PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f),
-			PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
-			PhysicsEngine::Vector3(0.8f, 0.3f, 0.7f),
-			20.0f
-		)
-	);
-	planes.push_back
-	(
-		new Plane
-		(
-			PhysicsEngine::Vector3(0.0f, 0.0f, 20.0f),
-			PhysicsEngine::Vector3(0.0f, 0.0f, -1.0f),
-			PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
-			PhysicsEngine::Vector3(0.9f, 0.9f, 0.9f),
-			20.0f
-		)
-	);
-	planes.push_back
-	(
-		new Plane
-		(
-			PhysicsEngine::Vector3(0.0f, 0.0f, -20.0f),
-			PhysicsEngine::Vector3(0.0f, 0.0f, 1.0f),
-			PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
-			PhysicsEngine::Vector3(0.0f, 0.8f, 0.0f),
-			20.0f
-		)
-	);
-	planes.push_back
-	(
-		new Plane
-		(
-			PhysicsEngine::Vector3(20.0f, 0.0f, 0.0f),
-			PhysicsEngine::Vector3(-1.0f, 0.0f, 0.0f),
-			PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f),
-			PhysicsEngine::Vector3(0.4f, 0.8f, 0.1f),
-			20.0f
-		)
-	);
-	planes.push_back
-	(
-		new Plane
-		(
-			PhysicsEngine::Vector3(-20.0f, 0.0f, 0.0f),
-			PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
-			PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f),
-			PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
-			20.0f
-		)
-	);
+	planes.push_back(plane1);
+	planes.push_back(plane2);
+	planes.push_back(plane3);
+	planes.push_back(plane4);
+	planes.push_back(plane5);
+
+	// Register them with the physics engine
+	physicsEngine.createPlane(plane1->plane);
+	physicsEngine.createPlane(plane2->plane);
+	physicsEngine.createPlane(plane3->plane);
+	physicsEngine.createPlane(plane4->plane);
+	physicsEngine.createPlane(plane5->plane);
 }
 
 /**

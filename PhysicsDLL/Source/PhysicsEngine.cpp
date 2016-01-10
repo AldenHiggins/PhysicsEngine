@@ -41,6 +41,11 @@ void Physics::createParticle(Particle *createdParticle)
 	particles.push_back(createdParticle);
 }
 
+void Physics::createPlane(CollisionPlane *createdPlane)
+{
+	planeObjects.push_back(createdPlane);
+}
+
 /**
 * Update function that progresses the physics engine
 */
@@ -71,13 +76,11 @@ void Physics::detectCollisions(std::vector<Collision> *collisionList)
 	// Detect cube collisions
 	for (unsigned int rigidBodyIndex = 0; rigidBodyIndex < rectangleObjects.size(); rigidBodyIndex++)
 	{
-		// Check for collisions against the ground
-		CollisionDetection::boxAndHalfSpaceCollisionDetect(rectangleObjects[rigidBodyIndex], Vector3(0, 1, 0), 0, collisionList);
-		// Check for collisions against the walls
-		CollisionDetection::boxAndHalfSpaceCollisionDetect(rectangleObjects[rigidBodyIndex], Vector3(-1, 0, 0), -20, collisionList);
-		CollisionDetection::boxAndHalfSpaceCollisionDetect(rectangleObjects[rigidBodyIndex], Vector3(1, 0, 0), -20, collisionList);
-		CollisionDetection::boxAndHalfSpaceCollisionDetect(rectangleObjects[rigidBodyIndex], Vector3(0, 0, -1), -20, collisionList);
-		CollisionDetection::boxAndHalfSpaceCollisionDetect(rectangleObjects[rigidBodyIndex], Vector3(0, 0, 1), -20, collisionList);
+		// Check for collisions against planes
+		for (unsigned int planeIndex = 0; planeIndex < planeObjects.size(); planeIndex++)
+		{
+			CollisionDetection::boxAndHalfSpaceCollisionDetect(rectangleObjects[rigidBodyIndex], planeObjects[planeIndex], collisionList);
+		}
 
 		// Search for box/box collisions
 		for (int otherRigidBodyIndex = rigidBodyIndex + 1; otherRigidBodyIndex < rectangleObjects.size(); otherRigidBodyIndex++)
@@ -89,13 +92,11 @@ void Physics::detectCollisions(std::vector<Collision> *collisionList)
 	// Detect sphere collisions
 	for (int sphereIndex = 0; sphereIndex < sphereObjects.size(); sphereIndex++)
 	{
-		// Check for collisions against ground
-		CollisionDetection::sphereAndHalfSpaceCollisionDetect(sphereObjects[sphereIndex], Vector3(0, 1, 0), 0, collisionList);
-		// Check for collisions against the walls
-		CollisionDetection::sphereAndHalfSpaceCollisionDetect(sphereObjects[sphereIndex], Vector3(-1, 0, 0), -20, collisionList);
-		CollisionDetection::sphereAndHalfSpaceCollisionDetect(sphereObjects[sphereIndex], Vector3(1, 0, 0), -20, collisionList);
-		CollisionDetection::sphereAndHalfSpaceCollisionDetect(sphereObjects[sphereIndex], Vector3(0, 0, -1), -20, collisionList);
-		CollisionDetection::sphereAndHalfSpaceCollisionDetect(sphereObjects[sphereIndex], Vector3(0, 0, 1), -20, collisionList);
+		// Check for collisions against planes
+		for (unsigned int planeIndex = 0; planeIndex < planeObjects.size(); planeIndex++)
+		{
+			CollisionDetection::sphereAndHalfSpaceCollisionDetect(sphereObjects[sphereIndex], planeObjects[planeIndex], collisionList);
+		}
 
 		// Check for collisions against other spheres
 		for (int otherSphereIndex = sphereIndex + 1; otherSphereIndex < sphereObjects.size(); otherSphereIndex++)
@@ -113,12 +114,11 @@ void Physics::detectCollisions(std::vector<Collision> *collisionList)
 	// Detect capsule collisions
 	for (int capsuleIndex = 0; capsuleIndex < capsuleObjects.size(); capsuleIndex++)
 	{
-		CollisionDetection::capsuleHalfSpaceCollisionDetect(capsuleObjects[capsuleIndex], Vector3(0, 1, 0), 0, collisionList);
-		// Check for collisions against the walls
-		CollisionDetection::capsuleHalfSpaceCollisionDetect(capsuleObjects[capsuleIndex], Vector3(-1, 0, 0), -20, collisionList);
-		CollisionDetection::capsuleHalfSpaceCollisionDetect(capsuleObjects[capsuleIndex], Vector3(1, 0, 0), -20, collisionList);
-		CollisionDetection::capsuleHalfSpaceCollisionDetect(capsuleObjects[capsuleIndex], Vector3(0, 0, -1), -20, collisionList);
-		CollisionDetection::capsuleHalfSpaceCollisionDetect(capsuleObjects[capsuleIndex], Vector3(0, 0, 1), -20, collisionList);
+		// Check for collisions against planes
+		for (unsigned int planeIndex = 0; planeIndex < planeObjects.size(); planeIndex++)
+		{
+			CollisionDetection::capsuleHalfSpaceCollisionDetect(capsuleObjects[capsuleIndex], planeObjects[planeIndex], collisionList);
+		}
 
 		// Check for collisions against spheres
 		for (int sphereIndex = 0; sphereIndex< sphereObjects.size(); sphereIndex++)

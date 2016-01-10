@@ -21,6 +21,8 @@ namespace PhysicsEngine
 		std::vector<CollisionSphere *> sphereObjects;
 		// Contains all of the capsules in the scene
 		std::vector<CollisionCapsule *> capsuleObjects;
+		// Contains all of the planes in the scene
+		std::vector<CollisionPlane *> planeObjects;
 
 		// Integrate all of the rigid bodies
 		void integrateRigidBodies(real duration);
@@ -40,6 +42,7 @@ namespace PhysicsEngine
 		PHYSICSDLL_API void createSphere(CollisionSphere *createdCapsule);
 		PHYSICSDLL_API void createBox(CollisionBox *createdBox);
 		PHYSICSDLL_API void createParticle(Particle *createdParticle);
+		PHYSICSDLL_API void createPlane(CollisionPlane *createdPlane);
 	};
 
 }

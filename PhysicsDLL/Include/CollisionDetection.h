@@ -21,8 +21,7 @@ namespace PhysicsEngine
 		static unsigned boxAndHalfSpaceCollisionDetect
 		(
 			CollisionBox *box,
-			const Vector3 planeDirection,
-			real planeOffset,
+			CollisionPlane *plane,
 			std::vector<Collision> *collisionList
 		);
 
@@ -30,8 +29,7 @@ namespace PhysicsEngine
 		static unsigned sphereAndHalfSpaceCollisionDetect
 		(
 			CollisionSphere *sphere,
-			const Vector3 planeDirection,
-			real planeOffset,
+			CollisionPlane *plane,
 			std::vector<Collision> *collisionList
 		);
 
@@ -55,8 +53,7 @@ namespace PhysicsEngine
 		static unsigned int capsuleHalfSpaceCollisionDetect
 		(
 			CollisionCapsule *capsule,
-			const Vector3 planeDirection,
-			real planeOffset,
+			CollisionPlane *plane,
 			std::vector<Collision> *collisionList
 		);
 

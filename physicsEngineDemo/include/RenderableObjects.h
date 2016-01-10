@@ -10,6 +10,8 @@ namespace PhysicsDemo
 	class Plane
 	{
 	public:
+		PhysicsEngine::CollisionPlane *plane;
+
 		PhysicsEngine::Vector3 position;
 		PhysicsEngine::Vector3 normal;
 		PhysicsEngine::Vector3 up;
@@ -22,7 +24,8 @@ namespace PhysicsDemo
 			PhysicsEngine::Vector3 normalInput,
 			PhysicsEngine::Vector3 upInput,
 			PhysicsEngine::Vector3 colorInput,
-			PhysicsEngine::real halfSizeInput
+			PhysicsEngine::real halfSizeInput,
+			PhysicsEngine::real offset
 		)
 		{
 			position = positionInput;
@@ -30,10 +33,15 @@ namespace PhysicsDemo
 			up = upInput;
 			color = colorInput;
 			halfSize = halfSizeInput;
+
+			plane = new PhysicsEngine::CollisionPlane();
+			plane->normal = normalInput;
+			plane->offset = offset;
 		}
 
 		~Plane()
 		{
+			delete plane;
 		}
 
 		// Display this plane

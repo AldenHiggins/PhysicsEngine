@@ -1,11 +1,7 @@
 #ifndef COLLISION_PRIMITIVES_H
 #define COLLISION_PRIMITIVES_H
 
-#ifdef COLLISION_PRIMITIVES_H_EXPORTS
 #define COLLISION_PRIMITIVES_H_API __declspec(dllexport) 
-#else
-#define COLLISION_PRIMITIVES_H_API __declspec(dllimport) 
-#endif
 
 #include "MathDataTypes.h"
 #include "RigidBody.h"
@@ -49,6 +45,15 @@ namespace PhysicsEngine
 
 		// Set all of the parameters for this rigid body/Collision Box
 		COLLISION_PRIMITIVES_H_API void setState(Vector3 position, Quaternion rotation, Vector3 velocity, Vector3 acceleration, real mass, real radiusInput, real heightInput);
+	};
+
+	class CollisionPlane
+	{
+	public:
+		Vector3 normal;
+		real offset;
+
+		COLLISION_PRIMITIVES_H_API	CollisionPlane() {}
 	};
 }
 

@@ -90,3 +90,4 @@ CollisionBox::CollisionBox()
 	body = new RigidBody;
 }
 
+

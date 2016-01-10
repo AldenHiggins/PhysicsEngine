@@ -142,11 +142,12 @@ unsigned int CollisionDetection::cubeCubeCollisionDetect
 unsigned CollisionDetection::boxAndHalfSpaceCollisionDetect
 (
 	CollisionBox *box,
-	const Vector3 planeDirection,
-	real planeOffset,
+	CollisionPlane *plane,
 	std::vector<Collision> *collisionList
 )
 {
+	Vector3 planeDirection = plane->normal;
+	real planeOffset = plane->offset;
 	//// Make sure we have contacts
 	//if (data->contactsLeft <= 0) return 0
 
@@ -204,11 +205,13 @@ unsigned CollisionDetection::boxAndHalfSpaceCollisionDetect
 unsigned CollisionDetection::sphereAndHalfSpaceCollisionDetect
 (
 	CollisionSphere *sphere,
-	const Vector3 planeDirection,
-	real planeOffset,
+	CollisionPlane *plane,
 	std::vector<Collision> *collisionList
 )
 {
+	Vector3 planeDirection = plane->normal;
+	real planeOffset = plane->offset;
+
 	real sphereDistance = sphere->body->getPosition() * planeDirection - sphere->radius - planeOffset;
 	// If the distance is greater than zero we don't have a collision
 	if (sphereDistance >= 0)
@@ -232,11 +235,13 @@ unsigned CollisionDetection::sphereAndHalfSpaceCollisionDetect
 unsigned CollisionDetection::capsuleHalfSpaceCollisionDetect
 (
 	CollisionCapsule *capsule,
-	const Vector3 planeDirection,
-	real planeOffset,
+	CollisionPlane *plane,
 	std::vector<Collision> *collisionList
-	)
+)
 {
+	Vector3 planeDirection = plane->normal;
+	real planeOffset = plane->offset;
+
 	// Consider the capsule as the two spheres at either end of the capsule
 	// Test the sphere at the top of the capsule first
 	Vector3 topSpherePosition = capsule->body->getPointInWorldSpace(Vector3(0, capsule->height, 0));
