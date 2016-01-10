@@ -534,9 +534,12 @@ namespace PhysicsEngine {
 			// Get the total value of the angles in order to normalize them
 			float totalAngle = x + y + z;
 			// Normalize all of the angles
-			x /= totalAngle;
-			y /= totalAngle;
-			z /= totalAngle;
+			if (totalAngle != 0)
+			{
+				x /= totalAngle;
+				y /= totalAngle;
+				z /= totalAngle;
+			}
 
 			totalAngle = (totalAngle * PI) / 180.0f;
 
