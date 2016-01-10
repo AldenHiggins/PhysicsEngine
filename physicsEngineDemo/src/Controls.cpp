@@ -25,7 +25,7 @@ void Controls::keyCheck
 			addCapsule
 			(
 				physicsEngine, capsules,
-				PhysicsEngine::Vector3(-3.0f, 5.0f, 12.0f), PhysicsEngine::Quaternion::fromEuler(1, 0, 0), PhysicsEngine::Vector3(10.0f, 0, 0), PhysicsEngine::Vector3(),
+				PhysicsEngine::Vector3(-3.0f, 5.7f, 12.0f), PhysicsEngine::Quaternion::fromEuler(1, 0, 0), PhysicsEngine::Vector3(10.0f, 0, 0), PhysicsEngine::Vector3(),
 				10.0f, 1.0f, 1.0f
 			);
 			addCube

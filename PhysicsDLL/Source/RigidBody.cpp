@@ -146,7 +146,21 @@ real RigidBody::getInverseMass()
 // Set the position of this object
 void RigidBody::setPosition(Vector3 &positionInput)
 {
+	// If the position has been set once prevent it from being set again on a static rigid body
+	if (positionHasBeenSet == true)
+	{
+		if (isStatic == true)
+		{
+			return;
+		}
+	}
+
 	position = positionInput;
+
+	if (positionHasBeenSet == false)
+	{
+		positionHasBeenSet = true;
+	}
 }
 
 // Get the position of this object

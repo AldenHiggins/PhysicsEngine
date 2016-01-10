@@ -50,11 +50,16 @@ namespace PhysicsEngine
 
 		// Does this rigid body just serve as a static piece of geometry to collide with but not move itself
 		bool isStatic;
+
+		// Becomes true after setPosition has been called once to set a flag so that you can then prevent the position
+		// from being set again on a static rigid body....should change this system
+		bool positionHasBeenSet;
 	public:
 		RigidBody()
 		{
 			motion = sleepEpsilon * 2.0f;
 			isStatic = false;
+			positionHasBeenSet = false;
 		}
 
 		// Integrate this object based on the time elapsed this frame
