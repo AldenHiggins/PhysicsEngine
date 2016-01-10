@@ -641,7 +641,7 @@ bool CollisionDetection::boxAndHalfSpaceIntersect
 	// Work out how far the box is from the origin
 	real boxDistance =
 		planeDirection *
-		box->body->getTransformMatrix().getAxisVector(3) -
+		box->body->getPosition() -
 		projectedRadius;
 
 	// Check for the intersection

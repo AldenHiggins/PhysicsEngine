@@ -3,6 +3,8 @@
 
 #include "MathDataTypes.h"
 
+#define PHYSICS_DLL_API __declspec(dllexport)
+
 namespace PhysicsEngine
 {
 	class RigidBody
@@ -45,10 +47,14 @@ namespace PhysicsEngine
 
 		// Denotes whether the rigid body is awake or moving/colliding/etc.. to prevent it from being updated unnecessarily
 		bool isAwake;
+
+		// Does this rigid body just serve as a static piece of geometry to collide with but not move itself
+		bool isStatic;
 	public:
 		RigidBody()
 		{
 			motion = sleepEpsilon * 2.0f;
+			isStatic = false;
 		}
 
 		// Integrate this object based on the time elapsed this frame
@@ -61,7 +67,7 @@ namespace PhysicsEngine
 		void addForceAtPoint(const Vector3 &force, const Vector3 &point);
 
 		// Add a force at a position on this object in object space
-		__declspec(dllexport) void addForceAtBodyPoint(const Vector3 &force, const Vector3 &point);
+		PHYSICS_DLL_API void addForceAtBodyPoint(const Vector3 &force, const Vector3 &point);
 
 		// Add the inputted velocity to this rigid body
 		void addVelocity(const Vector3 &deltaVelocity);
@@ -74,7 +80,7 @@ namespace PhysicsEngine
 
 		// Calculates all of the derived data that results from the current state of the rigidbody, this happens
 		// automatically during integration
-		void calculateDerivedData();
+		PHYSICS_DLL_API void calculateDerivedData();
 
 		// Set the inertia tensor of this rigid body
 		void setInertiaTensor(const Matrix3 &inertiaTensor);
@@ -131,13 +137,16 @@ namespace PhysicsEngine
 		void setIsAwake(bool isAwakeInput);
 
 		// Get this body's transformation matrix in a form that opengl can use
-		__declspec(dllexport) void getGLTransform(float matrix[16]) const;
+		PHYSICS_DLL_API void getGLTransform(float matrix[16]) const;
 
 		// Transform a point from object space into world space
 		Vector3 getPointInWorldSpace(const Vector3 &point) const;
 
 		// Get this rigid bodies transformation matrix
 		Matrix4 getTransformMatrix() const;
+
+		// Set is static
+		PHYSICS_DLL_API void setStatic(bool isStaticInput);
 	};
 }
 

@@ -16,6 +16,12 @@ void RigidBody::integrate(real timeStep)
 		return;
 	}
 
+	// If this rigid body is static it doesn't move...no need to integrate
+	if (isStatic)
+	{
+		return;
+	}
+
 	// Calculate linear acceleration from force inputs.
 	lastFrameAcceleration = acceleration;
 	lastFrameAcceleration.addScaledVector(forceAccum, inverseMass);
@@ -363,4 +369,10 @@ inline void _calculateTransformMatrix(Matrix4 &transformMatrix, const Vector3 &p
 	transformMatrix.data[10] = 1 - 2 * orientation.i*orientation.i -
 		2 * orientation.j*orientation.j;
 	transformMatrix.data[11] = position.z;
+}
+
+// Set is static
+void RigidBody::setStatic(bool isStaticInput)
+{
+	isStatic = isStaticInput;
 }

@@ -26,8 +26,8 @@ void Controls::keyCheck
 			(
 				physicsEngine, capsules,
 				PhysicsEngine::Vector3(-3.0f, 5.0f, 12.0f), PhysicsEngine::Quaternion::fromEuler(1, 0, 0), PhysicsEngine::Vector3(10.0f, 0, 0), PhysicsEngine::Vector3(),
-				10.0f, 1.0f, 1.0f)
-			;
+				10.0f, 1.0f, 1.0f
+			);
 			addCube
 			(
 				physicsEngine, rectangularBodies,
@@ -82,6 +82,7 @@ void Controls::addSphere
 	Sphere *newSphere = new Sphere();
 	physicsEngine->createSphere(newSphere->spherePrimitive);
 	newSphere->spherePrimitive->setState(position, velocity, acceleration, mass, radius);
+	newSphere->spherePrimitive->body->calculateDerivedData();
 	sphereBodies->push_back(newSphere);
 }
 
@@ -98,7 +99,9 @@ void Controls::addCube
 {
 	Box *newSquare = new Box();
 	physicsEngine->createBox(newSquare->boxPrimitive);
+	newSquare->boxPrimitive->body->setStatic(true);
 	newSquare->boxPrimitive->setState(position, velocity, PhysicsEngine::Vector3(0, -9.81, 0), mass, halfSize);
+	newSquare->boxPrimitive->body->calculateDerivedData();
 	rigidBodies->push_back(newSquare);
 }
 
@@ -118,6 +121,7 @@ void Controls::addCapsule
 	Capsule *newCapsule = new Capsule();
 	physicsEngine->createCapsule(newCapsule->capsulePrimitive);
 	newCapsule->capsulePrimitive->setState(position, rotation, velocity, acceleration, mass, radius, height);
+	newCapsule->capsulePrimitive->body->calculateDerivedData();
 	capsuleBodies->push_back(newCapsule);
 }
 
