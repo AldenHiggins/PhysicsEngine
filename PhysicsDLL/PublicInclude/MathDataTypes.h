@@ -529,26 +529,29 @@ namespace PhysicsEngine {
 			(*this) *= q;
 		}
 
-		static Quaternion fromEuler(float x, float y, float z)
+		static Quaternion fromEuler(float xAngle, float yAngle, float zAngle)
 		{
-			// Get the total value of the angles in order to normalize them
-			float totalAngle = x + y + z;
-			// Normalize all of the angles
-			if (totalAngle != 0)
-			{
-				x /= totalAngle;
-				y /= totalAngle;
-				z /= totalAngle;
-			}
+			float roll = zAngle * PI / 180.0f;
+			float yaw = yAngle * PI / 180.0f;
+			float pitch = xAngle * PI / 180.0f;
 
-			totalAngle = (totalAngle * PI) / 180.0f;
+			Quaternion quat;
+			float cr, cp, cy, sr, sp, sy, cpcy, spsy;
+			// calculate trig identities
+			cr = cos(roll / 2);
+			cp = cos(pitch / 2);
+			cy = cos(yaw / 2);
+			sr = sin(roll / 2);
+			sp = sin(pitch / 2);
+			sy = sin(yaw / 2);
+			cpcy = cp * cy;
+			spsy = sp * sy;
+			quat.r = cr * cpcy + sr * spsy;
+			quat.i = sr * cpcy - cr * spsy;
+			quat.j = cr * sp * cy + sr * cp * sy;
+			quat.k = cr * cp * sy - sr * sp * cy;
 
-			float r = cos(totalAngle / 2.0f);
-			float i = x * sin(totalAngle / 2.0f);
-			float j = y * sin(totalAngle / 2.0f);
-			float k = z * sin(totalAngle / 2.0f);
-
-			return Quaternion(r, i, j, k);
+			return quat;
 		}
 	};
 

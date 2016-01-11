@@ -1,17 +1,22 @@
 #include "PlayerControls.h"
 #include "MathDataTypes.h"
+#include <iostream>
 
 using namespace PhysicsDemo;
 
 // Controls
 void PlayerController::keyCheck(unsigned char key)
 {
-	PhysicsEngine::Quaternion rotation = PhysicsEngine::Quaternion::fromEuler(-pitch, yaw, 0.0f);
+	// Hacky from euler creation...but it works
+	PhysicsEngine::Quaternion rotation = PhysicsEngine::Quaternion::fromEuler(yaw, 0.0f, -pitch);
+
 	PhysicsEngine::Matrix3 rotMatrix;
 	rotMatrix.setOrientation(rotation);
 
 	PhysicsEngine::Vector3 forward = rotMatrix.transform(PhysicsEngine::Vector3(0.0f, 0.0f, 1.0f));
 	PhysicsEngine::Vector3 right = forward.vectorProduct(PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f));
+
+	std::cout << "Forward: " << forward[0] << " " << forward[1] << " " << forward[2] << std::endl;
 
 	switch (key)
 	{
