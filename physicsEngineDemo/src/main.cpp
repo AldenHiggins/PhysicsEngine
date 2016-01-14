@@ -21,8 +21,13 @@ void drawScene();
 // The player controller
 PlayerController player;
 
+// Duration of the previous frame
+float duration;
+
 // The instance of the physics engine that this game will make use of
 PhysicsEngine::Physics physicsEngine;
+
+std::vector<Renderable *> renderableObjects;
 
 // Contains all of the particles in the scene
 std::vector<RenderableParticle *> particles;
@@ -58,9 +63,20 @@ void createWindow(const char* title)
 */
 void update()
 {
+	// Update timing data and the duration variable
 	TimingData::get().update();
+	duration = (float)TimingData::get().lastFrameDuration * 0.001f;
+	if (duration <= 0.0f)
+	{
+		return;
+	}
+	else if (duration > 0.05f)
+	{
+		duration = 0.05f;
+	}
+
 	// Update the player's position
-	player.update((float)TimingData::get().lastFrameDuration * 0.001f);
+	player.update(duration);
 
 	glutPostRedisplay();
 }
@@ -79,26 +95,15 @@ void display()
 	glLoadIdentity();
 	// Look out towards the Z direction (eye, center, up)
 	gluLookAt(0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0);
-	// Move the scene based on where the player is
-	PhysicsEngine::real pitch = player.getPitch();
-	PhysicsEngine::real yaw = player.getYaw();
+	// Rotate the scene according to wheere the player is rotated
+	glRotatef(-1 * player.getPitch(), 1, 0, 0);
+	glRotatef(player.getYaw(), 0, 1, 0);
+	// Move the camera to the player's current location
 	PhysicsEngine::Vector3 position = player.getPosition();
-	glRotatef(-1 * pitch, 1, 0, 0);
-	glRotatef(yaw, 0, 1, 0);
 	glTranslatef(-1 * position[0], -1 * position[1], -1 * position[2]);
 	
-	// Draw the background
+	// Draw the background (just misc things right now, need to add these as scene objects
 	drawBackground();
-
-	float duration = (float)TimingData::get().lastFrameDuration * 0.001f;
-	if (duration <= 0.0f)
-	{
-		return;
-	}
-	else if (duration > 0.05f)
-	{
-		duration = 0.05f;
-	}
 
 	// Update the world physics based on the timestep of the frame
 	physicsEngine.updatePhysics(duration);
@@ -132,34 +137,10 @@ void drawBackground()
 // Draw the scene
 void drawScene()
 {
-	// Draw all the planes
-	for (unsigned int planeIndex = 0; planeIndex < planes.size(); planeIndex++)
+	// Draw all of the renderable objects
+	for (unsigned int renderableIndex = 0; renderableIndex < renderableObjects.size(); renderableIndex++)
 	{
-		planes[planeIndex]->display();
-	}
-
-	// Draw all of the particles
-	for (unsigned int particleIndex = 0; particleIndex < particles.size(); particleIndex++)
-	{
-		particles[particleIndex]->display();
-	}
-
-	// Draw all cubes
-	for (unsigned int rigidBodyIndex = 0; rigidBodyIndex < rectangleObjects.size(); rigidBodyIndex++)
-	{
-		rectangleObjects[rigidBodyIndex]->display();
-	}
-
-	// Draw all spheres
-	for (unsigned int rigidBodyIndex = 0; rigidBodyIndex < sphereObjects.size(); rigidBodyIndex++)
-	{
-		sphereObjects[rigidBodyIndex]->display();
-	}
-
-	// Draw all the capsules
-	for (unsigned int rigidBodyIndex = 0; rigidBodyIndex < capsuleObjects.size(); rigidBodyIndex++)
-	{
-		capsuleObjects[rigidBodyIndex]->display();
+		renderableObjects[renderableIndex]->display();
 	}
 }
 
@@ -185,7 +166,7 @@ void reshape(int width, int height)
 */
 void keyboard(unsigned char key, int x, int y)
 {
-	Controls::keyCheck(key, &physicsEngine, &particles, &rectangleObjects, &sphereObjects, &capsuleObjects, &player);
+	Controls::keyCheck(key, &physicsEngine, &renderableObjects, &particles, &rectangleObjects, &sphereObjects, &capsuleObjects, &player);
 	player.keyCheck(key);
 }
 
@@ -312,6 +293,13 @@ void initializeScene()
 	planes.push_back(plane3);
 	planes.push_back(plane4);
 	planes.push_back(plane5);
+
+	// Add them to renderable objects
+	renderableObjects.push_back((Renderable *)plane1);
+	renderableObjects.push_back((Renderable *)plane2);
+	renderableObjects.push_back((Renderable *)plane3);
+	renderableObjects.push_back((Renderable *)plane4);
+	renderableObjects.push_back((Renderable *)plane5);
 
 	// Register them with the physics engine
 	physicsEngine.createPlane(plane1->plane);

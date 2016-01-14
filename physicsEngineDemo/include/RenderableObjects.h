@@ -7,7 +7,13 @@
 
 namespace PhysicsDemo
 {
-	class Plane
+	class Renderable
+	{
+	public:
+		virtual void display() = 0;
+	};
+
+	class Plane : Renderable
 	{
 	public:
 		PhysicsEngine::CollisionPlane *plane;
@@ -48,7 +54,7 @@ namespace PhysicsDemo
 		void display();
 	};
 
-	class Box
+	class Box : public Renderable
 	{
 	public:
 		PhysicsEngine::CollisionBox *boxPrimitive;
@@ -67,7 +73,7 @@ namespace PhysicsDemo
 		void display();
 	};
 
-	class Sphere
+	class Sphere : public Renderable
 	{
 	public:
 		PhysicsEngine::CollisionSphere *spherePrimitive;
@@ -88,7 +94,7 @@ namespace PhysicsDemo
 	};
 
 
-	class Capsule
+	class Capsule : public Renderable
 	{
 	public:
 		PhysicsEngine::CollisionCapsule *capsulePrimitive;

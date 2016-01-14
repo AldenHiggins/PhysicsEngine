@@ -18,6 +18,7 @@ namespace PhysicsDemo
 		(
 			unsigned char key,
 			PhysicsEngine::Physics *physicsEngine,
+			std::vector<Renderable *> *renderableObjects,
 			std::vector<RenderableParticle *> *particles,
 			std::vector<Box *> *boxes,
 			std::vector<Sphere *> *spheres,
@@ -31,6 +32,7 @@ namespace PhysicsDemo
 		static void addParticle
 		(
 			PhysicsEngine::Physics *physicsEngine,
+			std::vector<Renderable *> *renderableObjects,
 			std::vector<RenderableParticle *> *particles,
 			PhysicsEngine::Vector3 position,
 			PhysicsEngine::real mass,
@@ -40,6 +42,7 @@ namespace PhysicsDemo
 		static void addSphere
 		(
 			PhysicsEngine::Physics *physicsEngine,
+			std::vector<Renderable *> *renderableObjects,
 			std::vector<Sphere *> *sphereBodies,
 			PhysicsEngine::Vector3 position,
 			PhysicsEngine::Vector3 velocity,
@@ -50,6 +53,7 @@ namespace PhysicsDemo
 		static void addCube
 		(
 			PhysicsEngine::Physics *physicsEngine,
+			std::vector<Renderable *> *renderableObjects,
 			std::vector<Box *> *rectangularBodies,
 			PhysicsEngine::Vector3 position,
 			PhysicsEngine::Vector3 velocity,
@@ -60,6 +64,7 @@ namespace PhysicsDemo
 		static void addCapsule
 		(
 			PhysicsEngine::Physics *physicsEngine,
+			std::vector<Renderable *> *renderableObjects,
 			std::vector<Capsule *> *capsuleBodies,
 			PhysicsEngine::Vector3 position,
 			PhysicsEngine::Quaternion rotation,

@@ -3,6 +3,7 @@
 
 #include "MathDataTypes.h"
 #include "Particle.h"
+#include "RenderableObjects.h"
 
 // Position
 // Size
@@ -12,7 +13,7 @@
 
 namespace PhysicsDemo
 {
-	class RenderableParticle
+	class RenderableParticle : public Renderable
 	{
 	protected:
 		PhysicsEngine::real size;
@@ -29,7 +30,7 @@ namespace PhysicsDemo
 			timeAliveSoFar = 0;
 		}
 		// Display this particle
-		virtual void display();
+		void display();
 		// Function called when this particle dies
 		virtual void onDeath();
 

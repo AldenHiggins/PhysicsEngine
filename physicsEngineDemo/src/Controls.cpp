@@ -10,6 +10,7 @@ void Controls::keyCheck
 (
 	unsigned char key,
 	PhysicsEngine::Physics *physicsEngine,
+	std::vector<Renderable *> *renderableObjects,
 	std::vector<RenderableParticle *> *particles,
 	std::vector<Box *> *rectangularBodies,
 	std::vector<Sphere *> *spheres,
@@ -23,7 +24,7 @@ void Controls::keyCheck
 		{		
 			addCapsule
 			(
-				physicsEngine, capsules,
+				physicsEngine, renderableObjects, capsules,
 				rotatePositionAlongYAxis(13.0f, 5.7f, player->getYaw()), PhysicsEngine::Quaternion::fromEuler(1, 0, 0), PhysicsEngine::Vector3(0.0f, 0, 0), PhysicsEngine::Vector3(),
 				10.0f, 1.0f, 1.0f
 			);
@@ -35,25 +36,25 @@ void Controls::keyCheck
 		{
 			addCube
 			(
-				physicsEngine, rectangularBodies,
+				physicsEngine, renderableObjects, rectangularBodies,
 				PhysicsEngine::Vector3(0.0f, 5.0f, 12.0f), PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f), PhysicsEngine::Vector3(),
 				10.0f, PhysicsEngine::Vector3(1.0f, .5f, .5f)
 			);
 			addCube
 			(
-				physicsEngine, rectangularBodies,
+				physicsEngine, renderableObjects, rectangularBodies,
 				PhysicsEngine::Vector3(3.0f, 7.0f, 12.0f), PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f), PhysicsEngine::Vector3(),
 				10.0f, PhysicsEngine::Vector3(1.0f, .5f, .5f)
 			);
 			addCube
 			(
-				physicsEngine, rectangularBodies,
+				physicsEngine, renderableObjects, rectangularBodies,
 				PhysicsEngine::Vector3(6.0f, 12.0f, 12.0f), PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f), PhysicsEngine::Vector3(),
 				10.0f, PhysicsEngine::Vector3(1.0f, .5f, .5f)
 			);
 			addCube
 			(
-				physicsEngine, rectangularBodies,
+				physicsEngine, renderableObjects, rectangularBodies,
 				PhysicsEngine::Vector3(9.0f, 15.0f, 12.0f), PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f), PhysicsEngine::Vector3(),
 				10.0f, PhysicsEngine::Vector3(1.0f, .5f, .5f)
 			);
@@ -70,6 +71,7 @@ void Controls::keyCheck
 void Controls::addParticle
 (
 	PhysicsEngine::Physics *physicsEngine,
+	std::vector<Renderable *> *renderableObjects,
 	std::vector<RenderableParticle *> *particles,
 	PhysicsEngine::Vector3 position,
 	PhysicsEngine::real mass,
@@ -80,11 +82,13 @@ void Controls::addParticle
 	RenderableParticle *particle = CreateParticle::createParticle(position, 5.0f, radius, PhysicsEngine::Vector3(.5f, .5f, .5f));
 	particles->push_back(particle);
 	physicsEngine->createParticle(particle->physicsParticle);
+	renderableObjects->push_back(particle);
 }
 
 void Controls::addSphere
 (
 	PhysicsEngine::Physics *physicsEngine,
+	std::vector<Renderable *> *renderableObjects,
 	std::vector<Sphere *> *sphereBodies,
 	PhysicsEngine::Vector3 position,
 	PhysicsEngine::Vector3 velocity,
@@ -98,11 +102,13 @@ void Controls::addSphere
 	newSphere->spherePrimitive->setState(position, velocity, acceleration, mass, radius);
 	newSphere->spherePrimitive->body->calculateDerivedData();
 	sphereBodies->push_back(newSphere);
+	renderableObjects->push_back(newSphere);
 }
 
 void Controls::addCube
 (
 	PhysicsEngine::Physics *physicsEngine,
+	std::vector<Renderable *> *renderableObjects,
 	std::vector<Box *> *rigidBodies,
 	PhysicsEngine::Vector3 position,
 	PhysicsEngine::Vector3 velocity,
@@ -117,11 +123,13 @@ void Controls::addCube
 	newSquare->boxPrimitive->setState(position, velocity, PhysicsEngine::Vector3(0, -9.81, 0), mass, halfSize);
 	newSquare->boxPrimitive->body->calculateDerivedData();
 	rigidBodies->push_back(newSquare);
+	renderableObjects->push_back(newSquare);
 }
 
 void Controls::addCapsule
 (
 	PhysicsEngine::Physics *physicsEngine,
+	std::vector<Renderable *> *renderableObjects,
 	std::vector<Capsule *> *capsuleBodies,
 	PhysicsEngine::Vector3 position,
 	PhysicsEngine::Quaternion rotation,
@@ -137,6 +145,7 @@ void Controls::addCapsule
 	newCapsule->capsulePrimitive->setState(position, rotation, velocity, acceleration, mass, radius, height);
 	newCapsule->capsulePrimitive->body->calculateDerivedData();
 	capsuleBodies->push_back(newCapsule);
+	renderableObjects->push_back(newCapsule);
 }
 
 /////////////////////////////////////////////////////////////////////////
