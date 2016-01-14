@@ -152,6 +152,9 @@ namespace PhysicsEngine
 
 		// Set is static
 		PHYSICS_DLL_API void setStatic(bool isStaticInput);
+
+		// Get whether the body is static
+		PHYSICS_DLL_API bool getStatic();
 	};
 }
 

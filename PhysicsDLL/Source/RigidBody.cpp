@@ -390,3 +390,9 @@ void RigidBody::setStatic(bool isStaticInput)
 {
 	isStatic = isStaticInput;
 }
+
+// Get whether the body is static
+bool RigidBody::getStatic()
+{
+	return isStatic;
+}
