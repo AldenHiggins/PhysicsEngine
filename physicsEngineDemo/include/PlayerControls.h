@@ -16,13 +16,24 @@ namespace PhysicsDemo
 		PhysicsEngine::real yaw;
 		PhysicsEngine::real pitch;
 		PhysicsEngine::real speed;
+
+		bool wPressed;
+		bool aPressed;
+		bool sPressed;
+		bool dPressed;
 		
 	public:
 		PlayerController()
 		{
 			position = PLAYER_DEFAULT_POSITION;
 			speed = PLAYER_DEFAULT_SPEED;
+			wPressed = false;
+			aPressed = false;
+			sPressed = false;
+			dPressed = false;
 		}
+		// Update player position as needed given the duration of the past frame
+		void update(float deltaTime);
 
 		// Controls
 		void keyCheck(unsigned char key);

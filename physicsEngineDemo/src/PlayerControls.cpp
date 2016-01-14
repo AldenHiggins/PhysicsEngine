@@ -4,8 +4,8 @@
 
 using namespace PhysicsDemo;
 
-// Controls
-void PlayerController::keyCheck(unsigned char key)
+// Update player position as needed given the duration of the past frame
+void PlayerController::update(float deltaTime)
 {
 	// Hacky from euler creation...but it works
 	PhysicsEngine::Quaternion rotation = PhysicsEngine::Quaternion::fromEuler(yaw, 0.0f, -pitch);
@@ -16,28 +16,52 @@ void PlayerController::keyCheck(unsigned char key)
 	PhysicsEngine::Vector3 forward = rotMatrix.transform(PhysicsEngine::Vector3(0.0f, 0.0f, 1.0f));
 	PhysicsEngine::Vector3 right = forward.vectorProduct(PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f));
 
-	std::cout << "Forward: " << forward[0] << " " << forward[1] << " " << forward[2] << std::endl;
+	//std::cout << "Forward: " << forward[0] << " " << forward[1] << " " << forward[2] << std::endl;
 
+	if (wPressed)
+	{
+		position += forward * speed;
+	}
+
+	if (sPressed)
+	{
+		position -= forward * speed;
+	}
+
+	if (aPressed)
+	{
+		position -= right * speed;
+	}
+
+	if (dPressed)
+	{
+		position += right * speed;
+	}
+}
+
+// Controls
+void PlayerController::keyCheck(unsigned char key)
+{
 	switch (key)
 	{
 	case 'w':
 	{
-		position += forward * speed;
+		wPressed = true;
 		break;
 	}
 	case 's':
 	{
-		position -= forward * speed;
+		sPressed = true;
 		break;
 	}
 	case 'a':
 	{
-		position -= right * speed;
+		aPressed = true;
 		break;
 	}
 	case 'd':
 	{
-		position += right * speed;
+		dPressed = true;
 		break;
 	}
 	}
@@ -47,37 +71,26 @@ void PlayerController::keyCheck(unsigned char key)
 // Controls
 void PlayerController::keyUpCheck(unsigned char key)
 {
-	// Hacky from euler creation...but it works
-	PhysicsEngine::Quaternion rotation = PhysicsEngine::Quaternion::fromEuler(yaw, 0.0f, -pitch);
-
-	PhysicsEngine::Matrix3 rotMatrix;
-	rotMatrix.setOrientation(rotation);
-
-	PhysicsEngine::Vector3 forward = rotMatrix.transform(PhysicsEngine::Vector3(0.0f, 0.0f, 1.0f));
-	PhysicsEngine::Vector3 right = forward.vectorProduct(PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f));
-
-	std::cout << "Forward: " << forward[0] << " " << forward[1] << " " << forward[2] << std::endl;
-
 	switch (key)
 	{
 	case 'w':
 	{
-		position += forward * speed;
+		wPressed = false;
 		break;
 	}
 	case 's':
 	{
-		position -= forward * speed;
+		sPressed = false;
 		break;
 	}
 	case 'a':
 	{
-		position -= right * speed;
+		aPressed = false;
 		break;
 	}
 	case 'd':
 	{
-		position += right * speed;
+		dPressed = false;
 		break;
 	}
 	}

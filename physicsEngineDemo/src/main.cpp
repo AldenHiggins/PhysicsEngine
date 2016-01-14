@@ -59,6 +59,9 @@ void createWindow(const char* title)
 void update()
 {
 	TimingData::get().update();
+	// Update the player's position
+	player.update((float)TimingData::get().lastFrameDuration * 0.001f);
+
 	glutPostRedisplay();
 }
 
