@@ -187,6 +187,14 @@ void keyboard(unsigned char key, int x, int y)
 }
 
 /**
+* Called when a key is pressed.
+*/
+void keyboardUp(unsigned char key, int x, int y)
+{
+	player.keyUpCheck(key);
+}
+
+/**
 * Called when the mouse is dragged.
 */
 void motion(int x, int y)
@@ -326,6 +334,7 @@ int main(int argc, char** argv)
 	// Set up the appropriate handler functions
 	glutReshapeFunc(reshape);
 	glutKeyboardFunc(keyboard);
+	glutKeyboardUpFunc(keyboardUp);
 	glutDisplayFunc(display);
 	glutIdleFunc(update);
 	glutMouseFunc(mouse);

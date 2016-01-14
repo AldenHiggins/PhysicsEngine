@@ -26,6 +26,7 @@ namespace PhysicsDemo
 
 		// Controls
 		void keyCheck(unsigned char key);
+		void keyUpCheck(unsigned char key);
 
 		// Getters and setters
 		PhysicsEngine::real getSpeed();
