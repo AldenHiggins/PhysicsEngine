@@ -41,8 +41,6 @@ std::vector<Capsule *> capsuleObjects;
 std::vector<Plane *> planes;
 
 // Camera control variables
-//float theta;
-//float phi;
 int lastX;
 int lastY;
 
@@ -89,7 +87,7 @@ void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	// Light up the scene
-	GLfloat light_position[] = { -4.0, 50.0, -10.0, 0.0 };
+	GLfloat light_position[] = { -4.0, 10.0, -10.0, 0.0 };
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 
 	glLoadIdentity();
@@ -101,9 +99,6 @@ void display()
 	// Move the camera to the player's current location
 	PhysicsEngine::Vector3 position = player.getPosition();
 	glTranslatef(-1 * position[0], -1 * position[1], -1 * position[2]);
-	
-	// Draw the background (just misc things right now, need to add these as scene objects
-	drawBackground();
 
 	// Update the world physics based on the timestep of the frame
 	physicsEngine.updatePhysics(duration);
@@ -113,25 +108,6 @@ void display()
 
 	glFlush();
 	glutSwapBuffers();
-}
-
-// Draw the background of the scene
-void drawBackground()
-{
-	glBegin(GL_QUADS);	
-	// Draw the lines of the axes
-	glColor3f(0.0f, 0.0f, 0.0f);
-	// x axis
-	glVertex3f(20, .01f, AXES_WIDTH/2);
-	glVertex3f(20, .01f, -1 * AXES_WIDTH/2);
-	glVertex3f(-20, .01f, -1 * AXES_WIDTH/2);
-	glVertex3f(-20, .01f, AXES_WIDTH/2);
-	// z axis
-	glVertex3f(AXES_WIDTH/2, .01f, 20);
-	glVertex3f(-1 * AXES_WIDTH/2, .01f, 20);
-	glVertex3f(-1 * AXES_WIDTH/2, .01f, -20);
-	glVertex3f(AXES_WIDTH/2, .01f, -20);
-	glEnd();
 }
 
 // Draw the scene
@@ -243,48 +219,48 @@ void initializeScene()
 		PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f),
 		PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
 		PhysicsEngine::Vector3(0.3f, 0.3f, 0.7f),
-		20.0f,
+		10.0f,
 		0.0f
 	);
 
 	Plane *plane2 = new Plane
 	(
-		PhysicsEngine::Vector3(0.0f, 0.0f, 20.0f),
+		PhysicsEngine::Vector3(0.0f, 10.0f, 10.0f),
 		PhysicsEngine::Vector3(0.0f, 0.0f, -1.0f),
 		PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
 		PhysicsEngine::Vector3(0.9f, 0.9f, 0.9f),
-		20.0f,
-		-20.0f
+		10.0f,
+		-10.0f
 	);
 
 	Plane *plane3 = new Plane
 	(
-		PhysicsEngine::Vector3(0.0f, 0.0f, -20.0f),
+		PhysicsEngine::Vector3(0.0f, 10.0f, -10.0f),
 		PhysicsEngine::Vector3(0.0f, 0.0f, 1.0f),
 		PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
 		PhysicsEngine::Vector3(0.0f, 0.8f, 0.0f),
-		20.0f,
-		-20.0f
+		10.0f,
+		-10.0f
 	);
 
 	Plane *plane4 = new Plane
 	(
-		PhysicsEngine::Vector3(20.0f, 0.0f, 0.0f),
+		PhysicsEngine::Vector3(10.0f, 10.0f, 0.0f),
 		PhysicsEngine::Vector3(-1.0f, 0.0f, 0.0f),
 		PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f),
 		PhysicsEngine::Vector3(0.4f, 0.8f, 0.1f),
-		20.0f,
-		-20.0f
+		10.0f,
+		-10.0f
 	);
 
 	Plane *plane5 = new Plane
 	(
-		PhysicsEngine::Vector3(-20.0f, 0.0f, 0.0f),
+		PhysicsEngine::Vector3(-10.0f, 10.0f, 0.0f),
 		PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
 		PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f),
 		PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
-		20.0f,
-		-20.0f
+		10.0f,
+		-10.0f
 	);
 
 	// Initialize the planes
@@ -307,6 +283,27 @@ void initializeScene()
 	physicsEngine.createPlane(plane3->plane);
 	physicsEngine.createPlane(plane4->plane);
 	physicsEngine.createPlane(plane5->plane);
+
+	//// Create the axes and add them to renderableObjects
+	//Axis *firstAxis = new Axis
+	//(
+	//	PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f),
+	//	PhysicsEngine::Vector3(20, .01f, AXES_WIDTH / 2),
+	//	PhysicsEngine::Vector3(20, .01f, -1 * AXES_WIDTH / 2),
+	//	PhysicsEngine::Vector3(-20, .01f, -1 * AXES_WIDTH / 2),
+	//	PhysicsEngine::Vector3(-20, .01f, AXES_WIDTH / 2)
+	//);
+	//renderableObjects.push_back((Renderable *) firstAxis);
+
+	//Axis *secondAxis = new Axis
+	//(
+	//	PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f),
+	//	PhysicsEngine::Vector3(AXES_WIDTH / 2, .01f, 20),
+	//	PhysicsEngine::Vector3(-1 * AXES_WIDTH / 2, .01f, 20),
+	//	PhysicsEngine::Vector3(-1 * AXES_WIDTH / 2, .01f, -20),
+	//	PhysicsEngine::Vector3(AXES_WIDTH / 2, .01f, -20)
+	//); 
+	//renderableObjects.push_back((Renderable *) secondAxis);
 }
 
 /**

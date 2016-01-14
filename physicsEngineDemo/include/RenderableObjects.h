@@ -13,6 +13,34 @@ namespace PhysicsDemo
 		virtual void display() = 0;
 	};
 
+	class Axis : Renderable
+	{
+	private:
+		PhysicsEngine::Vector3 color;
+		PhysicsEngine::Vector3 firstPoint;
+		PhysicsEngine::Vector3 secondPoint;
+		PhysicsEngine::Vector3 thirdPoint;
+		PhysicsEngine::Vector3 fourthPoint;
+	public:
+		Axis
+		(
+			PhysicsEngine::Vector3 colorInput,
+			PhysicsEngine::Vector3 firstPointInput,
+			PhysicsEngine::Vector3 secondPointInput,
+			PhysicsEngine::Vector3 thirdPointInput,
+			PhysicsEngine::Vector3 fourthPointInput
+		)
+		{
+			color = colorInput;
+			firstPoint = firstPointInput;
+			secondPoint = secondPointInput;
+			thirdPoint = thirdPointInput;
+			fourthPoint = fourthPointInput;
+		}
+
+		void display();
+	};
+
 	class Plane : Renderable
 	{
 	public:
