@@ -6,6 +6,7 @@
 #include "PhysicsEngine.h"
 #include "RigidBody.h"
 #include "PlayerControls.h"
+#include "PhysicsDemo.h"
 #include <vector>
 
 namespace PhysicsDemo
@@ -17,13 +18,7 @@ namespace PhysicsDemo
 		static void keyCheck
 		(
 			unsigned char key,
-			PhysicsEngine::Physics *physicsEngine,
-			std::vector<Renderable *> *renderableObjects,
-			std::vector<RenderableParticle *> *particles,
-			std::vector<Box *> *boxes,
-			std::vector<Sphere *> *spheres,
-			std::vector<Capsule *> *capsules,
-			PlayerController *player
+			RenderingDemo *demo
 		);
 	private:
 		/////////////////////////////////////////////////////////////////////////
@@ -31,9 +26,7 @@ namespace PhysicsDemo
 		/////////////////////////////////////////////////////////////////////////
 		static void addParticle
 		(
-			PhysicsEngine::Physics *physicsEngine,
-			std::vector<Renderable *> *renderableObjects,
-			std::vector<RenderableParticle *> *particles,
+			RenderingDemo *demo,
 			PhysicsEngine::Vector3 position,
 			PhysicsEngine::real mass,
 			PhysicsEngine::real radius,
@@ -41,9 +34,7 @@ namespace PhysicsDemo
 		);
 		static void addSphere
 		(
-			PhysicsEngine::Physics *physicsEngine,
-			std::vector<Renderable *> *renderableObjects,
-			std::vector<Sphere *> *sphereBodies,
+			RenderingDemo *demo,
 			PhysicsEngine::Vector3 position,
 			PhysicsEngine::Vector3 velocity,
 			PhysicsEngine::Vector3 acceleration,
@@ -52,9 +43,7 @@ namespace PhysicsDemo
 		);
 		static void addCube
 		(
-			PhysicsEngine::Physics *physicsEngine,
-			std::vector<Renderable *> *renderableObjects,
-			std::vector<Box *> *rectangularBodies,
+			RenderingDemo *demo,
 			PhysicsEngine::Vector3 position,
 			PhysicsEngine::Vector3 velocity,
 			PhysicsEngine::Vector3 acceleration,
@@ -63,9 +52,7 @@ namespace PhysicsDemo
 		);
 		static void addCapsule
 		(
-			PhysicsEngine::Physics *physicsEngine,
-			std::vector<Renderable *> *renderableObjects,
-			std::vector<Capsule *> *capsuleBodies,
+			RenderingDemo *demo,
 			PhysicsEngine::Vector3 position,
 			PhysicsEngine::Quaternion rotation,
 			PhysicsEngine::Vector3 velocity,
@@ -79,9 +66,9 @@ namespace PhysicsDemo
 		////////////////////////  OBJECT INTERACTIONS  //////////////////////////
 		/////////////////////////////////////////////////////////////////////////
 		// Add force to the first cylinder
-		static void addForceToCapsule(std::vector<Capsule *> *capsuleBodies, int capsuleIndex, PhysicsEngine::Vector3 force, PhysicsEngine::Vector3 position);
+		static void addForceToCapsule(RenderingDemo *demo, int capsuleIndex, PhysicsEngine::Vector3 force, PhysicsEngine::Vector3 position);
 		// Add force to the first cube
-		static void addForceToCube(std::vector<Box *> *rectangularBodies, int capsuleIndex, PhysicsEngine::Vector3 force, PhysicsEngine::Vector3 position);
+		static void addForceToCube(RenderingDemo *demo, int capsuleIndex, PhysicsEngine::Vector3 force, PhysicsEngine::Vector3 position);
 
 
 		/////////////////////////////////////////////////////////////////////////

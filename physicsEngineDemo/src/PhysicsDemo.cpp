@@ -112,7 +112,7 @@ void RenderingDemo::reshape(int width, int height)
 */
 void RenderingDemo::keyboard(unsigned char key, int x, int y)
 {
-	Controls::keyCheck(key, &physicsEngine, &renderableObjects, &particles, &rectangleObjects, &sphereObjects, &capsuleObjects, &player);
+	Controls::keyCheck(key, this);
 	player.keyCheck(key);
 }
 
