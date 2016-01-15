@@ -96,10 +96,7 @@ void Controls::addParticle
 	PhysicsEngine::real height
 )
 {
-	RenderableParticle *particle = CreateParticle::createParticle(position, 5.0f, radius, PhysicsEngine::Vector3(.5f, .5f, .5f));
-	particles->push_back(particle);
-	physicsEngine->createParticle(particle->physicsParticle);
-	renderableObjects->push_back(particle);
+	RenderableParticle *particle = CreateParticle::createParticle(demo, position, 5.0f, radius, PhysicsEngine::Vector3(.5f, .5f, .5f));
 }
 
 void Controls::addSphere
@@ -112,12 +109,7 @@ void Controls::addSphere
 	PhysicsEngine::real radius
 )
 {
-	Sphere *newSphere = new Sphere();
-	physicsEngine->createSphere(newSphere->spherePrimitive);
-	newSphere->spherePrimitive->setState(position, velocity, acceleration, mass, radius);
-	newSphere->spherePrimitive->body->calculateDerivedData();
-	sphereBodies->push_back(newSphere);
-	renderableObjects->push_back(newSphere);
+	Sphere *newSphere = new Sphere(demo, position, velocity, acceleration, mass, radius);
 }
 
 void Controls::addCube
@@ -130,13 +122,7 @@ void Controls::addCube
 	PhysicsEngine::Vector3 halfSize
 )
 {
-	Box *newSquare = new Box();
-	physicsEngine->createBox(newSquare->boxPrimitive);
-	newSquare->boxPrimitive->body->setStatic(true);
-	newSquare->boxPrimitive->setState(position, velocity, PhysicsEngine::Vector3(0, -9.81, 0), mass, halfSize);
-	newSquare->boxPrimitive->body->calculateDerivedData();
-	rigidBodies->push_back(newSquare);
-	renderableObjects->push_back(newSquare);
+	Box *newSquare = new Box(demo, position, velocity, acceleration, mass, halfSize);
 }
 
 void Controls::addCapsule
@@ -151,12 +137,7 @@ void Controls::addCapsule
 	PhysicsEngine::real height
 )
 {
-	Capsule *newCapsule = new Capsule();
-	physicsEngine->createCapsule(newCapsule->capsulePrimitive);
-	newCapsule->capsulePrimitive->setState(position, rotation, velocity, acceleration, mass, radius, height);
-	newCapsule->capsulePrimitive->body->calculateDerivedData();
-	capsuleBodies->push_back(newCapsule);
-	renderableObjects->push_back(newCapsule);
+	Capsule *newCapsule = new Capsule(demo, position, rotation, velocity, acceleration, mass, radius, height);
 }
 
 /////////////////////////////////////////////////////////////////////////

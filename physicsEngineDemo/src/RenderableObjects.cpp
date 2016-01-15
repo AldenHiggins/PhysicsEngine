@@ -1,4 +1,5 @@
 #include "RenderableObjects.h"
+#include "PhysicsDemo.h"
 
 using namespace PhysicsDemo;
 
@@ -45,6 +46,27 @@ void Plane::display()
 	glEnd();
 }
 
+Box::Box
+(
+	RenderingDemo *demo,
+	PhysicsEngine::Vector3 position,
+	PhysicsEngine::Vector3 velocity,
+	PhysicsEngine::Vector3 acceleration,
+	PhysicsEngine::real mass,
+	PhysicsEngine::Vector3 halfSize
+)
+{
+	boxPrimitive = new PhysicsEngine::CollisionBox();
+
+	boxPrimitive->body->setStatic(true);
+	boxPrimitive->setState(position, velocity, acceleration, mass, halfSize);
+	boxPrimitive->body->calculateDerivedData();
+
+	demo->physicsEngine.createBox(boxPrimitive);
+	demo->rectangleObjects.push_back(this);
+	demo->renderableObjects.push_back(this);
+}
+
 // Display this rectangle
 void Box::display()
 {
@@ -58,6 +80,25 @@ void Box::display()
 	glScalef(this->boxPrimitive->halfSize[0] * 2, this->boxPrimitive->halfSize[1] * 2, this->boxPrimitive->halfSize[2] * 2);
 	glutSolidCube(1.0f);
 	glPopMatrix();
+}
+
+Sphere::Sphere
+(
+	RenderingDemo *demo,
+	PhysicsEngine::Vector3 position,
+	PhysicsEngine::Vector3 velocity,
+	PhysicsEngine::Vector3 acceleration,
+	PhysicsEngine::real mass,
+	PhysicsEngine::real radius
+)
+{
+	spherePrimitive = new PhysicsEngine::CollisionSphere();
+	spherePrimitive->setState(position, velocity, acceleration, mass, radius);
+	spherePrimitive->body->calculateDerivedData();
+
+	demo->physicsEngine.createSphere(spherePrimitive);
+	demo->sphereObjects.push_back(this);
+	demo->renderableObjects.push_back(this);
 }
 
 // Display this sphere
@@ -74,14 +115,31 @@ void Sphere::display()
 	glPopMatrix();
 }
 
-// Generate a new capsule object
-Capsule::Capsule()
+
+Capsule::Capsule
+(
+	RenderingDemo *demo,
+	PhysicsEngine::Vector3 position,
+	PhysicsEngine::Quaternion rotation,
+	PhysicsEngine::Vector3 velocity,
+	PhysicsEngine::Vector3 acceleration,
+	PhysicsEngine::real mass,
+	PhysicsEngine::real radius,
+	PhysicsEngine::real height
+)
 {
-	// Generate the rigid body
-	capsulePrimitive = new PhysicsEngine::CollisionCapsule();
+	// Generate the quadric object
 	quadricObject = gluNewQuadric();
 	gluQuadricNormals(quadricObject, GLU_SMOOTH);
 	gluQuadricDrawStyle(quadricObject, GLU_FILL);
+
+	capsulePrimitive = new PhysicsEngine::CollisionCapsule();
+	capsulePrimitive->setState(position, rotation, velocity, acceleration, mass, radius, height);
+	capsulePrimitive->body->calculateDerivedData();
+
+	demo->physicsEngine.createCapsule(capsulePrimitive);
+	demo->capsuleObjects.push_back(this);
+	demo->renderableObjects.push_back(this);	
 }
 
 Capsule::~Capsule()

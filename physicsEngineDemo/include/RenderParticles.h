@@ -13,6 +13,8 @@
 
 namespace PhysicsDemo
 {
+	class RenderingDemo;
+
 	class RenderableParticle : public Renderable
 	{
 	protected:
@@ -77,7 +79,7 @@ namespace PhysicsDemo
 		// Generate a new firework
 		static RenderableParticle *createFireWorkParticle(PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 position, PhysicsEngine::Vector3 color, bool originalFirework, int lives);
 		// Generate a new particle
-		static RenderableParticle* CreateParticle::createParticle(PhysicsEngine::Vector3 position, PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 color);
+		static RenderableParticle* CreateParticle::createParticle(RenderingDemo *demo, PhysicsEngine::Vector3 position, PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 color);
 		// Generate a new circular particle
 		static RenderableParticle* createCircularParticle(PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 color);
 	private:

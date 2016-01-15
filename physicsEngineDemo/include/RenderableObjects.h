@@ -7,6 +7,8 @@
 
 namespace PhysicsDemo
 {
+	class RenderingDemo;
+
 	class Renderable
 	{
 	public:
@@ -87,10 +89,15 @@ namespace PhysicsDemo
 	public:
 		PhysicsEngine::CollisionBox *boxPrimitive;
 
-		Box()
-		{
-			boxPrimitive = new PhysicsEngine::CollisionBox();
-		}
+		Box
+		(
+			RenderingDemo *demo,
+			PhysicsEngine::Vector3 position,
+			PhysicsEngine::Vector3 velocity,
+			PhysicsEngine::Vector3 acceleration,
+			PhysicsEngine::real mass,
+			PhysicsEngine::Vector3 halfSize
+		);
 
 		~Box()
 		{
@@ -106,10 +113,15 @@ namespace PhysicsDemo
 	public:
 		PhysicsEngine::CollisionSphere *spherePrimitive;
 
-		Sphere()
-		{
-			spherePrimitive = new PhysicsEngine::CollisionSphere();
-		}
+		Sphere
+		(
+			RenderingDemo *demo,
+			PhysicsEngine::Vector3 position,
+			PhysicsEngine::Vector3 velocity,
+			PhysicsEngine::Vector3 acceleration,
+			PhysicsEngine::real mass,
+			PhysicsEngine::real radius
+		);
 
 		~Sphere()
 		{
@@ -127,7 +139,17 @@ namespace PhysicsDemo
 	public:
 		PhysicsEngine::CollisionCapsule *capsulePrimitive;
 
-		Capsule();
+		Capsule
+		(
+			RenderingDemo *demo,
+			PhysicsEngine::Vector3 position,
+			PhysicsEngine::Quaternion rotation,
+			PhysicsEngine::Vector3 velocity,
+			PhysicsEngine::Vector3 acceleration,
+			PhysicsEngine::real mass,
+			PhysicsEngine::real radius,
+			PhysicsEngine::real height
+		);
 
 		~Capsule();
 

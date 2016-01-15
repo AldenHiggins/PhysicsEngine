@@ -2,6 +2,7 @@
 #include "RenderParticles.h"
 #include <GL/glut.h>
 #include <iostream>
+#include "PhysicsDemo.h"
 
 using namespace PhysicsDemo;
 
@@ -147,7 +148,7 @@ RenderableParticle* CreateParticle::createCircularParticle(PhysicsEngine::real s
 }
 
 // Generate a new particle
-RenderableParticle* CreateParticle::createParticle(PhysicsEngine::Vector3 position, PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 color)
+RenderableParticle* CreateParticle::createParticle(RenderingDemo *demo, PhysicsEngine::Vector3 position, PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 color)
 {
 	RenderableParticle *newParticle = new RenderableParticle();
 	PhysicsEngine::real xVelocity = ((PhysicsEngine::real)((rand() % 200) - 100)) / 100;
@@ -163,5 +164,11 @@ RenderableParticle* CreateParticle::createParticle(PhysicsEngine::Vector3 positi
 	newParticle->setColor(color);
 	newParticle->setSize(size);
 	newParticle->physicsParticle->setLifeTime(3.0f);
+
+	// Add the new particle to the physics and rendering engines
+	demo->particles.push_back(newParticle);
+	demo->physicsEngine.createParticle(newParticle->physicsParticle);
+	demo->renderableObjects.push_back(newParticle);
+
 	return newParticle;
 }
