@@ -23,7 +23,7 @@
 
 #include "precision.h"
 
-#define PI 3.14159265
+#define PI 3.14159265f
 
 namespace PhysicsEngine {
 
@@ -529,21 +529,21 @@ namespace PhysicsEngine {
 			(*this) *= q;
 		}
 
-		static Quaternion fromEuler(float xAngle, float yAngle, float zAngle)
+		static Quaternion fromEuler(real xAngle, real yAngle, real zAngle)
 		{
-			float roll = zAngle * PI / 180.0f;
-			float yaw = yAngle * PI / 180.0f;
-			float pitch = xAngle * PI / 180.0f;
+			real roll = zAngle * PI / 180.0;
+			real yaw = yAngle * PI / 180.0;
+			real pitch = xAngle * PI / 180.0;
 
 			Quaternion quat;
-			float cr, cp, cy, sr, sp, sy, cpcy, spsy;
+			real cr, cp, cy, sr, sp, sy, cpcy, spsy;
 			// calculate trig identities
-			cr = cos(roll / 2);
-			cp = cos(pitch / 2);
-			cy = cos(yaw / 2);
-			sr = sin(roll / 2);
-			sp = sin(pitch / 2);
-			sy = sin(yaw / 2);
+			cr = cos(roll / 2.0);
+			cp = cos(pitch / 2.0);
+			cy = cos(yaw / 2.0);
+			sr = sin(roll / 2.0);
+			sp = sin(pitch / 2.0);
+			sy = sin(yaw / 2.0);
 			cpcy = cp * cy;
 			spsy = sp * sy;
 			quat.r = cr * cpcy + sr * spsy;

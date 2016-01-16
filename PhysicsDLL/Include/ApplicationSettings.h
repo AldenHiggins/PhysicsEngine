@@ -13,6 +13,4 @@
 #define SPHERE_STACKS 10
 #define SPHERE_SLICES 10
 
-#define PI 3.14159265
-
 #endif // APPLICATION_SETTINGS_H

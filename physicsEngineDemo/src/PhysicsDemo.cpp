@@ -64,11 +64,11 @@ void RenderingDemo::display()
 	// Look out towards the Z direction (eye, center, up)
 	gluLookAt(0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0);
 	// Rotate the scene according to wheere the player is rotated
-	glRotatef(-1 * player.getPitch(), 1, 0, 0);
-	glRotatef(player.getYaw(), 0, 1, 0);
+	glRotatef((float)(-1 * player.getPitch()), 1.0f, 0.0f, 0.0f);
+	glRotatef((float)player.getYaw(), 0.0f, 1.0f, 0.0f);
 	// Move the camera to the player's current location
 	PhysicsEngine::Vector3 position = player.getPosition();
-	glTranslatef(-1 * position[0], -1 * position[1], -1 * position[2]);
+	glTranslatef((float)(-1 * position[0]), (float)(-1 * position[1]), (float)(-1 * position[2]));
 
 	// Update the world physics based on the timestep of the frame
 	physicsEngine.updatePhysics(duration);

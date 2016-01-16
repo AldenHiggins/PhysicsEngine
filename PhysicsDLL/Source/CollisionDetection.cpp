@@ -294,7 +294,7 @@ unsigned int CollisionDetection::capsuleSphereCollisionDetect
 	capsuleCoordSphereCenter = capsule->body->getTransformMatrix().transformInverse(capsuleCoordSphereCenter);
 
 	// First check if the sphere is within the capsule's y coordinates, if not discard
-	float newCapsuleHeight = capsule->height * .5f + sphere->radius;
+	real newCapsuleHeight = capsule->height * .5f + sphere->radius;
 	if (capsuleCoordSphereCenter.y > newCapsuleHeight || capsuleCoordSphereCenter.y < -1 * newCapsuleHeight)
 	{
 		return 0;
@@ -305,7 +305,7 @@ unsigned int CollisionDetection::capsuleSphereCollisionDetect
 	capsuleCoordSphereCenterNoHeight.y = 0;
 
 	// Check if the sphere is close enough to the capsule to collide
-	float penetration = capsuleCoordSphereCenterNoHeight.magnitude() - sphere->radius - capsule->radius;
+	real penetration = capsuleCoordSphereCenterNoHeight.magnitude() - sphere->radius - capsule->radius;
 	if (penetration >= 0)
 	{
 		return 0;
@@ -356,15 +356,15 @@ unsigned int CollisionDetection::capsuleCapsuleCollisionDetect
 	Vector3 v = secondPoint2 - secondPoint1;
 	v.normalise();
 
-	float a = u * u;
-	float b = u * v;
-	float c = v * v;
-	float d = u * (firstPoint1 - secondPoint1);
-	float e = v * (firstPoint1 - secondPoint1);
+	real a = u * u;
+	real b = u * v;
+	real c = v * v;
+	real d = u * (firstPoint1 - secondPoint1);
+	real e = v * (firstPoint1 - secondPoint1);
 
-	float denominator = a * c - b * b;
-	float minimumSValue = 0;
-	float minimumTValue = 0;
+	real denominator = a * c - b * b;
+	real minimumSValue = 0;
+	real minimumTValue = 0;
 	// Check if the lines are parallel beforehand
 	if (denominator == 0)
 	{
@@ -404,7 +404,7 @@ unsigned int CollisionDetection::capsuleCapsuleCollisionDetect
 	Vector3 secondCapsulePosition = ((secondPoint2 - secondPoint1) * minimumTValue) + secondPoint1;
 
 	Vector3 vectorFromFirstToSecond = secondCapsulePosition - firstCapsulePosition;
-	float capsuleDistance = vectorFromFirstToSecond.magnitude();
+	real capsuleDistance = vectorFromFirstToSecond.magnitude();
 	capsuleDistance = capsuleDistance - first->radius - second->radius;
 
 	// Check if the distance between the capsules is less than the sum of their radii
@@ -448,18 +448,18 @@ unsigned int CollisionDetection::capsuleSquareCollisionDetect
 	Vector3 point3 = second->body->getPosition();
 
 	// Save the three constants that will be used several times during the closest point calculation for brevity's sake
-	float a = point2.x - point1.x;
-	float b = point2.y - point1.y;
-	float c = point2.z - point1.z;
+	real a = point2.x - point1.x;
+	real b = point2.y - point1.y;
+	real c = point2.z - point1.z;
 
 	// Calculate the numerator of the division to calculate the t value (the percentage between point 1 and point 2 of the capsule
 	// on which the closest point to the center of the cube lies
-	float num1 = -a * point3.x + a * point1.x;
-	float num2 = -b * point3.y + b * point1.y;
-	float num3 = -c * point3.z + c * point1.z;
-	float numerator = num1 + num2 + num3;
-	float denominator = -a * point2.x + a * point1.x - b * point2.y + b * point1.y - c * point2.z + c * point1.z;
-	float t = numerator / denominator;
+	real num1 = -a * point3.x + a * point1.x;
+	real num2 = -b * point3.y + b * point1.y;
+	real num3 = -c * point3.z + c * point1.z;
+	real numerator = num1 + num2 + num3;
+	real denominator = -a * point2.x + a * point1.x - b * point2.y + b * point1.y - c * point2.z + c * point1.z;
+	real t = numerator / denominator;
 
 	// Cap the t between 0 and 1
 	if (t < 0)
@@ -525,8 +525,8 @@ unsigned int CollisionDetection::capsuleSquareCollisionDetect
 	collisionPoint.normalise();
 	newCollision.contactNormal = collisionPoint;
 	// Calculate the penetration
-	float distanceToClosestPoint = (second->body->getPointInWorldSpace(pointInCubeSpace) - second->body->getPosition()).magnitude();
-	float penetration = first->radius - (second->body->getTransformMatrix().transformInverse(closestPointOnCapsule).magnitude() - distanceToClosestPoint);
+	real distanceToClosestPoint = (second->body->getPointInWorldSpace(pointInCubeSpace) - second->body->getPosition()).magnitude();
+	real penetration = first->radius - (second->body->getTransformMatrix().transformInverse(closestPointOnCapsule).magnitude() - distanceToClosestPoint);
 	newCollision.penetration = penetration;
 	newCollision.firstObject = first->body;
 	newCollision.secondObject = second->body;

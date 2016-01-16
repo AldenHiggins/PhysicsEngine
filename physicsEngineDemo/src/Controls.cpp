@@ -162,7 +162,7 @@ void Controls::addForceToCapsule(RenderingDemo *demo, int capsuleIndex, PhysicsE
 PhysicsEngine::Vector3 Controls::rotatePositionAlongYAxis(PhysicsEngine::real depth, PhysicsEngine::real height, PhysicsEngine::real theta)
 {
 	PhysicsEngine::Vector3 objectInitialPosition(0.0f, height, depth);
-	float thetaRads = theta * PI / 180.0;
+	PhysicsEngine::real thetaRads = theta * PI / 180.0;
 	PhysicsEngine::Quaternion cameraRotation(cos(thetaRads / 2), 0.0f, 1.0f * sin(thetaRads / 2), 0.0f);
 	PhysicsEngine::Matrix3 rotMatrix;
 	rotMatrix.setOrientation(cameraRotation);

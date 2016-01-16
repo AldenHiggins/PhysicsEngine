@@ -54,9 +54,9 @@ void CollisionCapsule::setState(Vector3 position, Quaternion rotation, Vector3 v
 	// Set the inertia tensor for the capsule
 	Matrix3 tensor;
 
-	float cM; // cylinder mass
-	float hsM; // mass of hemispheres
-	float rSq = radiusInput * radiusInput;
+	real cM; // cylinder mass
+	real hsM; // mass of hemispheres
+	real rSq = radiusInput * radiusInput;
 	cM = PI * heightInput * rSq * density;
 	hsM = PI * 2 * oneDiv3 * rSq * radiusInput * density;
 
@@ -64,10 +64,10 @@ void CollisionCapsule::setState(Vector3 position, Quaternion rotation, Vector3 v
 	tensor.data[4] = rSq * cM * 0.5f;
 	tensor.data[0] = tensor.data[8] = tensor.data[4] * 0.5f + cM * heightInput * heightInput * oneDiv12;
 	// from hemispheres
-	float temp0 = hsM * 2.0f * rSq / 5.0f;
+	real temp0 = hsM * 2.0f * rSq / 5.0f;
 	tensor.data[4] += temp0 * 2.0f;
-	float temp1 = heightInput * 0.5f;
-	float temp2 = temp0 + hsM * (temp1 * temp1 + 3.0f * oneDiv8 * heightInput * heightInput);
+	real temp1 = heightInput * 0.5f;
+	real temp2 = temp0 + hsM * (temp1 * temp1 + 3.0f * oneDiv8 * heightInput * heightInput);
 	tensor.data[0] += temp2 * 2.0f;
 	tensor.data[8] += temp2 * 2.0f;
 	tensor.data[1] = tensor.data[2] = tensor.data[3] = tensor.data[5] = tensor.data[6] = tensor.data[7] = 0.0f;

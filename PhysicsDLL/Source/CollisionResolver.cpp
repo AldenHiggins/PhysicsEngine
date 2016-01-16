@@ -25,7 +25,7 @@ void CollisionResolver::resolveContacts(std::vector<Collision> *collisionList, r
 void CollisionResolver::prepareContacts(std::vector<Collision> *collisionList, real duration)
 {
 	// Generate contact velocity and axis information.
-	for (int collisionIndex = 0; collisionIndex < collisionList->size(); collisionIndex++)
+	for (unsigned int collisionIndex = 0; collisionIndex < collisionList->size(); collisionIndex++)
 	{
 		// Calculate the internal contact data (inertia, basis, etc).
 		(*collisionList)[collisionIndex].calculateInternals(duration);
