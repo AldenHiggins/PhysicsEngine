@@ -185,6 +185,7 @@ void RenderingDemo::initializeScene()
 	TimingData::init();
 	Plane *plane1 = new Plane
 	(
+		this,
 		PhysicsEngine::Vector3(),
 		PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f),
 		PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
@@ -195,6 +196,7 @@ void RenderingDemo::initializeScene()
 
 	Plane *plane2 = new Plane
 	(
+		this,
 		PhysicsEngine::Vector3(0.0f, 10.0f, 10.0f),
 		PhysicsEngine::Vector3(0.0f, 0.0f, -1.0f),
 		PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
@@ -205,6 +207,7 @@ void RenderingDemo::initializeScene()
 
 	Plane *plane3 = new Plane
 	(
+		this,
 		PhysicsEngine::Vector3(0.0f, 10.0f, -10.0f),
 		PhysicsEngine::Vector3(0.0f, 0.0f, 1.0f),
 		PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
@@ -215,6 +218,7 @@ void RenderingDemo::initializeScene()
 
 	Plane *plane4 = new Plane
 	(
+		this,
 		PhysicsEngine::Vector3(10.0f, 10.0f, 0.0f),
 		PhysicsEngine::Vector3(-1.0f, 0.0f, 0.0f),
 		PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f),
@@ -225,6 +229,7 @@ void RenderingDemo::initializeScene()
 
 	Plane *plane5 = new Plane
 	(
+		this,
 		PhysicsEngine::Vector3(-10.0f, 10.0f, 0.0f),
 		PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
 		PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f),
@@ -233,46 +238,25 @@ void RenderingDemo::initializeScene()
 		-10.0f
 	);
 
-	// Initialize the planes
-	planes.push_back(plane1);
-	planes.push_back(plane2);
-	planes.push_back(plane3);
-	planes.push_back(plane4);
-	planes.push_back(plane5);
+	// Create the axes and add them to renderableObjects
+	Axis *firstAxis = new Axis
+	(
+		this,
+		PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f),
+		PhysicsEngine::Vector3(20, .01f, AXES_WIDTH / 2),
+		PhysicsEngine::Vector3(20, .01f, -1 * AXES_WIDTH / 2),
+		PhysicsEngine::Vector3(-20, .01f, -1 * AXES_WIDTH / 2),
+		PhysicsEngine::Vector3(-20, .01f, AXES_WIDTH / 2)
+	);
 
-	// Add them to renderable objects
-	renderableObjects.push_back((Renderable *)plane1);
-	renderableObjects.push_back((Renderable *)plane2);
-	renderableObjects.push_back((Renderable *)plane3);
-	renderableObjects.push_back((Renderable *)plane4);
-	renderableObjects.push_back((Renderable *)plane5);
-
-	// Register them with the physics engine
-	physicsEngine.createPlane(plane1->plane);
-	physicsEngine.createPlane(plane2->plane);
-	physicsEngine.createPlane(plane3->plane);
-	physicsEngine.createPlane(plane4->plane);
-	physicsEngine.createPlane(plane5->plane);
-
-	//// Create the axes and add them to renderableObjects
-	//Axis *firstAxis = new Axis
-	//(
-	//	PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f),
-	//	PhysicsEngine::Vector3(20, .01f, AXES_WIDTH / 2),
-	//	PhysicsEngine::Vector3(20, .01f, -1 * AXES_WIDTH / 2),
-	//	PhysicsEngine::Vector3(-20, .01f, -1 * AXES_WIDTH / 2),
-	//	PhysicsEngine::Vector3(-20, .01f, AXES_WIDTH / 2)
-	//);
-	//renderableObjects.push_back((Renderable *) firstAxis);
-
-	//Axis *secondAxis = new Axis
-	//(
-	//	PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f),
-	//	PhysicsEngine::Vector3(AXES_WIDTH / 2, .01f, 20),
-	//	PhysicsEngine::Vector3(-1 * AXES_WIDTH / 2, .01f, 20),
-	//	PhysicsEngine::Vector3(-1 * AXES_WIDTH / 2, .01f, -20),
-	//	PhysicsEngine::Vector3(AXES_WIDTH / 2, .01f, -20)
-	//); 
-	//renderableObjects.push_back((Renderable *) secondAxis);
+	Axis *secondAxis = new Axis
+	(
+		this,
+		PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f),
+		PhysicsEngine::Vector3(AXES_WIDTH / 2, .01f, 20),
+		PhysicsEngine::Vector3(-1 * AXES_WIDTH / 2, .01f, 20),
+		PhysicsEngine::Vector3(-1 * AXES_WIDTH / 2, .01f, -20),
+		PhysicsEngine::Vector3(AXES_WIDTH / 2, .01f, -20)
+	); 
 }
 

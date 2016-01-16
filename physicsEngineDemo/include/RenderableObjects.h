@@ -26,19 +26,13 @@ namespace PhysicsDemo
 	public:
 		Axis
 		(
+			RenderingDemo *demo,
 			PhysicsEngine::Vector3 colorInput,
 			PhysicsEngine::Vector3 firstPointInput,
 			PhysicsEngine::Vector3 secondPointInput,
 			PhysicsEngine::Vector3 thirdPointInput,
 			PhysicsEngine::Vector3 fourthPointInput
-		)
-		{
-			color = colorInput;
-			firstPoint = firstPointInput;
-			secondPoint = secondPointInput;
-			thirdPoint = thirdPointInput;
-			fourthPoint = fourthPointInput;
-		}
+		);
 
 		void display();
 	};
@@ -56,24 +50,14 @@ namespace PhysicsDemo
 
 		Plane
 		(
+			RenderingDemo *demo,
 			PhysicsEngine::Vector3 positionInput,
 			PhysicsEngine::Vector3 normalInput,
 			PhysicsEngine::Vector3 upInput,
 			PhysicsEngine::Vector3 colorInput,
 			PhysicsEngine::real halfSizeInput,
 			PhysicsEngine::real offset
-		)
-		{
-			position = positionInput;
-			normal = normalInput;
-			up = upInput;
-			color = colorInput;
-			halfSize = halfSizeInput;
-
-			plane = new PhysicsEngine::CollisionPlane();
-			plane->normal = normalInput;
-			plane->offset = offset;
-		}
+		);
 
 		~Plane()
 		{

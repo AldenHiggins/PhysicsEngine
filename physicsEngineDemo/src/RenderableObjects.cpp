@@ -3,6 +3,26 @@
 
 using namespace PhysicsDemo;
 
+Axis::Axis
+(
+	RenderingDemo *demo,
+	PhysicsEngine::Vector3 colorInput,
+	PhysicsEngine::Vector3 firstPointInput,
+	PhysicsEngine::Vector3 secondPointInput,
+	PhysicsEngine::Vector3 thirdPointInput,
+	PhysicsEngine::Vector3 fourthPointInput
+)
+{
+	color = colorInput;
+	firstPoint = firstPointInput;
+	secondPoint = secondPointInput;
+	thirdPoint = thirdPointInput;
+	fourthPoint = fourthPointInput;
+
+	// Add the axis to the renderable list
+	demo->renderableObjects.push_back(this);
+}
+
 void Axis::display()
 {
 	glBegin(GL_QUADS);
@@ -13,6 +33,33 @@ void Axis::display()
 	glVertex3f((float)thirdPoint[0], (float)thirdPoint[1], (float)thirdPoint[2]);
 	glVertex3f((float)fourthPoint[0], (float)fourthPoint[1], (float)fourthPoint[2]);
 	glEnd();
+}
+
+Plane::Plane
+(
+	RenderingDemo *demo,
+	PhysicsEngine::Vector3 positionInput,
+	PhysicsEngine::Vector3 normalInput,
+	PhysicsEngine::Vector3 upInput,
+	PhysicsEngine::Vector3 colorInput,
+	PhysicsEngine::real halfSizeInput,
+	PhysicsEngine::real offset
+)
+{
+	position = positionInput;
+	normal = normalInput;
+	up = upInput;
+	color = colorInput;
+	halfSize = halfSizeInput;
+
+	plane = new PhysicsEngine::CollisionPlane();
+	plane->normal = normalInput;
+	plane->offset = offset;
+
+	// Add the newly created plane to the demo's lists and the physics engine
+	demo->planes.push_back(this);
+	demo->renderableObjects.push_back(this);
+	demo->physicsEngine.createPlane(plane);
 }
 
 // Display this plane
