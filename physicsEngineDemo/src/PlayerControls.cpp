@@ -7,13 +7,7 @@ using namespace PhysicsDemo;
 // Update player position as needed given the duration of the past frame
 void PlayerController::update(float deltaTime)
 {
-	// Hacky from euler creation...but it works
-	Quaternion rotation = Quaternion::fromEuler(yaw, 0.0f, -pitch);
-
-	Matrix3 rotMatrix;
-	rotMatrix.setOrientation(rotation);
-
-	Vector3 forward = rotMatrix.transform(Vector3(0.0f, 0.0f, 1.0f));
+	Vector3 forward = getForward();
 	Vector3 right = forward.vectorProduct(Vector3(0.0f, 1.0f, 0.0f));
 
 	//std::cout << "Forward: " << forward[0] << " " << forward[1] << " " << forward[2] << std::endl;
@@ -96,6 +90,18 @@ void PlayerController::keyUpCheck(unsigned char key)
 }
 
 // Getters and setters
+Vector3 PlayerController::getForward()
+{
+	// Hacky from euler creation...but it works
+	Quaternion rotation = Quaternion::fromEuler(yaw, 0.0f, -pitch);
+
+	Matrix3 rotMatrix;
+	rotMatrix.setOrientation(rotation);
+
+	return rotMatrix.transform(Vector3(0.0f, 0.0f, 1.0f));
+}
+
+
 real PlayerController::getSpeed()
 {
 	return speed;

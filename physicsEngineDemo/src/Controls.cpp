@@ -14,6 +14,7 @@ void Controls::keyCheck
 {
 	switch (key)
 	{
+		// Add a sphere
 		case '1':
 		{		
 			addSphere
@@ -27,6 +28,8 @@ void Controls::keyCheck
 
 			break;
 		}
+
+		// Add a cube
 		case '2':
 		{
 			addCube
@@ -41,6 +44,8 @@ void Controls::keyCheck
 
 			break;
 		}
+
+		// Add a capsule
 		case '3':
 		{
 			addCapsule
@@ -54,19 +59,22 @@ void Controls::keyCheck
 			break;
 		}
 
+		// Fire a sphere bullet from where the player is looking
 		case '4':
 		{
-			//addSphere
-			//(
-			//	demo,
-			//	rotatePositionAlongYAxis(5.0f, 5.0f, demo->player.getYaw()), Quaternion::fromEuler(1, 0, 0), Vector3(0.0f, 0, 0), Vector3(),
-			//	1.0f, 1.0f, 3.0f
-			//);
+			Vector3 bulletStart = demo->player.getPosition() + demo->player.getForward();
+			addSphere
+			(
+				demo,
+				bulletStart, Vector3(0.0f, 0, 0), Vector3(),
+				1.0f, 0.1f
+			);
 
-			//addForceToSphere(demo, (demo->capsuleObjects.size() - 1), Vector3(300.0f, 0.0f, 0.0f), Vector3(0.0f, 0.6f, 0.3f));
+			addForceToSphere(demo, (demo->sphereObjects.size() - 1), (demo->player.getForward() * 1000.0f), Vector3());
 			break;
 		}
 
+		// Create the level out of really heavy cubes
 		case '0':
 		{
 			bool staticObjects = false;
@@ -76,28 +84,36 @@ void Controls::keyCheck
 			(
 				demo,
 				Vector3(-20.0f, 5.0f, 0.0f), Vector3(), Vector3(),
-				cubeMass, Vector3(0.5f, 5.0f, 10.0f),
+				cubeMass, Vector3(0.5f, 5.0f, 20.0f),
 				staticObjects
 			);
 			addCube
 			(
 				demo,
 				Vector3(20.0f, 5.0f, 0.0f), Vector3(), Vector3(),
-				cubeMass, Vector3(0.5f, 5.0f, 10.0f),
+				cubeMass, Vector3(0.5f, 5.0f, 20.0f),
 				staticObjects
 			);
 			addCube
 			(
 				demo,
 				Vector3(0.0f, 5.0f, 20.0f), Vector3(), Vector3(),
-				cubeMass, Vector3(10.0f, 5.0f, 0.5f),
+				cubeMass, Vector3(20.0f, 5.0f, 0.5f),
 				staticObjects
 			);
 			addCube
 			(
 				demo,
 				Vector3(0.0f, 5.0f, -20.0f), Vector3(), Vector3(),
-				cubeMass, Vector3(10.0f, 5.0f, 0.5f),
+				cubeMass, Vector3(20.0f, 5.0f, 0.5f),
+				staticObjects
+			);
+
+			addCube
+			(
+				demo,
+				Vector3(0.0f, 0.0f, 0.0f), Vector3(), Vector3(),
+				cubeMass, Vector3(20.0f, 1.0f, 20.0f),
 				staticObjects
 			);
 			break;

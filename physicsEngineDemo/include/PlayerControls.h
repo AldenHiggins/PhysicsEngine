@@ -44,6 +44,8 @@ namespace PhysicsDemo
 		real getSpeed();
 		void setSpeed(real newSpeed);
 
+		Vector3 getForward();
+
 		Vector3 getPosition();
 		void setPosition(Vector3 newPosition);
 
