@@ -73,6 +73,7 @@ namespace PhysicsDemo
 	{
 	public:
 		CollisionBox *boxPrimitive;
+		Vector3 color;
 
 		Box
 		(
@@ -82,6 +83,7 @@ namespace PhysicsDemo
 			Vector3 acceleration,
 			real mass,
 			Vector3 halfSize,
+			Vector3 colorInput,
 			bool isStatic
 		);
 
@@ -98,6 +100,7 @@ namespace PhysicsDemo
 	{
 	public:
 		CollisionSphere *spherePrimitive;
+		Vector3 color;
 
 		Sphere
 		(
@@ -106,7 +109,8 @@ namespace PhysicsDemo
 			Vector3 velocity,
 			Vector3 acceleration,
 			real mass,
-			real radius
+			real radius,
+			Vector3 color
 		);
 
 		~Sphere()
@@ -124,6 +128,7 @@ namespace PhysicsDemo
 	{
 	public:
 		PhysicsEngine::CollisionCapsule *capsulePrimitive;
+		Vector3 color;
 
 		Capsule
 		(
@@ -134,7 +139,8 @@ namespace PhysicsDemo
 			Vector3 acceleration,
 			real mass,
 			real radius,
-			real height
+			real height,
+			Vector3 colorInput
 		);
 
 		~Capsule();

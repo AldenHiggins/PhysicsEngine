@@ -31,7 +31,8 @@ namespace PhysicsDemo
 			Vector3 position,
 			real mass,
 			real radius,
-			real height
+			real height,
+			Vector3 color
 		);
 		static void addSphere
 		(
@@ -40,7 +41,8 @@ namespace PhysicsDemo
 			Vector3 velocity,
 			Vector3 acceleration,
 			real mass,
-			real radius
+			real radius,
+			Vector3 color
 		);
 		static void addCube
 		(
@@ -50,6 +52,7 @@ namespace PhysicsDemo
 			Vector3 acceleration,
 			real mass,
 			Vector3 halfSize,
+			Vector3 color,
 			bool isStatic
 		);
 		static void addCapsule
@@ -61,7 +64,8 @@ namespace PhysicsDemo
 			Vector3 acceleration,
 			real mass,
 			real radius,
-			real height
+			real height,
+			Vector3 color
 		);
 
 		/////////////////////////////////////////////////////////////////////////

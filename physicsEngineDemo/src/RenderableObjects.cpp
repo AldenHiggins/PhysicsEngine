@@ -101,9 +101,11 @@ Box::Box
 	Vector3 acceleration,
 	real mass,
 	Vector3 halfSize,
+	Vector3 colorInput,
 	bool isStatic
 )
 {
+	color = colorInput;
 	boxPrimitive = new CollisionBox();
 
 	boxPrimitive->body->setStatic(isStatic);
@@ -121,7 +123,7 @@ void Box::display()
 	// Get the OpenGL transformation
 	GLfloat mat[16];
 	this->boxPrimitive->body->getGLTransform(mat);
-	glColor3f(.5f, .1f, .9f);
+	glColor3f((float)color[0], (float)color[1], (float)color[2]);
 
 	glPushMatrix();
 	glMultMatrixf(mat);
@@ -137,9 +139,12 @@ Sphere::Sphere
 	Vector3 velocity,
 	Vector3 acceleration,
 	real mass,
-	real radius
+	real radius,
+	Vector3 colorInput
 )
 {
+	color = colorInput;
+
 	spherePrimitive = new CollisionSphere();
 	spherePrimitive->setState(position, velocity, acceleration, mass, radius);
 	spherePrimitive->body->calculateDerivedData();
@@ -155,7 +160,7 @@ void Sphere::display()
 	// Get the OpenGL transformation
 	GLfloat mat[16];
 	this->spherePrimitive->body->getGLTransform(mat);
-	glColor3f(.7f, .5f, .1f);
+	glColor3f((float)color[0], (float)color[1], (float)color[2]);
 
 	glPushMatrix();
 	glMultMatrixf(mat);
@@ -173,9 +178,12 @@ Capsule::Capsule
 	Vector3 acceleration,
 	real mass,
 	real radius,
-	real height
+	real height,
+	Vector3 colorInput
 )
 {
+	color = colorInput;
+
 	// Generate the quadric object
 	quadricObject = gluNewQuadric();
 	gluQuadricNormals(quadricObject, GLU_SMOOTH);
@@ -202,7 +210,7 @@ void Capsule::display()
 	// Get the OpenGL transformation
 	GLfloat mat[16];
 	this->capsulePrimitive->body->getGLTransform(mat);
-	glColor3f(.9f, .3f, .1f);
+	glColor3f((float)color[0], (float)color[1], (float)color[2]);
 
 	glPushMatrix();
 	glMultMatrixf(mat);

@@ -21,7 +21,7 @@ void Controls::keyCheck
 			(
 				demo,
 				rotatePositionAlongYAxis(5.0f, 5.0f, demo->player.getYaw()), Vector3(), Vector3(),
-				1.0f, 1.0f
+				1.0f, 1.0f, Vector3(0.0f, 0.5f, 0.5f)
 			);
 
 			addForceToSphere(demo, demo->sphereObjects.size() - 1, Vector3(300.0f, 0.0f, 0.0f), Vector3());
@@ -36,7 +36,7 @@ void Controls::keyCheck
 			(
 				demo,
 				rotatePositionAlongYAxis(5.0f, 5.0f, demo->player.getYaw()), Vector3(), Vector3(),
-				1.0f, Vector3(1.0f, 1.0f, 1.0f),
+				1.0f, Vector3(1.0f, 1.0f, 1.0f), Vector3(0.5f, 0.5f, 0.5f),
 				false
 			);
 
@@ -52,7 +52,7 @@ void Controls::keyCheck
 			(
 				demo,
 				rotatePositionAlongYAxis(5.0f, 5.0f, demo->player.getYaw()), Quaternion::fromEuler(1, 0, 0), Vector3(0.0f, 0, 0), Vector3(),
-				1.0f, 1.0f, 3.0f
+				1.0f, 1.0f, 3.0f, Vector3(0.5f, 0.5f, 0.5f)
 			);
 
 			addForceToCapsule(demo, (demo->capsuleObjects.size() - 1), Vector3(300.0f, 0.0f, 0.0f), Vector3(0.0f, 0.6f, 0.3f));
@@ -67,7 +67,7 @@ void Controls::keyCheck
 			(
 				demo,
 				bulletStart, Vector3(0.0f, 0, 0), Vector3(),
-				1.0f, 0.1f
+				1.0f, 0.1f, Vector3(0.8f, 0.0f, 0.2f)
 			);
 
 			addForceToSphere(demo, (demo->sphereObjects.size() - 1), (demo->player.getForward() * 1000.0f), Vector3());
@@ -82,7 +82,7 @@ void Controls::keyCheck
 			(
 				demo,
 				bulletStart, Vector3(0.0f, 0, 0), Vector3(),
-				1.0f, Vector3(0.1f, 0.1f, 0.1f),
+				1.0f, Vector3(0.1f, 0.1f, 0.1f), Vector3(0.8f, 0.0f, 0.2f),
 				false
 			);
 
@@ -100,28 +100,28 @@ void Controls::keyCheck
 			(
 				demo,
 				Vector3(-20.0f, 5.0f, 0.0f), Vector3(), Vector3(),
-				cubeMass, Vector3(0.5f, 5.0f, 20.0f),
+				cubeMass, Vector3(0.5f, 5.0f, 20.0f), Vector3(0.6f, 0.6f, 0.6f),
 				staticObjects
 			);
 			addCube
 			(
 				demo,
 				Vector3(20.0f, 5.0f, 0.0f), Vector3(), Vector3(),
-				cubeMass, Vector3(0.5f, 5.0f, 20.0f),
+				cubeMass, Vector3(0.5f, 5.0f, 20.0f), Vector3(0.6f, 0.6f, 0.6f),
 				staticObjects
 			);
 			addCube
 			(
 				demo,
 				Vector3(0.0f, 5.0f, 20.0f), Vector3(), Vector3(),
-				cubeMass, Vector3(20.0f, 5.0f, 0.5f),
+				cubeMass, Vector3(20.0f, 5.0f, 0.5f), Vector3(0.6f, 0.6f, 0.6f),
 				staticObjects
 			);
 			addCube
 			(
 				demo,
 				Vector3(0.0f, 5.0f, -20.0f), Vector3(), Vector3(),
-				cubeMass, Vector3(20.0f, 5.0f, 0.5f),
+				cubeMass, Vector3(20.0f, 5.0f, 0.5f), Vector3(0.6f, 0.6f, 0.6f),
 				staticObjects
 			);
 
@@ -129,7 +129,7 @@ void Controls::keyCheck
 			(
 				demo,
 				Vector3(0.0f, 0.0f, 0.0f), Vector3(), Vector3(),
-				cubeMass, Vector3(20.0f, 1.0f, 20.0f),
+				cubeMass, Vector3(20.0f, 1.0f, 20.0f), Vector3(0.6f, 0.6f, 0.6f),
 				staticObjects
 			);
 			break;
@@ -146,7 +146,8 @@ void Controls::addParticle
 	Vector3 position,
 	real mass,
 	real radius,
-	real height
+	real height,
+	Vector3 color
 )
 {
 	RenderableParticle *particle = CreateParticle::createParticle(demo, position, 5.0f, radius, Vector3(.5f, .5f, .5f));
@@ -159,10 +160,11 @@ void Controls::addSphere
 	Vector3 velocity,
 	Vector3 acceleration,
 	real mass,
-	real radius
+	real radius,
+	Vector3 color
 )
 {
-	Sphere *newSphere = new Sphere(demo, position, velocity, acceleration, mass, radius);
+	Sphere *newSphere = new Sphere(demo, position, velocity, acceleration, mass, radius, color);
 }
 
 void Controls::addCube
@@ -173,10 +175,11 @@ void Controls::addCube
 	Vector3 acceleration,
 	real mass,
 	Vector3 halfSize,
+	Vector3 color,
 	bool isStatic
 )
 {
-	Box *newSquare = new Box(demo, position, velocity, acceleration, mass, halfSize, isStatic);
+	Box *newSquare = new Box(demo, position, velocity, acceleration, mass, halfSize, color, isStatic);
 }
 
 void Controls::addCapsule
@@ -188,10 +191,11 @@ void Controls::addCapsule
 	Vector3 acceleration,
 	real mass,
 	real radius,
-	real height
+	real height,
+	Vector3 color
 )
 {
-	Capsule *newCapsule = new Capsule(demo, position, rotation, velocity, acceleration, mass, radius, height);
+	Capsule *newCapsule = new Capsule(demo, position, rotation, velocity, acceleration, mass, radius, height, color);
 }
 
 /////////////////////////////////////////////////////////////////////////
