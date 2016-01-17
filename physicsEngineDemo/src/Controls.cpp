@@ -74,6 +74,22 @@ void Controls::keyCheck
 			break;
 		}
 
+		// Fire box bullets
+		case '5':
+		{
+			Vector3 bulletStart = demo->player.getPosition() + demo->player.getForward();
+			addCube
+			(
+				demo,
+				bulletStart, Vector3(0.0f, 0, 0), Vector3(),
+				1.0f, Vector3(0.1f, 0.1f, 0.1f),
+				false
+			);
+
+			addForceToCube(demo, (demo->rectangleObjects.size() - 1), (demo->player.getForward() * 1000.0f), Vector3());
+			break;
+		}
+
 		// Create the level out of really heavy cubes
 		case '0':
 		{
