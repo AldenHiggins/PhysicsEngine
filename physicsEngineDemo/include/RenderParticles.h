@@ -4,6 +4,7 @@
 #include "MathDataTypes.h"
 #include "Particle.h"
 #include "RenderableObjects.h"
+#include "DataTypeRedefinition.h"
 
 // Position
 // Size
@@ -18,17 +19,17 @@ namespace PhysicsDemo
 	class RenderableParticle : public Renderable
 	{
 	protected:
-		PhysicsEngine::real size;
-		PhysicsEngine::Vector3 color;
-		PhysicsEngine::real lifeTime;
+		real size;
+		Vector3 color;
+		real lifeTime;
 		// The amount of time the particle waits to be displayed
-		PhysicsEngine::real startupTime;
+		real startupTime;
 		bool isDead = false;
-		PhysicsEngine::real timeAliveSoFar;
+		real timeAliveSoFar;
 	public:
 		RenderableParticle()
 		{
-			physicsParticle = new PhysicsEngine::Particle();
+			physicsParticle = new Particle();
 			timeAliveSoFar = 0;
 		}
 		// Display this particle
@@ -36,17 +37,17 @@ namespace PhysicsDemo
 		// Function called when this particle dies
 		virtual void onDeath();
 
-		void setColor(PhysicsEngine::Vector3 colorInput)
+		void setColor(Vector3 colorInput)
 		{
 			color = colorInput;
 		}
 
-		void setSize(PhysicsEngine::real sizeInput)
+		void setSize(real sizeInput)
 		{
 			size = sizeInput;
 		}
 
-		PhysicsEngine::Particle *physicsParticle;
+		Particle *physicsParticle;
 	};
 
 	class CircleParticle : public RenderableParticle
@@ -77,11 +78,11 @@ namespace PhysicsDemo
 	struct CreateParticle
 	{
 		// Generate a new firework
-		static RenderableParticle *createFireWorkParticle(PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 position, PhysicsEngine::Vector3 color, bool originalFirework, int lives);
+		static RenderableParticle *createFireWorkParticle(real speed, real size, Vector3 position, Vector3 color, bool originalFirework, int lives);
 		// Generate a new particle
-		static RenderableParticle* CreateParticle::createParticle(RenderingDemo *demo, PhysicsEngine::Vector3 position, PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 color);
+		static RenderableParticle* createParticle(RenderingDemo *demo, Vector3 position, real speed, real size, Vector3 color);
 		// Generate a new circular particle
-		static RenderableParticle* createCircularParticle(PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 color);
+		static RenderableParticle* createCircularParticle(real speed, real size, Vector3 color);
 	private:
 		// These are private to stop instances being created: use get().
 		CreateParticle() {}

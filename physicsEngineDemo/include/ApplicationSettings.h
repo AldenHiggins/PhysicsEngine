@@ -3,7 +3,7 @@
 
 // Define globally used general-purpose variables
 
-#define SCREEN_WIDTH 1100
+#define SCREEN_WIDTH 1500	
 #define SCREEN_HEIGHT 800
 #define MAX_PARTICLE_COUNT 100
 #define MAX_RIGIDBODY_COUNT 10
@@ -14,7 +14,5 @@
 #define SQUARE_ANGULAR_DAMPING .8f
 #define SPHERE_STACKS 10
 #define SPHERE_SLICES 10
-
-//#define PI 3.14159265
 
 #endif // APPLICATION_SETTINGS_H

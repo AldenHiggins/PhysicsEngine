@@ -82,9 +82,9 @@ void CollisionResolver::adjustVelocities(std::vector<Collision> *collisionList, 
 						firstRigidBody = (*collisionList)[i].secondObject;
 					}
 
-					if (firstRigidBody == NULL)
+					if (firstRigidBody == NULL || firstRigidBody->getStatic() == true)
 					{
-						continue;
+						continue;	
 					}
 
 					RigidBody *secondRigidBody = NULL;
@@ -169,7 +169,7 @@ void CollisionResolver::adjustPositions(std::vector<Collision> *collisionList, r
 						firstBody = (*collisionList)[i].secondObject;
 					}
 
-					if (firstBody == NULL)
+					if (firstBody == NULL || firstBody->getStatic() == true)
 					{
 						continue;
 					}

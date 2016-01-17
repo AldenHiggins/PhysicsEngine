@@ -3,19 +3,20 @@
 #define PLAYER_CONTROLS_H
 
 #include "MathDataTypes.h"
+#include "DataTypeRedefinition.h"
 
 #define PLAYER_DEFAULT_SPEED 1.0f
-#define PLAYER_DEFAULT_POSITION PhysicsEngine::Vector3(0.0f, 4.0f, 0.0f)
+#define PLAYER_DEFAULT_POSITION Vector3(0.0f, 4.0f, 0.0f)
 
 namespace PhysicsDemo
 {
 	class PlayerController 
 	{
 	private:
-		PhysicsEngine::Vector3 position;
-		PhysicsEngine::real yaw;
-		PhysicsEngine::real pitch;
-		PhysicsEngine::real speed;
+		Vector3 position;
+		real yaw;
+		real pitch;
+		real speed;
 
 		bool wPressed;
 		bool aPressed;
@@ -40,17 +41,17 @@ namespace PhysicsDemo
 		void keyUpCheck(unsigned char key);
 
 		// Getters and setters
-		PhysicsEngine::real getSpeed();
-		void setSpeed(PhysicsEngine::real newSpeed);
+		real getSpeed();
+		void setSpeed(real newSpeed);
 
-		PhysicsEngine::Vector3 getPosition();
-		void setPosition(PhysicsEngine::Vector3 newPosition);
+		Vector3 getPosition();
+		void setPosition(Vector3 newPosition);
 
-		PhysicsEngine::real getYaw();
-		void setYaw(PhysicsEngine::real newYaw);
+		real getYaw();
+		void setYaw(real newYaw);
 
-		PhysicsEngine::real getPitch();
-		void setPitch(PhysicsEngine::real newPitch);
+		real getPitch();
+		void setPitch(real newPitch);
 	};
 }
 

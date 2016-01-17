@@ -3,6 +3,7 @@
 
 #include "CollisionPrimitives.h"
 #include "ApplicationSettings.h"
+#include "DataTypeRedefinition.h"
 #include <gl/glut.h>
 
 namespace PhysicsDemo
@@ -18,20 +19,20 @@ namespace PhysicsDemo
 	class Axis : Renderable
 	{
 	private:
-		PhysicsEngine::Vector3 color;
-		PhysicsEngine::Vector3 firstPoint;
-		PhysicsEngine::Vector3 secondPoint;
-		PhysicsEngine::Vector3 thirdPoint;
-		PhysicsEngine::Vector3 fourthPoint;
+		Vector3 color;
+		Vector3 firstPoint;
+		Vector3 secondPoint;
+		Vector3 thirdPoint;
+		Vector3 fourthPoint;
 	public:
 		Axis
 		(
 			RenderingDemo *demo,
-			PhysicsEngine::Vector3 colorInput,
-			PhysicsEngine::Vector3 firstPointInput,
-			PhysicsEngine::Vector3 secondPointInput,
-			PhysicsEngine::Vector3 thirdPointInput,
-			PhysicsEngine::Vector3 fourthPointInput
+			Vector3 colorInput,
+			Vector3 firstPointInput,
+			Vector3 secondPointInput,
+			Vector3 thirdPointInput,
+			Vector3 fourthPointInput
 		);
 
 		void display();
@@ -40,23 +41,23 @@ namespace PhysicsDemo
 	class Plane : Renderable
 	{
 	public:
-		PhysicsEngine::CollisionPlane *plane;
+		CollisionPlane *plane;
 
-		PhysicsEngine::Vector3 position;
-		PhysicsEngine::Vector3 normal;
-		PhysicsEngine::Vector3 up;
-		PhysicsEngine::Vector3 color;
-		PhysicsEngine::real halfSize;
+		Vector3 position;
+		Vector3 normal;
+		Vector3 up;
+		Vector3 color;
+		real halfSize;
 
 		Plane
 		(
 			RenderingDemo *demo,
-			PhysicsEngine::Vector3 positionInput,
-			PhysicsEngine::Vector3 normalInput,
-			PhysicsEngine::Vector3 upInput,
-			PhysicsEngine::Vector3 colorInput,
-			PhysicsEngine::real halfSizeInput,
-			PhysicsEngine::real offset
+			Vector3 positionInput,
+			Vector3 normalInput,
+			Vector3 upInput,
+			Vector3 colorInput,
+			real halfSizeInput,
+			real offset
 		);
 
 		~Plane()
@@ -71,16 +72,16 @@ namespace PhysicsDemo
 	class Box : public Renderable
 	{
 	public:
-		PhysicsEngine::CollisionBox *boxPrimitive;
+		CollisionBox *boxPrimitive;
 
 		Box
 		(
 			RenderingDemo *demo,
-			PhysicsEngine::Vector3 position,
-			PhysicsEngine::Vector3 velocity,
-			PhysicsEngine::Vector3 acceleration,
-			PhysicsEngine::real mass,
-			PhysicsEngine::Vector3 halfSize
+			Vector3 position,
+			Vector3 velocity,
+			Vector3 acceleration,
+			real mass,
+			Vector3 halfSize
 		);
 
 		~Box()
@@ -95,16 +96,16 @@ namespace PhysicsDemo
 	class Sphere : public Renderable
 	{
 	public:
-		PhysicsEngine::CollisionSphere *spherePrimitive;
+		CollisionSphere *spherePrimitive;
 
 		Sphere
 		(
 			RenderingDemo *demo,
-			PhysicsEngine::Vector3 position,
-			PhysicsEngine::Vector3 velocity,
-			PhysicsEngine::Vector3 acceleration,
-			PhysicsEngine::real mass,
-			PhysicsEngine::real radius
+			Vector3 position,
+			Vector3 velocity,
+			Vector3 acceleration,
+			real mass,
+			real radius
 		);
 
 		~Sphere()
@@ -126,13 +127,13 @@ namespace PhysicsDemo
 		Capsule
 		(
 			RenderingDemo *demo,
-			PhysicsEngine::Vector3 position,
-			PhysicsEngine::Quaternion rotation,
-			PhysicsEngine::Vector3 velocity,
-			PhysicsEngine::Vector3 acceleration,
-			PhysicsEngine::real mass,
-			PhysicsEngine::real radius,
-			PhysicsEngine::real height
+			Vector3 position,
+			Quaternion rotation,
+			Vector3 velocity,
+			Vector3 acceleration,
+			real mass,
+			real radius,
+			real height
 		);
 
 		~Capsule();

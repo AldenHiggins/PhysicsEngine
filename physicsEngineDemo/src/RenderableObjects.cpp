@@ -6,11 +6,11 @@ using namespace PhysicsDemo;
 Axis::Axis
 (
 	RenderingDemo *demo,
-	PhysicsEngine::Vector3 colorInput,
-	PhysicsEngine::Vector3 firstPointInput,
-	PhysicsEngine::Vector3 secondPointInput,
-	PhysicsEngine::Vector3 thirdPointInput,
-	PhysicsEngine::Vector3 fourthPointInput
+	Vector3 colorInput,
+	Vector3 firstPointInput,
+	Vector3 secondPointInput,
+	Vector3 thirdPointInput,
+	Vector3 fourthPointInput
 )
 {
 	color = colorInput;
@@ -38,12 +38,12 @@ void Axis::display()
 Plane::Plane
 (
 	RenderingDemo *demo,
-	PhysicsEngine::Vector3 positionInput,
-	PhysicsEngine::Vector3 normalInput,
-	PhysicsEngine::Vector3 upInput,
-	PhysicsEngine::Vector3 colorInput,
-	PhysicsEngine::real halfSizeInput,
-	PhysicsEngine::real offset
+	Vector3 positionInput,
+	Vector3 normalInput,
+	Vector3 upInput,
+	Vector3 colorInput,
+	real halfSizeInput,
+	real offset
 )
 {
 	position = positionInput;
@@ -52,7 +52,7 @@ Plane::Plane
 	color = colorInput;
 	halfSize = halfSizeInput;
 
-	plane = new PhysicsEngine::CollisionPlane();
+	plane = new CollisionPlane();
 	plane->normal = normalInput;
 	plane->offset = offset;
 
@@ -70,18 +70,18 @@ void Plane::display()
 	glNormal3f((float)normal[0], (float)normal[1], (float)normal[2]);
 
 
-	PhysicsEngine::Vector3 right = up.vectorProduct(normal);
+	Vector3 right = up.vectorProduct(normal);
 
-	PhysicsEngine::real newHalfSize = halfSize;
-	PhysicsEngine::Vector3 variableColor = color;
+	real newHalfSize = halfSize;
+	Vector3 variableColor = color;
 	for (int quadIndex = 0; quadIndex < 50; quadIndex++)
 	{
 		variableColor[0] += .1f;
 		glColor3f((float)variableColor[0], (float)variableColor[1], (float)variableColor[2]);
-		PhysicsEngine::Vector3 position1 = position + (up * newHalfSize) + (right * newHalfSize) + (normal * quadIndex * .01f);
-		PhysicsEngine::Vector3 position2 = position + (up * newHalfSize) - (right * newHalfSize) + (normal * quadIndex * .01f);
-		PhysicsEngine::Vector3 position3 = position - (up * newHalfSize) - (right * newHalfSize) + (normal * quadIndex * .01f);
-		PhysicsEngine::Vector3 position4 = position - (up * newHalfSize) + (right * newHalfSize) + (normal * quadIndex * .01f);
+		Vector3 position1 = position + (up * newHalfSize) + (right * newHalfSize) + (normal * quadIndex * .01f);
+		Vector3 position2 = position + (up * newHalfSize) - (right * newHalfSize) + (normal * quadIndex * .01f);
+		Vector3 position3 = position - (up * newHalfSize) - (right * newHalfSize) + (normal * quadIndex * .01f);
+		Vector3 position4 = position - (up * newHalfSize) + (right * newHalfSize) + (normal * quadIndex * .01f);
 
 		glVertex3f((float)position1[0], (float)position1[1], (float)position1[2]);
 		glVertex3f((float)position2[0], (float)position2[1], (float)position2[2]);
@@ -96,14 +96,14 @@ void Plane::display()
 Box::Box
 (
 	RenderingDemo *demo,
-	PhysicsEngine::Vector3 position,
-	PhysicsEngine::Vector3 velocity,
-	PhysicsEngine::Vector3 acceleration,
-	PhysicsEngine::real mass,
-	PhysicsEngine::Vector3 halfSize
+	Vector3 position,
+	Vector3 velocity,
+	Vector3 acceleration,
+	real mass,
+	Vector3 halfSize
 )
 {
-	boxPrimitive = new PhysicsEngine::CollisionBox();
+	boxPrimitive = new CollisionBox();
 
 	boxPrimitive->body->setStatic(true);
 	boxPrimitive->setState(position, velocity, acceleration, mass, halfSize);
@@ -132,14 +132,14 @@ void Box::display()
 Sphere::Sphere
 (
 	RenderingDemo *demo,
-	PhysicsEngine::Vector3 position,
-	PhysicsEngine::Vector3 velocity,
-	PhysicsEngine::Vector3 acceleration,
-	PhysicsEngine::real mass,
-	PhysicsEngine::real radius
+	Vector3 position,
+	Vector3 velocity,
+	Vector3 acceleration,
+	real mass,
+	real radius
 )
 {
-	spherePrimitive = new PhysicsEngine::CollisionSphere();
+	spherePrimitive = new CollisionSphere();
 	spherePrimitive->setState(position, velocity, acceleration, mass, radius);
 	spherePrimitive->body->calculateDerivedData();
 
@@ -166,13 +166,13 @@ void Sphere::display()
 Capsule::Capsule
 (
 	RenderingDemo *demo,
-	PhysicsEngine::Vector3 position,
-	PhysicsEngine::Quaternion rotation,
-	PhysicsEngine::Vector3 velocity,
-	PhysicsEngine::Vector3 acceleration,
-	PhysicsEngine::real mass,
-	PhysicsEngine::real radius,
-	PhysicsEngine::real height
+	Vector3 position,
+	Quaternion rotation,
+	Vector3 velocity,
+	Vector3 acceleration,
+	real mass,
+	real radius,
+	real height
 )
 {
 	// Generate the quadric object
@@ -180,7 +180,7 @@ Capsule::Capsule
 	gluQuadricNormals(quadricObject, GLU_SMOOTH);
 	gluQuadricDrawStyle(quadricObject, GLU_FILL);
 
-	capsulePrimitive = new PhysicsEngine::CollisionCapsule();
+	capsulePrimitive = new CollisionCapsule();
 	capsulePrimitive->setState(position, rotation, velocity, acceleration, mass, radius, height);
 	capsulePrimitive->body->calculateDerivedData();
 

@@ -8,13 +8,13 @@ using namespace PhysicsDemo;
 void PlayerController::update(float deltaTime)
 {
 	// Hacky from euler creation...but it works
-	PhysicsEngine::Quaternion rotation = PhysicsEngine::Quaternion::fromEuler(yaw, 0.0f, -pitch);
+	Quaternion rotation = Quaternion::fromEuler(yaw, 0.0f, -pitch);
 
-	PhysicsEngine::Matrix3 rotMatrix;
+	Matrix3 rotMatrix;
 	rotMatrix.setOrientation(rotation);
 
-	PhysicsEngine::Vector3 forward = rotMatrix.transform(PhysicsEngine::Vector3(0.0f, 0.0f, 1.0f));
-	PhysicsEngine::Vector3 right = forward.vectorProduct(PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f));
+	Vector3 forward = rotMatrix.transform(Vector3(0.0f, 0.0f, 1.0f));
+	Vector3 right = forward.vectorProduct(Vector3(0.0f, 1.0f, 0.0f));
 
 	//std::cout << "Forward: " << forward[0] << " " << forward[1] << " " << forward[2] << std::endl;
 
@@ -67,7 +67,6 @@ void PlayerController::keyCheck(unsigned char key)
 	}
 }
 
-
 // Controls
 void PlayerController::keyUpCheck(unsigned char key)
 {
@@ -97,40 +96,40 @@ void PlayerController::keyUpCheck(unsigned char key)
 }
 
 // Getters and setters
-PhysicsEngine::real PlayerController::getSpeed()
+real PlayerController::getSpeed()
 {
 	return speed;
 }
 
-void PlayerController::setSpeed(PhysicsEngine::real newSpeed)
+void PlayerController::setSpeed(real newSpeed)
 {
 	speed = newSpeed;
 }
 
-PhysicsEngine::Vector3 PlayerController::getPosition()
+Vector3 PlayerController::getPosition()
 {
 	return position;
 }
-void PlayerController::setPosition(PhysicsEngine::Vector3 newPosition)
+void PlayerController::setPosition(Vector3 newPosition)
 {
 	position = newPosition;
 }
 
-PhysicsEngine::real PlayerController::getYaw()
+real PlayerController::getYaw()
 {
 	return yaw;
 }
 
-void PlayerController::setYaw(PhysicsEngine::real newYaw)
+void PlayerController::setYaw(real newYaw)
 {
 	yaw = newYaw;
 }
 
-PhysicsEngine::real PlayerController::getPitch()
+real PlayerController::getPitch()
 {
 	return pitch;
 }
-void PlayerController::setPitch(PhysicsEngine::real newPitch)
+void PlayerController::setPitch(real newPitch)
 {
 	pitch = newPitch;
 }

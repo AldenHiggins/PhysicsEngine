@@ -19,42 +19,42 @@ void Controls::keyCheck
 			//addCapsule
 			//(
 			//	demo,
-			//	rotatePositionAlongYAxis(13.0f, 5.7f, demo->player.getYaw()), PhysicsEngine::Quaternion::fromEuler(1, 0, 0), PhysicsEngine::Vector3(0.0f, 0, 0), PhysicsEngine::Vector3(),
+			//	rotatePositionAlongYAxis(13.0f, 5.7f, demo->player.getYaw()), Quaternion::fromEuler(1, 0, 0), Vector3(0.0f, 0, 0), Vector3(),
 			//	10.0f, 1.0f, 1.0f
 			//);
 
 			//addCapsule
 			//(
 			//	demo,
-			//	PhysicsEngine::Vector3(-5.0f, 5.0f, 1.0f), PhysicsEngine::Quaternion::fromEuler(1, 0, 0), PhysicsEngine::Vector3(0.0f, 0, 0), PhysicsEngine::Vector3(),
+			//	Vector3(-5.0f, 5.0f, 1.0f), Quaternion::fromEuler(1, 0, 0), Vector3(0.0f, 0, 0), Vector3(),
 			//	1.0f, 1.0f, 1.0f
 			//);
 
-			//addForceToCapsule(demo, (demo->capsuleObjects.size() - 1), PhysicsEngine::Vector3(300.0f, 0.0f, 0.0f), PhysicsEngine::Vector3());
+			//addForceToCapsule(demo, (demo->capsuleObjects.size() - 1), Vector3(300.0f, 0.0f, 0.0f), Vector3());
 			//void Controls::addSphere
 			//	(
 			//		RenderingDemo *demo,
-			//		PhysicsEngine::Vector3 position,
-			//		PhysicsEngine::Vector3 velocity,
-			//		PhysicsEngine::Vector3 acceleration,
-			//		PhysicsEngine::real mass,
-			//		PhysicsEngine::real radius
+			//		Vector3 position,
+			//		Vector3 velocity,
+			//		Vector3 acceleration,
+			//		real mass,
+			//		real radius
 			//		)
 
 			addSphere
 			(
 				demo,
-				PhysicsEngine::Vector3(0.0f, 5.0f, 1.0f), PhysicsEngine::Vector3(), PhysicsEngine::Vector3(),
+				Vector3(0.0f, 5.0f, 1.0f), Vector3(), Vector3(),
 				1.0f, 1.0f
 			);
 
-			addForceToSphere(demo, demo->sphereObjects.size() - 1, PhysicsEngine::Vector3(300.0f, 0.0f, 0.0f), PhysicsEngine::Vector3());
+			addForceToSphere(demo, demo->sphereObjects.size() - 1, Vector3(300.0f, 0.0f, 0.0f), Vector3());
 
 			addCube
 			(
 				demo,
-				PhysicsEngine::Vector3(10.0f, 5.0f, 0.0f), PhysicsEngine::Vector3(), PhysicsEngine::Vector3(),
-				10.0f, PhysicsEngine::Vector3(0.5f, 5.0f, 10.0f)
+				Vector3(10.0f, 5.0f, 0.0f), Vector3(), Vector3(),
+				10.0f, Vector3(0.5f, 5.0f, 10.0f)
 			);
 
 			break;
@@ -64,54 +64,54 @@ void Controls::keyCheck
 			addCube
 			(
 				demo,
-				PhysicsEngine::Vector3(-20.0f, 5.0f, 0.0f), PhysicsEngine::Vector3(), PhysicsEngine::Vector3(),
-				10.0f, PhysicsEngine::Vector3(0.5f, 5.0f, 10.0f)
+				Vector3(-20.0f, 5.0f, 0.0f), Vector3(), Vector3(),
+				10.0f, Vector3(0.5f, 5.0f, 10.0f)
 			);
 			addCube
 			(
 				demo,
-				PhysicsEngine::Vector3(20.0f, 5.0f, 0.0f), PhysicsEngine::Vector3(), PhysicsEngine::Vector3(),
-				10.0f, PhysicsEngine::Vector3(0.5f, 5.0f, 10.0f)
+				Vector3(20.0f, 5.0f, 0.0f), Vector3(), Vector3(),
+				10.0f, Vector3(0.5f, 5.0f, 10.0f)
 			);
 			addCube
 			(
 				demo,
-				PhysicsEngine::Vector3(0.0f, 5.0f, 20.0f), PhysicsEngine::Vector3(), PhysicsEngine::Vector3(),
-				10.0f, PhysicsEngine::Vector3(10.0f, 5.0f, 0.5f)
+				Vector3(0.0f, 5.0f, 20.0f), Vector3(), Vector3(),
+				10.0f, Vector3(10.0f, 5.0f, 0.5f)
 			);
 			addCube
 			(
 				demo,
-				PhysicsEngine::Vector3(0.0f, 5.0f, -20.0f), PhysicsEngine::Vector3(), PhysicsEngine::Vector3(),
-				10.0f, PhysicsEngine::Vector3(10.0f, 5.0f, 0.5f)
+				Vector3(0.0f, 5.0f, -20.0f), Vector3(), Vector3(),
+				10.0f, Vector3(10.0f, 5.0f, 0.5f)
 			);
 
 			//addCube
 			//(
 			//	demo,
-			//	PhysicsEngine::Vector3(0.0f, 5.0f, 12.0f), PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f), PhysicsEngine::Vector3(),
-			//	10.0f, PhysicsEngine::Vector3(1.0f, .5f, .5f)
+			//	Vector3(0.0f, 5.0f, 12.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3(),
+			//	10.0f, Vector3(1.0f, .5f, .5f)
 			//);
 			//addCube
 			//(
 			//	demo,
-			//	PhysicsEngine::Vector3(3.0f, 7.0f, 12.0f), PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f), PhysicsEngine::Vector3(),
-			//	10.0f, PhysicsEngine::Vector3(1.0f, .5f, .5f)
+			//	Vector3(3.0f, 7.0f, 12.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3(),
+			//	10.0f, Vector3(1.0f, .5f, .5f)
 			//);
 			//addCube
 			//(
 			//	demo,
-			//	PhysicsEngine::Vector3(6.0f, 12.0f, 12.0f), PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f), PhysicsEngine::Vector3(),
-			//	10.0f, PhysicsEngine::Vector3(1.0f, .5f, .5f)
+			//	Vector3(6.0f, 12.0f, 12.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3(),
+			//	10.0f, Vector3(1.0f, .5f, .5f)
 			//);
 			//addCube
 			//(
 			//	demo,
-			//	PhysicsEngine::Vector3(9.0f, 15.0f, 12.0f), PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f), PhysicsEngine::Vector3(),
-			//	10.0f, PhysicsEngine::Vector3(1.0f, .5f, .5f)
+			//	Vector3(9.0f, 15.0f, 12.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3(),
+			//	10.0f, Vector3(1.0f, .5f, .5f)
 			//);
 
-			//addParticle(physicsEngine, particles, PhysicsEngine::Vector3(0.0f, 4.0f, 6.0f), 1.0f, 1.0f, 1.0f);
+			//addParticle(physicsEngine, particles, Vector3(0.0f, 4.0f, 6.0f), 1.0f, 1.0f, 1.0f);
 			break;
 		}
 	}
@@ -123,23 +123,23 @@ void Controls::keyCheck
 void Controls::addParticle
 (
 	RenderingDemo *demo,
-	PhysicsEngine::Vector3 position,
-	PhysicsEngine::real mass,
-	PhysicsEngine::real radius,
-	PhysicsEngine::real height
+	Vector3 position,
+	real mass,
+	real radius,
+	real height
 )
 {
-	RenderableParticle *particle = CreateParticle::createParticle(demo, position, 5.0f, radius, PhysicsEngine::Vector3(.5f, .5f, .5f));
+	RenderableParticle *particle = CreateParticle::createParticle(demo, position, 5.0f, radius, Vector3(.5f, .5f, .5f));
 }
 
 void Controls::addSphere
 (
 	RenderingDemo *demo,
-	PhysicsEngine::Vector3 position,
-	PhysicsEngine::Vector3 velocity,
-	PhysicsEngine::Vector3 acceleration,
-	PhysicsEngine::real mass,
-	PhysicsEngine::real radius
+	Vector3 position,
+	Vector3 velocity,
+	Vector3 acceleration,
+	real mass,
+	real radius
 )
 {
 	Sphere *newSphere = new Sphere(demo, position, velocity, acceleration, mass, radius);
@@ -148,11 +148,11 @@ void Controls::addSphere
 void Controls::addCube
 (
 	RenderingDemo *demo,
-	PhysicsEngine::Vector3 position,
-	PhysicsEngine::Vector3 velocity,
-	PhysicsEngine::Vector3 acceleration,
-	PhysicsEngine::real mass,
-	PhysicsEngine::Vector3 halfSize
+	Vector3 position,
+	Vector3 velocity,
+	Vector3 acceleration,
+	real mass,
+	Vector3 halfSize
 )
 {
 	Box *newSquare = new Box(demo, position, velocity, acceleration, mass, halfSize);
@@ -161,13 +161,13 @@ void Controls::addCube
 void Controls::addCapsule
 (
 	RenderingDemo *demo,
-	PhysicsEngine::Vector3 position,
-	PhysicsEngine::Quaternion rotation,
-	PhysicsEngine::Vector3 velocity,
-	PhysicsEngine::Vector3 acceleration,
-	PhysicsEngine::real mass,
-	PhysicsEngine::real radius,
-	PhysicsEngine::real height
+	Vector3 position,
+	Quaternion rotation,
+	Vector3 velocity,
+	Vector3 acceleration,
+	real mass,
+	real radius,
+	real height
 )
 {
 	Capsule *newCapsule = new Capsule(demo, position, rotation, velocity, acceleration, mass, radius, height);
@@ -177,19 +177,19 @@ void Controls::addCapsule
 ////////////////////////  OBJECT INTERACTIONS  //////////////////////////
 /////////////////////////////////////////////////////////////////////////
 // Add force to the cube at cubeindex
-void Controls::addForceToCube(RenderingDemo *demo, int cubeIndex, PhysicsEngine::Vector3 force, PhysicsEngine::Vector3 position)
+void Controls::addForceToCube(RenderingDemo *demo, int cubeIndex, Vector3 force, Vector3 position)
 {
 	(demo->rectangleObjects)[0]->boxPrimitive->body->addForceAtBodyPoint(force, position);
 }
 
 // Add force to the capsule at capsuleIndex
-void Controls::addForceToCapsule(RenderingDemo *demo, int capsuleIndex, PhysicsEngine::Vector3 force, PhysicsEngine::Vector3 position)
+void Controls::addForceToCapsule(RenderingDemo *demo, int capsuleIndex, Vector3 force, Vector3 position)
 {
 	(demo->capsuleObjects)[capsuleIndex]->capsulePrimitive->body->addForceAtBodyPoint(force, position);
 }
 
 // Add force to the sphere at sphereIndex
-void Controls::addForceToSphere(RenderingDemo *demo, int sphereIndex, PhysicsEngine::Vector3 force, PhysicsEngine::Vector3 position)
+void Controls::addForceToSphere(RenderingDemo *demo, int sphereIndex, Vector3 force, Vector3 position)
 {
 	(demo->sphereObjects)[sphereIndex]->spherePrimitive->body->addForceAtBodyPoint(force, position);
 }
@@ -197,12 +197,12 @@ void Controls::addForceToSphere(RenderingDemo *demo, int sphereIndex, PhysicsEng
 /////////////////////////////////////////////////////////////////////////
 ////////////////////////    HELPER FUNCTIONS   //////////////////////////
 /////////////////////////////////////////////////////////////////////////
-PhysicsEngine::Vector3 Controls::rotatePositionAlongYAxis(PhysicsEngine::real depth, PhysicsEngine::real height, PhysicsEngine::real theta)
+Vector3 Controls::rotatePositionAlongYAxis(real depth, real height, real theta)
 {
-	PhysicsEngine::Vector3 objectInitialPosition(0.0f, height, depth);
-	PhysicsEngine::real thetaRads = theta * PI / 180.0;
-	PhysicsEngine::Quaternion cameraRotation(cos(thetaRads / 2), 0.0f, 1.0f * sin(thetaRads / 2), 0.0f);
-	PhysicsEngine::Matrix3 rotMatrix;
+	Vector3 objectInitialPosition(0.0f, height, depth);
+	real thetaRads = theta * PI / 180.0;
+	Quaternion cameraRotation(cos(thetaRads / 2), 0.0f, 1.0f * sin(thetaRads / 2), 0.0f);
+	Matrix3 rotMatrix;
 	rotMatrix.setOrientation(cameraRotation);
 
 	return rotMatrix.transform(objectInitialPosition);

@@ -11,6 +11,7 @@
 #include "Controls.h"
 #include "RenderableObjects.h"
 #include "PlayerControls.h"
+#include "DataTypeRedefinition.h"
 
 using namespace PhysicsDemo;
 
@@ -67,7 +68,7 @@ void RenderingDemo::display()
 	glRotatef((float)(-1 * player.getPitch()), 1.0f, 0.0f, 0.0f);
 	glRotatef((float)player.getYaw(), 0.0f, 1.0f, 0.0f);
 	// Move the camera to the player's current location
-	PhysicsEngine::Vector3 position = player.getPosition();
+	Vector3 position = player.getPosition();
 	glTranslatef((float)(-1 * position[0]), (float)(-1 * position[1]), (float)(-1 * position[2]));
 
 	// Update the world physics based on the timestep of the frame
@@ -130,8 +131,8 @@ void RenderingDemo::keyboardUp(unsigned char key, int x, int y)
 void RenderingDemo::motion(int x, int y)
 {
 	// Update the camera
-	PhysicsEngine::real yaw = player.getYaw();
-	PhysicsEngine::real pitch = player.getPitch();
+	real yaw = player.getYaw();
+	real pitch = player.getPitch();
 
 	player.setYaw(yaw + (x - lastX) * .25f);
 	player.setPitch(pitch + (y - lastY) * .25f);
@@ -183,80 +184,80 @@ void RenderingDemo::initializeScene()
 {
 	// Initialize the timers
 	TimingData::init();
-	Plane *plane1 = new Plane
-	(
-		this,
-		PhysicsEngine::Vector3(),
-		PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f),
-		PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
-		PhysicsEngine::Vector3(0.3f, 0.3f, 0.7f),
-		10.0f,
-		0.0f
-	);
+	//Plane *plane1 = new Plane
+	//(
+	//	this,
+	//	Vector3(),
+	//	Vector3(0.0f, 1.0f, 0.0f),
+	//	Vector3(1.0f, 0.0f, 0.0f),
+	//	Vector3(0.3f, 0.3f, 0.7f),
+	//	10.0f,
+	//	0.0f
+	//);
 
-	Plane *plane2 = new Plane
-	(
-		this,
-		PhysicsEngine::Vector3(0.0f, 10.0f, 10.0f),
-		PhysicsEngine::Vector3(0.0f, 0.0f, -1.0f),
-		PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
-		PhysicsEngine::Vector3(0.9f, 0.9f, 0.9f),
-		10.0f,
-		-10.0f
-	);
+	//Plane *plane2 = new Plane
+	//(
+	//	this,
+	//	Vector3(0.0f, 10.0f, 10.0f),
+	//	Vector3(0.0f, 0.0f, -1.0f),
+	//	Vector3(1.0f, 0.0f, 0.0f),
+	//	Vector3(0.9f, 0.9f, 0.9f),
+	//	10.0f,
+	//	-10.0f
+	//);
 
-	Plane *plane3 = new Plane
-	(
-		this,
-		PhysicsEngine::Vector3(0.0f, 10.0f, -10.0f),
-		PhysicsEngine::Vector3(0.0f, 0.0f, 1.0f),
-		PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
-		PhysicsEngine::Vector3(0.0f, 0.8f, 0.0f),
-		10.0f,
-		-10.0f
-	);
+	//Plane *plane3 = new Plane
+	//(
+	//	this,
+	//	Vector3(0.0f, 10.0f, -10.0f),
+	//	Vector3(0.0f, 0.0f, 1.0f),
+	//	Vector3(1.0f, 0.0f, 0.0f),
+	//	Vector3(0.0f, 0.8f, 0.0f),
+	//	10.0f,
+	//	-10.0f
+	//);
 
-	Plane *plane4 = new Plane
-	(
-		this,
-		PhysicsEngine::Vector3(10.0f, 10.0f, 0.0f),
-		PhysicsEngine::Vector3(-1.0f, 0.0f, 0.0f),
-		PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f),
-		PhysicsEngine::Vector3(0.4f, 0.8f, 0.1f),
-		10.0f,
-		-10.0f
-	);
+	//Plane *plane4 = new Plane
+	//(
+	//	this,
+	//	Vector3(10.0f, 10.0f, 0.0f),
+	//	Vector3(-1.0f, 0.0f, 0.0f),
+	//	Vector3(0.0f, 1.0f, 0.0f),
+	//	Vector3(0.4f, 0.8f, 0.1f),
+	//	10.0f,
+	//	-10.0f
+	//);
 
-	Plane *plane5 = new Plane
-	(
-		this,
-		PhysicsEngine::Vector3(-10.0f, 10.0f, 0.0f),
-		PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
-		PhysicsEngine::Vector3(0.0f, 1.0f, 0.0f),
-		PhysicsEngine::Vector3(1.0f, 0.0f, 0.0f),
-		10.0f,
-		-10.0f
-	);
+	//Plane *plane5 = new Plane
+	//(
+	//	this,
+	//	Vector3(-10.0f, 10.0f, 0.0f),
+	//	Vector3(1.0f, 0.0f, 0.0f),
+	//	Vector3(0.0f, 1.0f, 0.0f),
+	//	Vector3(1.0f, 0.0f, 0.0f),
+	//	10.0f,
+	//	-10.0f
+	//);
 
-	// Create the axes and add them to renderableObjects
-	Axis *firstAxis = new Axis
-	(
-		this,
-		PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f),
-		PhysicsEngine::Vector3(20, .01f, AXES_WIDTH / 2),
-		PhysicsEngine::Vector3(20, .01f, -1 * AXES_WIDTH / 2),
-		PhysicsEngine::Vector3(-20, .01f, -1 * AXES_WIDTH / 2),
-		PhysicsEngine::Vector3(-20, .01f, AXES_WIDTH / 2)
-	);
+	//// Create the axes and add them to renderableObjects
+	//Axis *firstAxis = new Axis
+	//(
+	//	this,
+	//	Vector3(0.0f, 0.0f, 0.0f),
+	//	Vector3(20, .01f, AXES_WIDTH / 2),
+	//	Vector3(20, .01f, -1 * AXES_WIDTH / 2),
+	//	Vector3(-20, .01f, -1 * AXES_WIDTH / 2),
+	//	Vector3(-20, .01f, AXES_WIDTH / 2)
+	//);
 
-	Axis *secondAxis = new Axis
-	(
-		this,
-		PhysicsEngine::Vector3(0.0f, 0.0f, 0.0f),
-		PhysicsEngine::Vector3(AXES_WIDTH / 2, .01f, 20),
-		PhysicsEngine::Vector3(-1 * AXES_WIDTH / 2, .01f, 20),
-		PhysicsEngine::Vector3(-1 * AXES_WIDTH / 2, .01f, -20),
-		PhysicsEngine::Vector3(AXES_WIDTH / 2, .01f, -20)
-	); 
+	//Axis *secondAxis = new Axis
+	//(
+	//	this,
+	//	Vector3(0.0f, 0.0f, 0.0f),
+	//	Vector3(AXES_WIDTH / 2, .01f, 20),
+	//	Vector3(-1 * AXES_WIDTH / 2, .01f, 20),
+	//	Vector3(-1 * AXES_WIDTH / 2, .01f, -20),
+	//	Vector3(AXES_WIDTH / 2, .01f, -20)
+	//); 
 }
 

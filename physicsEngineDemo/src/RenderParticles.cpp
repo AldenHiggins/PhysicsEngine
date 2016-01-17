@@ -15,7 +15,7 @@ void RenderableParticle::display()
 		return;
 	}
 
-	PhysicsEngine::Vector3 position = physicsParticle->getPosition();
+	Vector3 position = physicsParticle->getPosition();
 
 	glBegin(GL_QUADS);
 	// Set the color for the particle
@@ -49,7 +49,7 @@ void CircleParticle::display()
 		return;
 	}
 
-	PhysicsEngine::Vector3 position = physicsParticle->getPosition();
+	Vector3 position = physicsParticle->getPosition();
 
 	glColor3f((float)color[0], (float)color[1], (float)color[2]);
 	glPushMatrix();
@@ -96,12 +96,12 @@ void FireworkParticle::onDeath()
 }
 
 // Generate a new circular particle
-RenderableParticle* CreateParticle::createFireWorkParticle(PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 position, PhysicsEngine::Vector3 color, bool originalFirework, int lives)
+RenderableParticle* CreateParticle::createFireWorkParticle(real speed, real size, Vector3 position, Vector3 color, bool originalFirework, int lives)
 {
 	FireworkParticle *newParticle = new FireworkParticle(lives);
-	PhysicsEngine::real xVelocity = ((PhysicsEngine::real)((rand() % 800) - 400)) / 100;
-	PhysicsEngine::real yVelocity = ((PhysicsEngine::real)((rand() % 800) - 0)) / 100;
-	PhysicsEngine::real zVelocity = ((PhysicsEngine::real)((rand() % 800) - 400)) / 100;
+	real xVelocity = ((real)((rand() % 800) - 400)) / 100;
+	real yVelocity = ((real)((rand() % 800) - 0)) / 100;
+	real zVelocity = ((real)((rand() % 800) - 400)) / 100;
 
 	xVelocity *= speed;
 	yVelocity *= speed * 2;
@@ -117,9 +117,9 @@ RenderableParticle* CreateParticle::createFireWorkParticle(PhysicsEngine::real s
 		newParticle->physicsParticle->setStartupTime(5.0f);
 	}
 
-	newParticle->physicsParticle->setVelocity(PhysicsEngine::Vector3(xVelocity, yVelocity, zVelocity));
+	newParticle->physicsParticle->setVelocity(Vector3(xVelocity, yVelocity, zVelocity));
 	// Add gravity onto this circular particle
-	newParticle->physicsParticle->setAcceleration(PhysicsEngine::Vector3(0.0f, -3.81f, 0.0f));
+	newParticle->physicsParticle->setAcceleration(Vector3(0.0f, -3.81f, 0.0f));
 	newParticle->physicsParticle->setPosition(position);
 	newParticle->setColor(color);
 	newParticle->setSize(size);
@@ -128,19 +128,19 @@ RenderableParticle* CreateParticle::createFireWorkParticle(PhysicsEngine::real s
 }
 
 // Generate a new circular particle
-RenderableParticle* CreateParticle::createCircularParticle(PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 color)
+RenderableParticle* CreateParticle::createCircularParticle(real speed, real size, Vector3 color)
 {
 	CircleParticle *newParticle = new CircleParticle();
-	PhysicsEngine::real xVelocity = ((PhysicsEngine::real)((rand() % 200) - 100)) / 100;
-	PhysicsEngine::real yVelocity = 30.0f;
-	PhysicsEngine::real zVelocity = ((PhysicsEngine::real)((rand() % 200) - 100)) / 100;
+	real xVelocity = ((real)((rand() % 200) - 100)) / 100;
+	real yVelocity = 30.0f;
+	real zVelocity = ((real)((rand() % 200) - 100)) / 100;
 	xVelocity *= speed;
 	yVelocity *= speed;
 	zVelocity *= speed;
-	newParticle->physicsParticle->setVelocity(PhysicsEngine::Vector3(xVelocity, yVelocity, zVelocity));
+	newParticle->physicsParticle->setVelocity(Vector3(xVelocity, yVelocity, zVelocity));
 	// Add gravity onto this circular particle
-	newParticle->physicsParticle->setAcceleration(PhysicsEngine::Vector3(0.0f, -9.81f, 0.0f));
-	newParticle->physicsParticle->setPosition(PhysicsEngine::Vector3(0.0f, 4.0f, 6.0f));
+	newParticle->physicsParticle->setAcceleration(Vector3(0.0f, -9.81f, 0.0f));
+	newParticle->physicsParticle->setPosition(Vector3(0.0f, 4.0f, 6.0f));
 	newParticle->setColor(color);
 	newParticle->setSize(size);
 	newParticle->physicsParticle->setLifeTime(2.0f);
@@ -148,16 +148,16 @@ RenderableParticle* CreateParticle::createCircularParticle(PhysicsEngine::real s
 }
 
 // Generate a new particle
-RenderableParticle* CreateParticle::createParticle(RenderingDemo *demo, PhysicsEngine::Vector3 position, PhysicsEngine::real speed, PhysicsEngine::real size, PhysicsEngine::Vector3 color)
+RenderableParticle* CreateParticle::createParticle(RenderingDemo *demo, Vector3 position, real speed, real size, Vector3 color)
 {
 	RenderableParticle *newParticle = new RenderableParticle();
-	PhysicsEngine::real xVelocity = ((PhysicsEngine::real)((rand() % 200) - 100)) / 100;
-	PhysicsEngine::real yVelocity = ((PhysicsEngine::real)((rand() % 200) - 100)) / 100;
-	PhysicsEngine::real zVelocity = ((PhysicsEngine::real)((rand() % 200) - 100)) / 100;
+	real xVelocity = ((real)((rand() % 200) - 100)) / 100;
+	real yVelocity = ((real)((rand() % 200) - 100)) / 100;
+	real zVelocity = ((real)((rand() % 200) - 100)) / 100;
 	xVelocity *= speed;
 	yVelocity *= speed;
 	zVelocity *= speed;
-	newParticle->physicsParticle->setVelocity(PhysicsEngine::Vector3(xVelocity, yVelocity, zVelocity));
+	newParticle->physicsParticle->setVelocity(Vector3(xVelocity, yVelocity, zVelocity));
 	newParticle->physicsParticle->setPosition(position);
 	// Give the particle a ramp up time to make a GIF
 	newParticle->physicsParticle->setStartupTime(0.1f);
