@@ -553,6 +553,30 @@ namespace PhysicsEngine {
 
 			return quat;
 		}
+
+		Vector3 toEuler()
+		{
+			Vector3 zero;
+
+			//yaw
+			zero[1] = atan2(2 * j * r - 2 * i * k, 1 - 2 * j * j - 2 * k * k);
+			//pitch
+			zero[0] = asin(2 * i * j + 2 * k * r);
+			//roll
+			zero[2] = atan2(2 * i * r - 2 * j * k, 1 - 2 * i * i - 2 * k * k);
+
+			// Convert the angles from radians into degrees
+			zero[0] = zero[0] * 180.0f / PI;
+			zero[1] = zero[1] * 180.0f / PI;
+			zero[2] = zero[2] * 180.0f / PI;
+
+			return zero;
+		}
+
+		Quaternion conjugate()
+		{
+			return Quaternion(r, -1 * i, -1 * j, -1 * k);
+		}
 	};
 
 	/**

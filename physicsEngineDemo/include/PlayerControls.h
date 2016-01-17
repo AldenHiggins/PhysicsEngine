@@ -17,6 +17,7 @@ namespace PhysicsDemo
 		real yaw;
 		real pitch;
 		real speed;
+		Quaternion rotation;
 
 		bool wPressed;
 		bool aPressed;
@@ -41,6 +42,9 @@ namespace PhysicsDemo
 		void keyUpCheck(unsigned char key);
 
 		// Getters and setters
+		Quaternion getRotation();
+		void setRotation(Quaternion newRotation);
+
 		real getSpeed();
 		void setSpeed(real newSpeed);
 

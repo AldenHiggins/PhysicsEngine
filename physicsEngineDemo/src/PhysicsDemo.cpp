@@ -61,12 +61,18 @@ void RenderingDemo::display()
 	GLfloat light_position[] = { -4.0, 10.0, -10.0, 0.0 };
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 
+	// Determine the new camera forward
+	Matrix3 rotMatrix;
+	rotMatrix.setOrientation(player.getRotation());
+	Vector3 rotatedForward = rotMatrix.transform(Vector3(0.0f, 0.0f, 1.0f));
 	glLoadIdentity();
-	// Look out towards the Z direction (eye, center, up)
-	gluLookAt(0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0);
-	// Rotate the scene according to wheere the player is rotated
-	glRotatef((float)(-1 * player.getPitch()), 1.0f, 0.0f, 0.0f);
-	glRotatef((float)player.getYaw(), 0.0f, 1.0f, 0.0f);
+	// Look out towards the forward direction (eye, forward, up)
+	gluLookAt
+	(
+		0.0, 0.0, 0.0,
+		rotatedForward[0], rotatedForward[1], rotatedForward[2],
+		0.0, 1.0, 0.0
+	);
 	// Move the camera to the player's current location
 	Vector3 position = player.getPosition();
 	glTranslatef((float)(-1 * position[0]), (float)(-1 * position[1]), (float)(-1 * position[2]));
@@ -130,22 +136,33 @@ void RenderingDemo::keyboardUp(unsigned char key, int x, int y)
 */
 void RenderingDemo::motion(int x, int y)
 {
-	// Update the camera
-	real yaw = player.getYaw();
-	real pitch = player.getPitch();
+	Quaternion playerRotation = player.getRotation();
 
-	player.setYaw(yaw + (x - lastX) * .25f);
-	player.setPitch(pitch + (y - lastY) * .25f);
+	float angle = (x - lastX);
+	angle = angle * PI / 180.0f;
+	Quaternion yawQuat(cos(angle / 2), 0.0f, sin(angle / 2), 0.0f);
 
-	// Clamp the pitch to prevent gimbal lock and other bad things
-	if (pitch < -20.0f)
-	{
-		player.setPitch(-20.0f);
-	}
-	else if (pitch > 80.0f)
-	{
-		player.setPitch(80.0f);
-	}
+	playerRotation *= yawQuat;
+
+	angle = playerRotation.toEuler()[1];
+	angle = angle * PI / 180.0f;
+	Quaternion newQuat(cos(angle / 2), 0.0f, sin(angle / 2), 0.0f);
+
+	Matrix3 rotMatrix;
+	rotMatrix.setOrientation(newQuat);
+
+	Vector3 rotatedForward = rotMatrix.transform(Vector3(0.0f, 0.0f, 1.0f));
+
+	Vector3 right = Vector3(0.0f, 1.0f, 0.0f).vectorProduct(rotatedForward);
+
+	angle = (y - lastY);
+	angle = angle * PI / 180.0f;
+	angle *= -1;
+	Quaternion pitchQuat(cos(angle / 2), right[0] * sin(angle / 2), right[1] * sin(angle / 2), right[2] * sin(angle / 2));
+
+	playerRotation *= pitchQuat;
+	
+	player.setRotation(playerRotation);
 
 	// Remember the position
 	lastX = x;

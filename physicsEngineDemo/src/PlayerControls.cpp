@@ -90,10 +90,20 @@ void PlayerController::keyUpCheck(unsigned char key)
 }
 
 // Getters and setters
+Quaternion PlayerController::getRotation()
+{
+	return rotation;
+}
+
+void PlayerController::setRotation(Quaternion newRotation)
+{
+	rotation = newRotation;
+}
+
 Vector3 PlayerController::getForward()
 {
 	// Hacky from euler creation...but it works
-	Quaternion rotation = Quaternion::fromEuler(yaw, 0.0f, -pitch);
+	//Quaternion rotation = Quaternion::fromEuler(yaw, 0.0f, -pitch);
 
 	Matrix3 rotMatrix;
 	rotMatrix.setOrientation(rotation);
