@@ -16,46 +16,14 @@ void Controls::keyCheck
 	{
 		case '1':
 		{		
-			//addCapsule
-			//(
-			//	demo,
-			//	rotatePositionAlongYAxis(13.0f, 5.7f, demo->player.getYaw()), Quaternion::fromEuler(1, 0, 0), Vector3(0.0f, 0, 0), Vector3(),
-			//	10.0f, 1.0f, 1.0f
-			//);
-
-			//addCapsule
-			//(
-			//	demo,
-			//	Vector3(-5.0f, 5.0f, 1.0f), Quaternion::fromEuler(1, 0, 0), Vector3(0.0f, 0, 0), Vector3(),
-			//	1.0f, 1.0f, 1.0f
-			//);
-
-			//addForceToCapsule(demo, (demo->capsuleObjects.size() - 1), Vector3(300.0f, 0.0f, 0.0f), Vector3());
-			//void Controls::addSphere
-			//	(
-			//		RenderingDemo *demo,
-			//		Vector3 position,
-			//		Vector3 velocity,
-			//		Vector3 acceleration,
-			//		real mass,
-			//		real radius
-			//		)
-
 			addSphere
 			(
 				demo,
-				Vector3(0.0f, 5.0f, 1.0f), Vector3(), Vector3(),
+				rotatePositionAlongYAxis(5.0f, 5.0f, demo->player.getYaw()), Vector3(), Vector3(),
 				1.0f, 1.0f
 			);
 
 			addForceToSphere(demo, demo->sphereObjects.size() - 1, Vector3(300.0f, 0.0f, 0.0f), Vector3());
-
-			addCube
-			(
-				demo,
-				Vector3(10.0f, 5.0f, 0.0f), Vector3(), Vector3(),
-				10.0f, Vector3(0.5f, 5.0f, 10.0f)
-			);
 
 			break;
 		}
@@ -64,54 +32,74 @@ void Controls::keyCheck
 			addCube
 			(
 				demo,
+				rotatePositionAlongYAxis(5.0f, 5.0f, demo->player.getYaw()), Vector3(), Vector3(),
+				1.0f, Vector3(1.0f, 1.0f, 1.0f),
+				false
+			);
+
+			addForceToCube(demo, demo->rectangleObjects.size() - 1, Vector3(300.0f, 0.0f, 0.0f), Vector3(0.0f, 0.2f, 0.5f));
+
+			break;
+		}
+		case '3':
+		{
+			addCapsule
+			(
+				demo,
+				rotatePositionAlongYAxis(5.0f, 5.0f, demo->player.getYaw()), Quaternion::fromEuler(1, 0, 0), Vector3(0.0f, 0, 0), Vector3(),
+				1.0f, 1.0f, 3.0f
+			);
+
+			addForceToCapsule(demo, (demo->capsuleObjects.size() - 1), Vector3(300.0f, 0.0f, 0.0f), Vector3(0.0f, 0.6f, 0.3f));
+			break;
+		}
+
+		case '4':
+		{
+			//addSphere
+			//(
+			//	demo,
+			//	rotatePositionAlongYAxis(5.0f, 5.0f, demo->player.getYaw()), Quaternion::fromEuler(1, 0, 0), Vector3(0.0f, 0, 0), Vector3(),
+			//	1.0f, 1.0f, 3.0f
+			//);
+
+			//addForceToSphere(demo, (demo->capsuleObjects.size() - 1), Vector3(300.0f, 0.0f, 0.0f), Vector3(0.0f, 0.6f, 0.3f));
+			break;
+		}
+
+		case '0':
+		{
+			bool staticObjects = false;
+			real cubeMass = 1000.0f;
+
+			addCube
+			(
+				demo,
 				Vector3(-20.0f, 5.0f, 0.0f), Vector3(), Vector3(),
-				10.0f, Vector3(0.5f, 5.0f, 10.0f)
+				cubeMass, Vector3(0.5f, 5.0f, 10.0f),
+				staticObjects
 			);
 			addCube
 			(
 				demo,
 				Vector3(20.0f, 5.0f, 0.0f), Vector3(), Vector3(),
-				10.0f, Vector3(0.5f, 5.0f, 10.0f)
+				cubeMass, Vector3(0.5f, 5.0f, 10.0f),
+				staticObjects
 			);
 			addCube
 			(
 				demo,
 				Vector3(0.0f, 5.0f, 20.0f), Vector3(), Vector3(),
-				10.0f, Vector3(10.0f, 5.0f, 0.5f)
+				cubeMass, Vector3(10.0f, 5.0f, 0.5f),
+				staticObjects
 			);
 			addCube
 			(
 				demo,
 				Vector3(0.0f, 5.0f, -20.0f), Vector3(), Vector3(),
-				10.0f, Vector3(10.0f, 5.0f, 0.5f)
+				cubeMass, Vector3(10.0f, 5.0f, 0.5f),
+				staticObjects
 			);
-
-			//addCube
-			//(
-			//	demo,
-			//	Vector3(0.0f, 5.0f, 12.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3(),
-			//	10.0f, Vector3(1.0f, .5f, .5f)
-			//);
-			//addCube
-			//(
-			//	demo,
-			//	Vector3(3.0f, 7.0f, 12.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3(),
-			//	10.0f, Vector3(1.0f, .5f, .5f)
-			//);
-			//addCube
-			//(
-			//	demo,
-			//	Vector3(6.0f, 12.0f, 12.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3(),
-			//	10.0f, Vector3(1.0f, .5f, .5f)
-			//);
-			//addCube
-			//(
-			//	demo,
-			//	Vector3(9.0f, 15.0f, 12.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3(),
-			//	10.0f, Vector3(1.0f, .5f, .5f)
-			//);
-
-			//addParticle(physicsEngine, particles, Vector3(0.0f, 4.0f, 6.0f), 1.0f, 1.0f, 1.0f);
 			break;
 		}
 	}
@@ -152,10 +140,11 @@ void Controls::addCube
 	Vector3 velocity,
 	Vector3 acceleration,
 	real mass,
-	Vector3 halfSize
+	Vector3 halfSize,
+	bool isStatic
 )
 {
-	Box *newSquare = new Box(demo, position, velocity, acceleration, mass, halfSize);
+	Box *newSquare = new Box(demo, position, velocity, acceleration, mass, halfSize, isStatic);
 }
 
 void Controls::addCapsule
@@ -179,7 +168,7 @@ void Controls::addCapsule
 // Add force to the cube at cubeindex
 void Controls::addForceToCube(RenderingDemo *demo, int cubeIndex, Vector3 force, Vector3 position)
 {
-	(demo->rectangleObjects)[0]->boxPrimitive->body->addForceAtBodyPoint(force, position);
+	(demo->rectangleObjects)[cubeIndex]->boxPrimitive->body->addForceAtBodyPoint(force, position);
 }
 
 // Add force to the capsule at capsuleIndex

@@ -100,12 +100,13 @@ Box::Box
 	Vector3 velocity,
 	Vector3 acceleration,
 	real mass,
-	Vector3 halfSize
+	Vector3 halfSize,
+	bool isStatic
 )
 {
 	boxPrimitive = new CollisionBox();
 
-	boxPrimitive->body->setStatic(true);
+	boxPrimitive->body->setStatic(isStatic);
 	boxPrimitive->setState(position, velocity, acceleration, mass, halfSize);
 	boxPrimitive->body->calculateDerivedData();
 

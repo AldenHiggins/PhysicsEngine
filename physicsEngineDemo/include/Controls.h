@@ -49,7 +49,8 @@ namespace PhysicsDemo
 			Vector3 velocity,
 			Vector3 acceleration,
 			real mass,
-			Vector3 halfSize
+			Vector3 halfSize,
+			bool isStatic
 		);
 		static void addCapsule
 		(
