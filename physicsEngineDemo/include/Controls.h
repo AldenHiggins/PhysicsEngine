@@ -7,6 +7,7 @@
 #include "RigidBody.h"
 #include "PlayerControls.h"
 #include "PhysicsDemo.h"
+#include "DataTypeRedefinition.h"
 #include <vector>
 
 namespace PhysicsDemo
@@ -27,54 +28,55 @@ namespace PhysicsDemo
 		static void addParticle
 		(
 			RenderingDemo *demo,
-			PhysicsEngine::Vector3 position,
-			PhysicsEngine::real mass,
-			PhysicsEngine::real radius,
-			PhysicsEngine::real height
+			Vector3 position,
+			real mass,
+			real radius,
+			real height
 		);
 		static void addSphere
 		(
 			RenderingDemo *demo,
-			PhysicsEngine::Vector3 position,
-			PhysicsEngine::Vector3 velocity,
-			PhysicsEngine::Vector3 acceleration,
-			PhysicsEngine::real mass,
-			PhysicsEngine::real radius
+			Vector3 position,
+			Vector3 velocity,
+			Vector3 acceleration,
+			real mass,
+			real radius
 		);
 		static void addCube
 		(
 			RenderingDemo *demo,
-			PhysicsEngine::Vector3 position,
-			PhysicsEngine::Vector3 velocity,
-			PhysicsEngine::Vector3 acceleration,
-			PhysicsEngine::real mass,
-			PhysicsEngine::Vector3 halfSize
+			Vector3 position,
+			Vector3 velocity,
+			Vector3 acceleration,
+			real mass,
+			Vector3 halfSize
 		);
 		static void addCapsule
 		(
 			RenderingDemo *demo,
-			PhysicsEngine::Vector3 position,
-			PhysicsEngine::Quaternion rotation,
-			PhysicsEngine::Vector3 velocity,
-			PhysicsEngine::Vector3 acceleration,
-			PhysicsEngine::real mass,
-			PhysicsEngine::real radius,
-			PhysicsEngine::real height
+			Vector3 position,
+			Quaternion rotation,
+			Vector3 velocity,
+			Vector3 acceleration,
+			real mass,
+			real radius,
+			real height
 		);
 
 		/////////////////////////////////////////////////////////////////////////
 		////////////////////////  OBJECT INTERACTIONS  //////////////////////////
 		/////////////////////////////////////////////////////////////////////////
-		// Add force to the first cylinder
-		static void addForceToCapsule(RenderingDemo *demo, int capsuleIndex, PhysicsEngine::Vector3 force, PhysicsEngine::Vector3 position);
-		// Add force to the first cube
-		static void addForceToCube(RenderingDemo *demo, int capsuleIndex, PhysicsEngine::Vector3 force, PhysicsEngine::Vector3 position);
-
+		// Add force to the capsule at capsuleIndex
+		static void addForceToCapsule(RenderingDemo *demo, int capsuleIndex, Vector3 force, Vector3 position);
+		// Add force to the cube at cubeIndex
+		static void addForceToCube(RenderingDemo *demo, int cubeIndex, Vector3 force, Vector3 position);
+		// Add force to the sphere at sphereIndex
+		static void addForceToSphere(RenderingDemo *demo, int sphereIndex, Vector3 force, Vector3 position);
 
 		/////////////////////////////////////////////////////////////////////////
 		////////////////////////    HELPER FUNCTIONS   //////////////////////////
 		/////////////////////////////////////////////////////////////////////////
-		static PhysicsEngine::Vector3 rotatePositionAlongYAxis(PhysicsEngine::real depth, PhysicsEngine::real height, PhysicsEngine::real theta);
+		static Vector3 rotatePositionAlongYAxis(real depth, real height, real theta);
 	};	
 }
 
