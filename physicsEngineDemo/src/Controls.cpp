@@ -93,7 +93,7 @@ void Controls::keyCheck
 		// Create the level out of really heavy cubes
 		case '0':
 		{
-			bool staticObjects = false;
+			bool staticObjects = true;
 			real cubeMass = 1000.0f;
 
 			addCube

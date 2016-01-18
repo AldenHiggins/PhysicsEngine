@@ -76,12 +76,6 @@ void Physics::detectCollisions(std::vector<Collision> *collisionList)
 	// Detect cube collisions
 	for (unsigned int rigidBodyIndex = 0; rigidBodyIndex < rectangleObjects.size(); rigidBodyIndex++)
 	{
-		// Don't collision detect for a static object
-		if (rectangleObjects[rigidBodyIndex]->body->getStatic())
-		{
-			continue;
-		}
-
 		// Check for collisions against planes
 		for (unsigned int planeIndex = 0; planeIndex < planeObjects.size(); planeIndex++)
 		{
@@ -91,6 +85,12 @@ void Physics::detectCollisions(std::vector<Collision> *collisionList)
 		// Search for box/box collisions
 		for (unsigned int otherRigidBodyIndex = rigidBodyIndex + 1; otherRigidBodyIndex < rectangleObjects.size(); otherRigidBodyIndex++)
 		{
+			// Don't collision detect for a static object
+			if (rectangleObjects[rigidBodyIndex]->body->getStatic() && rectangleObjects[otherRigidBodyIndex]->body->getStatic())
+			{
+				continue;
+			}
+
 			CollisionDetection::cubeCubeCollisionDetect(collisionList, rectangleObjects[rigidBodyIndex], rectangleObjects[otherRigidBodyIndex]);
 		}
 	}
