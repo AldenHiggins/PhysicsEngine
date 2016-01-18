@@ -9,8 +9,10 @@ void PlayerController::update(float deltaTime)
 {
 	Vector3 forward = getForward();
 	Vector3 right = forward.vectorProduct(Vector3(0.0f, 1.0f, 0.0f));
-
-	//std::cout << "Forward: " << forward[0] << " " << forward[1] << " " << forward[2] << std::endl;
+	
+	// Zero out the y movement
+	forward[1] = 0.0f;
+	right[1] = 0.0f;
 
 	if (wPressed)
 	{
