@@ -5,7 +5,7 @@
 #include "MathDataTypes.h"
 #include "DataTypeRedefinition.h"
 
-#define PLAYER_DEFAULT_SPEED 1.0f
+#define PLAYER_DEFAULT_SPEED 0.1f
 #define PLAYER_DEFAULT_POSITION Vector3(0.0f, 4.0f, 0.0f)
 
 namespace PhysicsDemo

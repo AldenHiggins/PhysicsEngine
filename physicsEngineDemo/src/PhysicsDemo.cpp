@@ -138,7 +138,7 @@ void RenderingDemo::motion(int x, int y)
 {
 	Quaternion playerRotation = player.getRotation();
 
-	float angle = (x - lastX);
+	real angle = (float)(x - lastX);
 	angle = angle * PI / 180.0f;
 	Quaternion yawQuat(cos(angle / 2), 0.0f, sin(angle / 2), 0.0f);
 
