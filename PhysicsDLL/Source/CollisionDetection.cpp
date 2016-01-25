@@ -521,7 +521,7 @@ unsigned int CollisionDetection::capsuleSquareCollisionDetect
 	Vector3 collisionPoint = second->body->getPointInWorldSpace(pointInCubeSpace);
 	Collision newCollision;
 	newCollision.contactPoint = collisionPoint;
-	collisionPoint = collisionPoint - second->body->getPosition();
+	collisionPoint = collisionPoint - closestPointOnCapsule;
 	collisionPoint.normalise();
 	newCollision.contactNormal = collisionPoint;
 	// Calculate the penetration
