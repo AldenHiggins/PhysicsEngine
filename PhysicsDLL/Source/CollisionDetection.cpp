@@ -431,6 +431,8 @@ unsigned int CollisionDetection::capsuleCapsuleCollisionDetect
 	return 1;
 }
 
+#define PARALLEL_EPSILON 0.0001
+
 // Determine if a capsule has collided with a square
 unsigned int CollisionDetection::capsuleSquareCollisionDetect
 (
@@ -439,100 +441,95 @@ unsigned int CollisionDetection::capsuleSquareCollisionDetect
 	std::vector<Collision> *collisionList
 )
 {
-	// Start out by testing the line segment representing the capsule against the center point of the
-	// cube, finding the closest point along that line segment to the cube's center
-
 	// Get the three points involved
-	Vector3 point1 = first->body->getPointInWorldSpace(Vector3(0.0, first->height / 2.0f, 0.0));
-	Vector3 point2 = first->body->getPointInWorldSpace(Vector3(0.0, -1 * first->height / 2.0f, 0.0f));
-	Vector3 point3 = second->body->getPosition();
+	//Vector3 point1 = first->body->getPointInWorldSpace(Vector3(0.0, first->height / 2.0f, 0.0));
+	//Vector3 point2 = first->body->getPointInWorldSpace(Vector3(0.0, -1 * first->height / 2.0f, 0.0f));
+	//Vector3 point3 = second->body->getPosition();
+	//Vector3 pointInCubeSpace = second->body->getTransformMatrix().transformInverse(closestPointOnCapsule);
 
-	// Save the three constants that will be used several times during the closest point calculation for brevity's sake
-	real a = point2.x - point1.x;
-	real b = point2.y - point1.y;
-	real c = point2.z - point1.z;
+	Vector3 boxCenter = second->body->getPosition();
 
-	// Calculate the numerator of the division to calculate the t value (the percentage between point 1 and point 2 of the capsule
-	// on which the closest point to the center of the cube lies
-	real num1 = -a * point3.x + a * point1.x;
-	real num2 = -b * point3.y + b * point1.y;
-	real num3 = -c * point3.z + c * point1.z;
-	real numerator = num1 + num2 + num3;
-	real denominator = -a * point2.x + a * point1.x - b * point2.y + b * point1.y - c * point2.z + c * point1.z;
-	real t = numerator / denominator;
+	Vector3 capCenterBoxSpace = second->body->getTransformMatrix().transformInverse(first->body->getPosition());
+	Vector3 capsuleStartBoxSpace = second->body->getTransformMatrix().transformInverse(first->body->getPointInWorldSpace(Vector3(0.0, -1 * first->height / 2.0f, 0.0f)));
+	Vector3 capsuleEndBoxSpace = second->body->getTransformMatrix().transformInverse(first->body->getPointInWorldSpace(Vector3(0.0, first->height / 2.0f, 0.0f)));
+	Vector3 capsuleSegmentVector = capsuleEndBoxSpace - capsuleStartBoxSpace;
+	real maxRayDistance = capsuleSegmentVector.magnitude;
+	capsuleSegmentVector.normalise();
 
-	// Cap the t between 0 and 1
-	if (t < 0)
-	{
-		t = 0;
-	}
+	// Expand the box half sizes by the capsules radius
+	Vector3 boxExpandedHalfSizes;
+	boxExpandedHalfSizes[0] = second->halfSize[0] + first->radius;
+	boxExpandedHalfSizes[1] = second->halfSize[1] + first->radius;
+	boxExpandedHalfSizes[2] = second->halfSize[2] + first->radius;
 
-	if (t > 1)
+	real t = 0.0f;
+	
+	// Check the three axes
+	for (int axisIndex = 0; axisIndex < 3; axisIndex++)
 	{
-		t = 1;
-	}
+		if (abs(capsuleSegmentVector[axisIndex]) < PARALLEL_EPSILON)
+		{
+			if (capsuleStartBoxSpace[axisIndex] < -1 * boxExpandedHalfSizes[axisIndex] || capsuleStartBoxSpace[axisIndex] > boxExpandedHalfSizes[axisIndex])
+			{
+				return 0;
+			}
+		}
+		else
+		{
+			// Compute intersection t value of ray with near and far plane of box
+			real ood = 1.0f / capsuleSegmentVector[axisIndex];
+			real t1 = (-1 * boxExpandedHalfSizes[axisIndex] - capsuleStartBoxSpace[axisIndex]) * ood;
+			real t2 = (boxExpandedHalfSizes[axisIndex] - capsuleStartBoxSpace[axisIndex]) * ood;
+			// Make t1 be intersection with near and t2 with far
+			if (t1 > t2)
+			{
+				real temp = t1;
+				t1 = t2;
+				t2 = temp;
+			}
+			// Compute the intersection of slab intersection intervals
+			if (t1 > t)
+			{
+				t = t1;
+			}
+			if (t2 < maxRayDistance)
+			{
+				maxRayDistance = t2;
+			}
 
-	Vector3 capsuleVector = point2 - point1;
-	Vector3 closestPointOnCapsule = point1 + capsuleVector * t;
-
-	Vector3 pointInCubeSpace = second->body->getTransformMatrix().transformInverse(closestPointOnCapsule);
-
-	// Test all of the axis to make sure they are all within the cube
-	if ((abs(pointInCubeSpace[0]) - first->radius) > second->halfSize[0])
-	{
-		return 0;
-	}
-	if ((abs(pointInCubeSpace[1]) - first->radius) > second->halfSize[1])
-	{
-		return 0;
-	}
-	if ((abs(pointInCubeSpace[2]) - first->radius) > second->halfSize[2])
-	{
-		return 0;
-	}
-
-	// Cap the point in cube space to the halfsize
-	if (pointInCubeSpace[0] > second->halfSize[0])
-	{
-		pointInCubeSpace[0] = second->halfSize[0];
-	}
-	else if (pointInCubeSpace[0] < -1 * second->halfSize[0])
-	{
-		pointInCubeSpace[0] = -1 * second->halfSize[0];
-	}
-	if (pointInCubeSpace[1] > second->halfSize[1])
-	{
-		pointInCubeSpace[1] = second->halfSize[1];
-	}
-	else if (pointInCubeSpace[1] < -1 * second->halfSize[1])
-	{
-		pointInCubeSpace[1] = -1 * second->halfSize[1];
-	}
-	if (pointInCubeSpace[2] > second->halfSize[2])
-	{
-		pointInCubeSpace[2] = second->halfSize[2];
-	}
-	else if (pointInCubeSpace[2] < -1 * second->halfSize[2])
-	{
-		pointInCubeSpace[2] = -1 * second->halfSize[2];
+			if (t > maxRayDistance)
+			{
+				return 0;
+			}
+		}
 	}
 
-	// Convert the point back into world space
-	Vector3 collisionPoint = second->body->getPointInWorldSpace(pointInCubeSpace);
+	Vector3 intersectionPoint = capsuleStartBoxSpace + capsuleSegmentVector * t;
+
 	Collision newCollision;
-	newCollision.contactPoint = collisionPoint;
-	collisionPoint = collisionPoint - closestPointOnCapsule;
-	collisionPoint.normalise();
-	newCollision.contactNormal = collisionPoint;
-	// Calculate the penetration
-	real distanceToClosestPoint = (second->body->getPointInWorldSpace(pointInCubeSpace) - second->body->getPosition()).magnitude();
-	real penetration = first->radius - (second->body->getTransformMatrix().transformInverse(closestPointOnCapsule).magnitude() - distanceToClosestPoint);
-	newCollision.penetration = penetration;
+	newCollision.contactPoint = second->body->getPointInWorldSpace(intersectionPoint);
+
+	// Contact the underpants gnomes for this one
+	if (second->halfSize[0] > first->height || second->halfSize[1] > first->height || second->halfSize[2] > first->height)
+	{
+
+	}
+	// Case where the box is small enough that we don't have to get fancy with the contact normal
+	else
+	{
+		Vector3 contactNormal = intersectionPoint;
+		contactNormal.normalise();
+		newCollision.contactNormal = contactNormal;
+	}
+
+	
+
+	newCollision.penetration = t;
+	
 	newCollision.firstObject = first->body;
-	newCollision.secondObject = second->body;
+	newCollision.secondObject = other->body;
 	newCollision.friction = 0.9f;
 
-	collisionList->push_back(newCollision);
 
 	return 1;
 }
