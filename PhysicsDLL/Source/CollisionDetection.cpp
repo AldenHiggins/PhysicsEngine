@@ -450,10 +450,12 @@ unsigned int CollisionDetection::capsuleSquareCollisionDetect
 	Vector3 boxCenter = second->body->getPosition();
 
 	Vector3 capCenterBoxSpace = second->body->getTransformMatrix().transformInverse(first->body->getPosition());
+	Vector3 capsuleStart = first->body->getPointInWorldSpace(Vector3(0.0, -1 * first->height / 2.0f, 0.0f));
 	Vector3 capsuleStartBoxSpace = second->body->getTransformMatrix().transformInverse(first->body->getPointInWorldSpace(Vector3(0.0, -1 * first->height / 2.0f, 0.0f)));
+	Vector3 capsuleEnd = first->body->getPointInWorldSpace(Vector3(0.0, first->height / 2.0f, 0.0f));
 	Vector3 capsuleEndBoxSpace = second->body->getTransformMatrix().transformInverse(first->body->getPointInWorldSpace(Vector3(0.0, first->height / 2.0f, 0.0f)));
 	Vector3 capsuleSegmentVector = capsuleEndBoxSpace - capsuleStartBoxSpace;
-	real maxRayDistance = capsuleSegmentVector.magnitude;
+	real maxRayDistance = capsuleSegmentVector.magnitude();
 	capsuleSegmentVector.normalise();
 
 	// Expand the box half sizes by the capsules radius
@@ -505,6 +507,18 @@ unsigned int CollisionDetection::capsuleSquareCollisionDetect
 	}
 
 	Vector3 intersectionPoint = capsuleStartBoxSpace + capsuleSegmentVector * t;
+	// Get rid of the capsule's radius from the calculated intersection point
+	for (int axisIndex = 0; axisIndex < 3; axisIndex++)
+	{
+		if (intersectionPoint[axisIndex] < -1 * first->radius)
+		{
+			intersectionPoint[axisIndex] += first->radius;
+		}
+		else if (intersectionPoint[axisIndex] > first->radius)
+		{
+			intersectionPoint[axisIndex] -= first->radius;
+		}
+	}
 
 	Collision newCollision;
 	newCollision.contactPoint = second->body->getPointInWorldSpace(intersectionPoint);
@@ -512,7 +526,33 @@ unsigned int CollisionDetection::capsuleSquareCollisionDetect
 	// Contact the underpants gnomes for this one
 	if (second->halfSize[0] > first->height || second->halfSize[1] > first->height || second->halfSize[2] > first->height)
 	{
+		Vector3 axes[] = 
+		{
+			Vector3(1, 0, 0), Vector3(-1, 0, 0),
+			Vector3(0, 1, 0), Vector3(0, -1, 0),
+			Vector3(0, 0, 1), Vector3(0, 0, -1)
+		};
 
+		real axesDistances[] =
+		{
+			boxExpandedHalfSizes[0] - intersectionPoint[0], abs(-1 * boxExpandedHalfSizes[0] - intersectionPoint[0]),
+			boxExpandedHalfSizes[1] - intersectionPoint[1], abs(-1 * boxExpandedHalfSizes[1] - intersectionPoint[1]),
+			boxExpandedHalfSizes[2] - intersectionPoint[2], abs(-1 * boxExpandedHalfSizes[2] - intersectionPoint[2])
+		};
+
+		int closestAxisIndex = 0;
+		real lowestDistance = 10000;
+
+		for (int axisIndex = 0; axisIndex < 6; axisIndex++)
+		{
+			if (axesDistances[axisIndex] < lowestDistance)
+			{
+				closestAxisIndex = axisIndex;
+				lowestDistance = axesDistances[axisIndex];
+			}
+		}
+
+		newCollision.contactNormal = axes[closestAxisIndex];
 	}
 	// Case where the box is small enough that we don't have to get fancy with the contact normal
 	else
@@ -522,14 +562,13 @@ unsigned int CollisionDetection::capsuleSquareCollisionDetect
 		newCollision.contactNormal = contactNormal;
 	}
 
-	
-
-	newCollision.penetration = t;
+	newCollision.penetration = .1f;
 	
 	newCollision.firstObject = first->body;
-	newCollision.secondObject = other->body;
+	newCollision.secondObject = second->body;
 	newCollision.friction = 0.9f;
 
+	collisionList->push_back(newCollision);
 
 	return 1;
 }
