@@ -553,6 +553,7 @@ unsigned int CollisionDetection::capsuleSquareCollisionDetect
 		}
 
 		newCollision.contactNormal = axes[closestAxisIndex];
+		newCollision.penetration = abs(first->radius - lowestDistance);
 	}
 	// Case where the box is small enough that we don't have to get fancy with the contact normal
 	else
@@ -560,9 +561,8 @@ unsigned int CollisionDetection::capsuleSquareCollisionDetect
 		Vector3 contactNormal = intersectionPoint;
 		contactNormal.normalise();
 		newCollision.contactNormal = contactNormal;
+		newCollision.penetration = .1f;
 	}
-
-	newCollision.penetration = .1f;
 	
 	newCollision.firstObject = first->body;
 	newCollision.secondObject = second->body;

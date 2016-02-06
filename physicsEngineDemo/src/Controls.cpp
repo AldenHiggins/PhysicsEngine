@@ -32,15 +32,23 @@ void Controls::keyCheck
 		// Add a cube
 		case '2':
 		{
+			//addCube
+			//(
+			//	demo,
+			//	rotatePositionAlongYAxis(5.0f, 5.0f, demo->player.getYaw()), Vector3(), Vector3(),
+			//	1.0f, Vector3(1.0f, 1.0f, 1.0f), Vector3(0.9f, 0.5f, 0.5f),
+			//	false
+			//);
+
 			addCube
 			(
 				demo,
-				rotatePositionAlongYAxis(5.0f, 5.0f, demo->player.getYaw()), Vector3(), Vector3(),
-				1.0f, Vector3(1.0f, 1.0f, 1.0f), Vector3(0.5f, 0.5f, 0.5f),
+				Vector3(5.0f, 5.0f, 0.0f), Vector3(), Vector3(),
+				1.0f, Vector3(0.2f, 0.2f, 0.2f), Vector3(0.9f, 0.5f, 0.5f),
 				false
 			);
 
-			addForceToCube(demo, demo->rectangleObjects.size() - 1, Vector3(300.0f, 0.0f, 0.0f), Vector3(0.0f, 0.2f, 0.5f));
+			addForceToCube(demo, demo->rectangleObjects.size() - 1, Vector3(-300.0f, 0.0f, 0.0f), Vector3());
 
 			break;
 		}
@@ -48,14 +56,21 @@ void Controls::keyCheck
 		// Add a capsule
 		case '3':
 		{
+			//addCapsule
+			//(
+			//	demo,
+			//	rotatePositionAlongYAxis(5.0f, 5.0f, demo->player.getRotation().toEuler()[1]), Quaternion::fromEuler(1, 0, 0), Vector3(), Vector3(),
+			//	1.0f, 1.0f, 3.0f, Vector3(0.5f, 0.5f, 0.5f)
+			//);
+
 			addCapsule
 			(
 				demo,
-				rotatePositionAlongYAxis(5.0f, 5.0f, demo->player.getYaw()), Quaternion::fromEuler(1, 0, 0), Vector3(0.0f, 0, 0), Vector3(),
+				Vector3(0.0f, 5.0f, 0.0f), Quaternion::fromEuler(45, 0, 135), Vector3(), Vector3(),
 				1.0f, 1.0f, 3.0f, Vector3(0.5f, 0.5f, 0.5f)
 			);
 
-			addForceToCapsule(demo, (demo->capsuleObjects.size() - 1), Vector3(300.0f, 0.0f, 0.0f), Vector3(0.0f, 0.6f, 0.3f));
+			addForceToCapsule(demo, (demo->capsuleObjects.size() - 1), Vector3(0.0f, 0.0f, 300.0f), Vector3(0.0f, 0.0f, 0.0f));
 			break;
 		}
 
@@ -67,10 +82,10 @@ void Controls::keyCheck
 			(
 				demo,
 				bulletStart, Vector3(0.0f, 0, 0), Vector3(),
-				1.0f, 0.1f, Vector3(0.8f, 0.0f, 0.2f)
+				0.1f, 0.1f, Vector3(0.8f, 0.0f, 0.2f)
 			);
 
-			addForceToSphere(demo, (demo->sphereObjects.size() - 1), (demo->player.getForward() * 1000.0f), Vector3());
+			addForceToSphere(demo, (demo->sphereObjects.size() - 1), (demo->player.getForward() * 40.0f), Vector3());
 			break;
 		}
 
@@ -82,54 +97,72 @@ void Controls::keyCheck
 			(
 				demo,
 				bulletStart, Vector3(0.0f, 0, 0), Vector3(),
-				1.0f, Vector3(0.1f, 0.1f, 0.1f), Vector3(0.8f, 0.0f, 0.2f),
+				0.1f, Vector3(0.1f, 0.1f, 0.1f), Vector3(0.8f, 0.5f, 0.2f),
 				false
 			);
 
-			addForceToCube(demo, (demo->rectangleObjects.size() - 1), (demo->player.getForward() * 1000.0f), Vector3());
+			addForceToCube(demo, (demo->rectangleObjects.size() - 1), (demo->player.getForward() * 40.0f), Vector3());
 			break;
 		}
 
+		// Fire capsule bullets
+		case '6':
+		{
+			Vector3 bulletStart = demo->player.getPosition() + demo->player.getForward();
+			addCapsule
+			(
+				demo,
+				bulletStart, Quaternion::fromEuler(1, 0, 0), Vector3(), Vector3(),
+				0.1f, 0.1f, 0.3f, Vector3(0.5f, 0.5f, 0.9f)
+			);
+
+			addForceToCapsule(demo, (demo->capsuleObjects.size() - 1), (demo->player.getForward() * 10.0f), Vector3());
+			break;
+		}
+		case '9':
+		{
+		
+		}
 		// Create the level out of really heavy cubes
 		case '0':
 		{
 			bool staticObjects = true;
 			real cubeMass = 1000.0f;
+			Vector3 wallColor(0.067f, 0.078f, 0.67f);
 
 			addCube
 			(
 				demo,
 				Vector3(-20.0f, 5.0f, 0.0f), Vector3(), Vector3(),
-				cubeMass, Vector3(0.5f, 5.0f, 20.0f), Vector3(0.6f, 0.6f, 0.6f),
+				cubeMass, Vector3(0.5f, 5.0f, 20.0f), wallColor,
 				staticObjects
 			);
 			addCube
 			(
 				demo,
 				Vector3(20.0f, 5.0f, 0.0f), Vector3(), Vector3(),
-				cubeMass, Vector3(0.5f, 5.0f, 20.0f), Vector3(0.6f, 0.6f, 0.6f),
+				cubeMass, Vector3(0.5f, 5.0f, 20.0f), wallColor,
 				staticObjects
 			);
 			addCube
 			(
 				demo,
 				Vector3(0.0f, 5.0f, 20.0f), Vector3(), Vector3(),
-				cubeMass, Vector3(20.0f, 5.0f, 0.5f), Vector3(0.6f, 0.6f, 0.6f),
+				cubeMass, Vector3(20.0f, 5.0f, 0.5f), wallColor,
 				staticObjects
 			);
 			addCube
 			(
 				demo,
 				Vector3(0.0f, 5.0f, -20.0f), Vector3(), Vector3(),
-				cubeMass, Vector3(20.0f, 5.0f, 0.5f), Vector3(0.6f, 0.6f, 0.6f),
+				cubeMass, Vector3(20.0f, 5.0f, 0.5f), wallColor,
 				staticObjects
 			);
-
 			addCube
 			(
 				demo,
 				Vector3(0.0f, 0.0f, 0.0f), Vector3(), Vector3(),
-				cubeMass, Vector3(20.0f, 1.0f, 20.0f), Vector3(0.6f, 0.6f, 0.6f),
+				cubeMass, Vector3(20.0f, 1.0f, 20.0f), wallColor,
 				staticObjects
 			);
 			break;
