@@ -48,6 +48,9 @@ namespace PhysicsDemo
 		int lastX;
 		int lastY;
 
+		// Draw objects to help visually debug the engine (collision points, normals, etc...)
+		void drawPhysicsDebugObjects();
+
 		void initializeScene();
 		void initializeGraphics();
 		void motion(int x, int y);

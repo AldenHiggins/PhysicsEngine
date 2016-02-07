@@ -52,8 +52,6 @@ void RenderingDemo::update()
 	{
 		physicsEngine.updatePhysics(duration);
 	}
-
-	std::vector<PhysicsEngine::Collision> *collisionList = physicsEngine.getCollisionList();
 	
 	glutPostRedisplay();
 }
@@ -85,6 +83,8 @@ void RenderingDemo::display()
 	Vector3 position = player.getPosition();
 	glTranslatef((float)(-1 * position[0]), (float)(-1 * position[1]), (float)(-1 * position[2]));
 
+	drawPhysicsDebugObjects();
+
 	// Draw the scene
 	drawScene();
 
@@ -99,6 +99,50 @@ void RenderingDemo::drawScene()
 	for (unsigned int renderableIndex = 0; renderableIndex < renderableObjects.size(); renderableIndex++)
 	{
 		renderableObjects[renderableIndex]->display();
+	}
+}
+
+// Draw objects to help visually debug the engine (collision points, normals, etc...)
+void RenderingDemo::drawPhysicsDebugObjects()
+{
+	std::vector<PhysicsEngine::Collision> *collisionList = physicsEngine.getCollisionList();
+
+	for (unsigned int collisionIndex = 0; collisionIndex < collisionList->size(); collisionIndex++)
+	{
+
+		//Sphere
+		//	(
+		//		RenderingDemo *demo,
+		//		Vector3 position,
+		//		Vector3 velocity,
+		//		Vector3 acceleration,
+		//		real mass,
+		//		real radius,
+		//		Vector3 color
+		//		);
+
+		glColor3f(1.0f, 1.0f, 0.0f);
+
+		glPushMatrix();
+		Vector3 collisionPosition = (*collisionList)[collisionIndex].contactPoint;
+		glTranslatef((float)collisionPosition[0], (float)collisionPosition[1], (float)collisionPosition[2]);
+		glutSolidSphere(0.3f, SPHERE_SLICES, SPHERE_STACKS);
+		glPopMatrix();
+
+		// now render the contact normal
+		glPushMatrix();
+		glTranslatef((float)collisionPosition[0], (float)collisionPosition[1], (float)collisionPosition[2]);
+		Vector3 collisionNormal = (*collisionList)[collisionIndex].contactNormal;
+		Vector3 rotationAxis = collisionNormal.vectorProduct(Vector3(0.0f, 0.0f, 1.0f));
+		real rotationAngle = acos(collisionNormal.scalarProduct(Vector3(0.0f, 0.0f, 1.0f)));
+		rotationAngle = rotationAngle * 180 / PI;
+		glScalef(0.1f, 0.1f, 1.0f);
+		glRotatef((float)rotationAngle, (float)rotationAxis[0], (float)rotationAxis[1], (float)rotationAxis[2]);
+		//glTranslatef(0.0f, 1.0f, 0.0f)
+		glutSolidCube(1.0f);
+		//glutSolidSphere(0.3f, SPHERE_SLICES, SPHERE_STACKS);
+		glPopMatrix();
+
 	}
 }
 
