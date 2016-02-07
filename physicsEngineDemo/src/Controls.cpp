@@ -119,10 +119,6 @@ void Controls::keyCheck
 			addForceToCapsule(demo, (demo->capsuleObjects.size() - 1), (demo->player.getForward() * 10.0f), Vector3());
 			break;
 		}
-		case '9':
-		{
-		
-		}
 		// Create the level out of really heavy cubes
 		case '0':
 		{
@@ -166,6 +162,21 @@ void Controls::keyCheck
 				staticObjects
 			);
 			break;
+		}
+		case '9':
+		{
+			demo->isPaused = !demo->isPaused;
+		}
+		case '=':
+		{
+			if (demo->isPaused)
+			{
+				demo->physicsEngine.updatePhysics(0.0166f);
+			}
+		}
+		case '-':
+		{
+
 		}
 	}
 }

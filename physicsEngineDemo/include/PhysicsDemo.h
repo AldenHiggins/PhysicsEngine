@@ -26,6 +26,9 @@ namespace PhysicsDemo
 		// Duration of the previous frame
 		float duration;
 
+		// Used to pause the game
+		bool isPaused;
+
 		// The instance of the physics engine that this game will make use of
 		PhysicsEngine::Physics physicsEngine;
 		// The list of all renderable objects in the demo

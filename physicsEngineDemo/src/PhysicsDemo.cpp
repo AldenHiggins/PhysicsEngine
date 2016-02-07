@@ -47,6 +47,12 @@ void RenderingDemo::update()
 	// Update the player's position
 	player.update(duration);
 
+	// Update the world physics based on the timestep of the frame
+	if (!isPaused)
+	{
+		physicsEngine.updatePhysics(duration);
+	}
+	
 	glutPostRedisplay();
 }
 
@@ -76,9 +82,6 @@ void RenderingDemo::display()
 	// Move the camera to the player's current location
 	Vector3 position = player.getPosition();
 	glTranslatef((float)(-1 * position[0]), (float)(-1 * position[1]), (float)(-1 * position[2]));
-
-	// Update the world physics based on the timestep of the frame
-	physicsEngine.updatePhysics(duration);
 
 	// Draw the scene
 	drawScene();
