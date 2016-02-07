@@ -55,7 +55,7 @@ void Physics::updatePhysics(float duration)
 	integrateRigidBodies(duration);
 
 	// Check for and resolve collisions
-	std::vector<Collision> collisionList;
+	collisionList.clear();
 	detectCollisions(&collisionList);
 	resolveCollisions(&collisionList, duration);
 }
@@ -180,6 +180,12 @@ void Physics::integrateRigidBodies(real duration)
 	{
 		capsuleObjects[rigidBodyIndex]->body->integrate(duration);
 	}
+}
+
+// Get the current collisions this frame
+std::vector<Collision>* Physics::getCollisionList()
+{
+	return &collisionList;
 }
 
 /**

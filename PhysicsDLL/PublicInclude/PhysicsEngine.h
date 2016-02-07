@@ -23,6 +23,8 @@ namespace PhysicsEngine
 		std::vector<CollisionCapsule *> capsuleObjects;
 		// Contains all of the planes in the scene
 		std::vector<CollisionPlane *> planeObjects;
+		// Contains all of the collisions this frame
+		std::vector<Collision> collisionList;
 
 		// Integrate all of the rigid bodies
 		void integrateRigidBodies(real duration);
@@ -36,6 +38,9 @@ namespace PhysicsEngine
 
 		// Update the physics engine based on the elapsed time
 		PHYSICSDLL_API void updatePhysics(float duration);
+
+		// Get the current collisions this frame
+		PHYSICSDLL_API std::vector<Collision> *getCollisionList();
 
 		// Add objects to the physics engine
 		PHYSICSDLL_API void createCapsule(CollisionCapsule *createdCapsule);

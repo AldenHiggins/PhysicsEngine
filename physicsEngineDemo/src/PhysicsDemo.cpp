@@ -52,6 +52,8 @@ void RenderingDemo::update()
 	{
 		physicsEngine.updatePhysics(duration);
 	}
+
+	std::vector<PhysicsEngine::Collision> *collisionList = physicsEngine.getCollisionList();
 	
 	glutPostRedisplay();
 }
