@@ -9,6 +9,7 @@ typedef PhysicsEngine::Vector3 Vector3;
 typedef PhysicsEngine::real real;
 typedef PhysicsEngine::Quaternion Quaternion;
 typedef PhysicsEngine::Matrix3 Matrix3;
+typedef PhysicsEngine::Matrix4 Matrix4;
 typedef PhysicsEngine::CollisionPlane CollisionPlane;
 typedef PhysicsEngine::CollisionCapsule CollisionCapsule;
 typedef PhysicsEngine::CollisionSphere CollisionSphere;

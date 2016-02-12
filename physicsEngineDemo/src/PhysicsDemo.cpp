@@ -109,40 +109,50 @@ void RenderingDemo::drawPhysicsDebugObjects()
 
 	for (unsigned int collisionIndex = 0; collisionIndex < collisionList->size(); collisionIndex++)
 	{
-
-		//Sphere
-		//	(
-		//		RenderingDemo *demo,
-		//		Vector3 position,
-		//		Vector3 velocity,
-		//		Vector3 acceleration,
-		//		real mass,
-		//		real radius,
-		//		Vector3 color
-		//		);
-
 		glColor3f(1.0f, 1.0f, 0.0f);
 
 		glPushMatrix();
 		Vector3 collisionPosition = (*collisionList)[collisionIndex].contactPoint;
 		glTranslatef((float)collisionPosition[0], (float)collisionPosition[1], (float)collisionPosition[2]);
 		glutSolidSphere(0.3f, SPHERE_SLICES, SPHERE_STACKS);
-		glPopMatrix();
+		glPopMatrix();	
 
 		// now render the contact normal
-		glPushMatrix();
-		glTranslatef((float)collisionPosition[0], (float)collisionPosition[1], (float)collisionPosition[2]);
+		//glPushMatrix();
+		
+		//void setOrientationAndPos(const Quaternion &q, const Vector3 &pos)
+		
+
+
 		Vector3 collisionNormal = (*collisionList)[collisionIndex].contactNormal;
-		Vector3 rotationAxis = collisionNormal.vectorProduct(Vector3(0.0f, 0.0f, 1.0f));
-		real rotationAngle = acos(collisionNormal.scalarProduct(Vector3(0.0f, 0.0f, 1.0f)));
-		rotationAngle = rotationAngle * 180 / PI;
-		glScalef(0.1f, 0.1f, 1.0f);
-		glRotatef((float)rotationAngle, (float)rotationAxis[0], (float)rotationAxis[1], (float)rotationAxis[2]);
-		//glTranslatef(0.0f, 1.0f, 0.0f)
+		Vector3 rotationAxis = collisionNormal.vectorProduct(Vector3(1.0f, 0.0f, 0.0f));
+		real rotationAngle = acos(collisionNormal.scalarProduct(Vector3(1.0f, 0.0f, 0.0f)));
+		//rotationAngle = rotationAngle * 180 / PI;
+
+		// Create a transformation matrix corresponding to the collision normal's rotation and position
+		
+		Quaternion collisionRotation(cos(rotationAngle), rotationAxis[0] * sin(rotationAngle / 2), rotationAxis[1] * sin(rotationAngle / 2), rotationAxis[2] * sin(rotationAngle / 2));
+		Matrix4 transformationMatrix;
+		transformationMatrix.setOrientationAndPos(collisionRotation, collisionPosition);
+		GLfloat mat[16];
+		transformationMatrix.fillGLArray(mat);
+
+		glPushMatrix();
+		glMultMatrixf(mat);
+		glScalef(1.0f, 0.1f, 0.1f);
 		glutSolidCube(1.0f);
-		//glutSolidSphere(0.3f, SPHERE_SLICES, SPHERE_STACKS);
 		glPopMatrix();
 
+		// Print out the collision info to the console
+		std::cout << "Collision Position:" << std::endl;
+		std::cout << collisionPosition[0] << " " << collisionPosition[1] << " " << collisionPosition[2] << std::endl;
+		// Print out the collision normals to the console
+		std::cout << "Collision Normal:" << std::endl;
+		std::cout << collisionNormal[0] << " " << collisionNormal[1] << " " << collisionNormal[2] << std::endl;
+		std::cout << "Rotation axis:" << std::endl;
+		std::cout << rotationAxis[0] << " " << rotationAxis[1] << " " << rotationAxis[2] << std::endl;
+		std::cout << "Rotation angle:" << std::endl;
+		std::cout << rotationAngle << std::endl;
 	}
 }
 
@@ -305,25 +315,25 @@ void RenderingDemo::initializeScene()
 	//	-10.0f
 	//);
 
-	//// Create the axes and add them to renderableObjects
-	//Axis *firstAxis = new Axis
-	//(
-	//	this,
-	//	Vector3(0.0f, 0.0f, 0.0f),
-	//	Vector3(20, .01f, AXES_WIDTH / 2),
-	//	Vector3(20, .01f, -1 * AXES_WIDTH / 2),
-	//	Vector3(-20, .01f, -1 * AXES_WIDTH / 2),
-	//	Vector3(-20, .01f, AXES_WIDTH / 2)
-	//);
+	// Create the axes and add them to renderableObjects
+	Axis *firstAxis = new Axis
+	(
+		this,
+		Vector3(0.0f, 0.3f, 0.3f),
+		Vector3(20, 1.01f, AXES_WIDTH / 2),
+		Vector3(20, 1.01f, -1 * AXES_WIDTH / 2),
+		Vector3(-20, 1.01f, -1 * AXES_WIDTH / 2),
+		Vector3(-20, 1.01f, AXES_WIDTH / 2)
+	);
 
-	//Axis *secondAxis = new Axis
-	//(
-	//	this,
-	//	Vector3(0.0f, 0.0f, 0.0f),
-	//	Vector3(AXES_WIDTH / 2, .01f, 20),
-	//	Vector3(-1 * AXES_WIDTH / 2, .01f, 20),
-	//	Vector3(-1 * AXES_WIDTH / 2, .01f, -20),
-	//	Vector3(AXES_WIDTH / 2, .01f, -20)
-	//); 
+	Axis *secondAxis = new Axis
+	(
+		this,
+		Vector3(1.0f, 0.01f, 0.0f),
+		Vector3(AXES_WIDTH / 2, 1.01f, 20),
+		Vector3(-1 * AXES_WIDTH / 2, 1.01f, 20),
+		Vector3(-1 * AXES_WIDTH / 2, 1.01f, -20),
+		Vector3(AXES_WIDTH / 2, 1.01f, -20)
+	); 
 }
 
