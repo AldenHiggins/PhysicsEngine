@@ -119,6 +119,22 @@ void Controls::keyCheck
 			addForceToCapsule(demo, (demo->capsuleObjects.size() - 1), (demo->player.getForward() * 10.0f), Vector3());
 			break;
 		}
+		// Clear all of the renderable objects
+		case '8':
+		{
+			std::vector<Renderable *> *renderableObjects = &demo->renderableObjects;
+
+			for (unsigned int renderIndex = 0; renderIndex < renderableObjects->size(); renderIndex++)
+			{
+				Renderable *renderable = (*renderableObjects)[renderIndex];
+				delete renderable;
+			}
+
+			demo->renderableObjects.clear();
+			demo->rectangleObjects.clear();
+			demo->sphereObjects.clear();
+			demo->capsuleObjects.clear();
+		}
 		// Create the level out of really heavy cubes
 		case '0':
 		{
