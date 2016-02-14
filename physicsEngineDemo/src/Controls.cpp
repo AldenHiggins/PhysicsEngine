@@ -138,45 +138,7 @@ void Controls::keyCheck
 		// Create the level out of really heavy cubes
 		case '0':
 		{
-			bool staticObjects = true;
-			real cubeMass = 1000.0f;
-			Vector3 wallColor(0.067f, 0.078f, 0.67f);
-
-			addCube
-			(
-				demo,
-				Vector3(-20.0f, 5.0f, 0.0f), Vector3(), Vector3(),
-				cubeMass, Vector3(0.5f, 5.0f, 20.0f), wallColor,
-				staticObjects
-			);
-			addCube
-			(
-				demo,
-				Vector3(20.0f, 5.0f, 0.0f), Vector3(), Vector3(),
-				cubeMass, Vector3(0.5f, 5.0f, 20.0f), wallColor,
-				staticObjects
-			);
-			addCube
-			(
-				demo,
-				Vector3(0.0f, 5.0f, 20.0f), Vector3(), Vector3(),
-				cubeMass, Vector3(20.0f, 5.0f, 0.5f), wallColor,
-				staticObjects
-			);
-			addCube
-			(
-				demo,
-				Vector3(0.0f, 5.0f, -20.0f), Vector3(), Vector3(),
-				cubeMass, Vector3(20.0f, 5.0f, 0.5f), wallColor,
-				staticObjects
-			);
-			addCube
-			(
-				demo,
-				Vector3(0.0f, 0.0f, 0.0f), Vector3(), Vector3(),
-				cubeMass, Vector3(20.0f, 1.0f, 20.0f), wallColor,
-				staticObjects
-			);
+			createScene(demo);
 			break;
 		}
 		case '9':
@@ -291,4 +253,50 @@ Vector3 Controls::rotatePositionAlongYAxis(real depth, real height, real theta)
 	rotMatrix.setOrientation(cameraRotation);
 
 	return rotMatrix.transform(objectInitialPosition);
+}
+
+/////////////////////////////////////////////////////////////////////////
+/////////////////////    CREATE SCENE OBJECTS   /////////////////////////
+/////////////////////////////////////////////////////////////////////////
+void Controls::createScene(RenderingDemo *demo)
+{
+	bool staticObjects = true;
+	real cubeMass = 1000.0f;
+	Vector3 wallColor(0.067f, 0.078f, 0.67f);
+
+	addCube
+	(
+		demo,
+		Vector3(-20.0f, 5.0f, 0.0f), Vector3(), Vector3(),
+		cubeMass, Vector3(0.5f, 5.0f, 20.0f), wallColor,
+		staticObjects
+	);
+	addCube
+	(
+		demo,
+		Vector3(20.0f, 5.0f, 0.0f), Vector3(), Vector3(),
+		cubeMass, Vector3(0.5f, 5.0f, 20.0f), wallColor,
+		staticObjects
+	);
+	addCube
+	(
+		demo,
+		Vector3(0.0f, 5.0f, 20.0f), Vector3(), Vector3(),
+		cubeMass, Vector3(20.0f, 5.0f, 0.5f), wallColor,
+		staticObjects
+	);
+	addCube
+	(
+		demo,
+		Vector3(0.0f, 5.0f, -20.0f), Vector3(), Vector3(),
+		cubeMass, Vector3(20.0f, 5.0f, 0.5f), wallColor,
+		staticObjects
+	);
+	addCube
+	(
+		demo,
+		Vector3(0.0f, 0.0f, 0.0f), Vector3(), Vector3(),
+		cubeMass, Vector3(20.0f, 1.0f, 20.0f), wallColor,
+		staticObjects
+	);
 }

@@ -260,60 +260,8 @@ void RenderingDemo::initializeScene()
 {
 	// Initialize the timers
 	TimingData::init();
-	//Plane *plane1 = new Plane
-	//(
-	//	this,
-	//	Vector3(),
-	//	Vector3(0.0f, 1.0f, 0.0f),
-	//	Vector3(1.0f, 0.0f, 0.0f),
-	//	Vector3(0.3f, 0.3f, 0.7f),
-	//	10.0f,
-	//	0.0f
-	//);
 
-	//Plane *plane2 = new Plane
-	//(
-	//	this,
-	//	Vector3(0.0f, 10.0f, 10.0f),
-	//	Vector3(0.0f, 0.0f, -1.0f),
-	//	Vector3(1.0f, 0.0f, 0.0f),
-	//	Vector3(0.9f, 0.9f, 0.9f),
-	//	10.0f,
-	//	-10.0f
-	//);
-
-	//Plane *plane3 = new Plane
-	//(
-	//	this,
-	//	Vector3(0.0f, 10.0f, -10.0f),
-	//	Vector3(0.0f, 0.0f, 1.0f),
-	//	Vector3(1.0f, 0.0f, 0.0f),
-	//	Vector3(0.0f, 0.8f, 0.0f),
-	//	10.0f,
-	//	-10.0f
-	//);
-
-	//Plane *plane4 = new Plane
-	//(
-	//	this,
-	//	Vector3(10.0f, 10.0f, 0.0f),
-	//	Vector3(-1.0f, 0.0f, 0.0f),
-	//	Vector3(0.0f, 1.0f, 0.0f),
-	//	Vector3(0.4f, 0.8f, 0.1f),
-	//	10.0f,
-	//	-10.0f
-	//);
-
-	//Plane *plane5 = new Plane
-	//(
-	//	this,
-	//	Vector3(-10.0f, 10.0f, 0.0f),
-	//	Vector3(1.0f, 0.0f, 0.0f),
-	//	Vector3(0.0f, 1.0f, 0.0f),
-	//	Vector3(1.0f, 0.0f, 0.0f),
-	//	10.0f,
-	//	-10.0f
-	//);
+	Controls::createScene(this);
 
 	// Create the axes and add them to renderableObjects
 	Axis *firstAxis = new Axis
