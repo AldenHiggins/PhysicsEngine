@@ -155,6 +155,9 @@ namespace PhysicsEngine
 
 		// Get whether the body is static
 		PHYSICS_DLL_API bool getStatic();
+
+		// Generate a transformation matrix based on the given rotation and position
+		PHYSICS_DLL_API static void _calculateTransformMatrix(Matrix4 &transformMatrix, const Vector3 &position, const Quaternion &orientation);
 	};
 }
 

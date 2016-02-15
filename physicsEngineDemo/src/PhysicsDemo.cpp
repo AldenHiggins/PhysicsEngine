@@ -12,6 +12,7 @@
 #include "RenderableObjects.h"
 #include "PlayerControls.h"
 #include "DataTypeRedefinition.h"
+#include "RigidBody.h"
 
 using namespace PhysicsDemo;
 
@@ -109,31 +110,25 @@ void RenderingDemo::drawPhysicsDebugObjects()
 
 	for (unsigned int collisionIndex = 0; collisionIndex < collisionList->size(); collisionIndex++)
 	{
+		// Render the collision position
 		glColor3f(1.0f, 1.0f, 0.0f);
-
 		glPushMatrix();
 		Vector3 collisionPosition = (*collisionList)[collisionIndex].contactPoint;
 		glTranslatef((float)collisionPosition[0], (float)collisionPosition[1], (float)collisionPosition[2]);
 		glutSolidSphere(0.3f, SPHERE_SLICES, SPHERE_STACKS);
 		glPopMatrix();	
 
-		// now render the contact normal
-		//glPushMatrix();
-		
-		//void setOrientationAndPos(const Quaternion &q, const Vector3 &pos)
-		
-
-
+		// Now render the collision normal
 		Vector3 collisionNormal = (*collisionList)[collisionIndex].contactNormal;
+		collisionNormal.normalise();
 		Vector3 rotationAxis = collisionNormal.vectorProduct(Vector3(1.0f, 0.0f, 0.0f));
-		real rotationAngle = acos(collisionNormal.scalarProduct(Vector3(1.0f, 0.0f, 0.0f)));
-		//rotationAngle = rotationAngle * 180 / PI;
+		float rotationAngle = acosf(collisionNormal.scalarProduct(Vector3(1.0f, 0.0f, 0.0f)));
+		collisionPosition = collisionPosition + (collisionNormal * .3f);
 
 		// Create a transformation matrix corresponding to the collision normal's rotation and position
-		
-		Quaternion collisionRotation(cos(rotationAngle), rotationAxis[0] * sin(rotationAngle / 2), rotationAxis[1] * sin(rotationAngle / 2), rotationAxis[2] * sin(rotationAngle / 2));
+		Quaternion collisionRotation(cosf(rotationAngle / 2.0f), rotationAxis[0] * sinf(rotationAngle / 2.0f), rotationAxis[1] * sinf(rotationAngle / 2.0f), rotationAxis[2] * sinf(rotationAngle / 2.0f));
 		Matrix4 transformationMatrix;
-		transformationMatrix.setOrientationAndPos(collisionRotation, collisionPosition);
+		PhysicsEngine::RigidBody::_calculateTransformMatrix(transformationMatrix, collisionPosition, collisionRotation);
 		GLfloat mat[16];
 		transformationMatrix.fillGLArray(mat);
 

@@ -358,7 +358,7 @@ static inline void _transformInertiaTensor(Matrix3 &iitWorld, const Quaternion &
 }
 
 // Recalculate the given transformation matrix based on the given position and orientation (taken from Cyclone)
-inline void _calculateTransformMatrix(Matrix4 &transformMatrix, const Vector3 &position, const Quaternion &orientation)
+void RigidBody::_calculateTransformMatrix(Matrix4 &transformMatrix, const Vector3 &position, const Quaternion &orientation)
 {
 	transformMatrix.data[0] = 1 - 2 * orientation.j*orientation.j -
 		2 * orientation.k*orientation.k;
