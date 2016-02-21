@@ -13,6 +13,7 @@
 #include "PlayerControls.h"
 #include "DataTypeRedefinition.h"
 #include "RigidBody.h"
+#include "Rendering.h"
 
 using namespace PhysicsDemo;
 
@@ -111,12 +112,8 @@ void RenderingDemo::drawPhysicsDebugObjects()
 	for (unsigned int collisionIndex = 0; collisionIndex < collisionList->size(); collisionIndex++)
 	{
 		// Render the collision position
-		glColor3f(1.0f, 1.0f, 0.0f);
-		glPushMatrix();
 		Vector3 collisionPosition = (*collisionList)[collisionIndex].contactPoint;
-		glTranslatef((float)collisionPosition[0], (float)collisionPosition[1], (float)collisionPosition[2]);
-		glutSolidSphere(0.3f, SPHERE_SLICES, SPHERE_STACKS);
-		glPopMatrix();	
+		Rendering::drawSphere(collisionPosition, Vector3(1.0f, 1.0f, 0.0f), 0.3);	
 
 		// Now render the collision normal
 		Vector3 collisionNormal = (*collisionList)[collisionIndex].contactNormal;
@@ -131,12 +128,8 @@ void RenderingDemo::drawPhysicsDebugObjects()
 		PhysicsEngine::RigidBody::_calculateTransformMatrix(transformationMatrix, collisionPosition, collisionRotation);
 		GLfloat mat[16];
 		transformationMatrix.fillGLArray(mat);
-
-		glPushMatrix();
-		glMultMatrixf(mat);
-		glScalef(1.0f, 0.1f, 0.1f);
-		glutSolidCube(1.0f);
-		glPopMatrix();
+		
+		Rendering::drawBox(mat, Vector3(1.0f, 1.0f, 1.0f), Vector3(0.5f, 0.05f, 0.05f));
 
 		// Print out the collision info to the console
 		std::cout << "Collision Position:" << std::endl;
