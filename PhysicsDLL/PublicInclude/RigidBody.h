@@ -106,7 +106,7 @@ namespace PhysicsEngine
 		void setPosition(Vector3 &positionInput);
 
 		// Get the position of this object
-		Vector3 getPosition();
+		PHYSICS_DLL_API Vector3 getPosition();
 
 		// Set the orientation of this rigid body
 		void setOrientation(const Quaternion &orientationInput);
